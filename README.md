@@ -6,6 +6,8 @@ Created By Cole Abbeduto
 
 'git clone https://github.com/cole21771/MSOESuperMileageServer-V2.git'
 
+'cd MSOESuperMileageServer-V2'
+
 'npm install'
 
 'npm run-script build'
