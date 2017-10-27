@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="socketService.openSidenavs()">
+    <svg fill="#FFFFFF" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+    </svg>
+  </button>
+  {{title}}
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav class="sidenav" id="sidenav">
+    <button class="sidenav-button" color="accent" mat-raised-button>Button 1</button>
+    <br><br>
+    <button class="sidenav-button" color="accent" mat-raised-button>Button 2</button>
+    <br><br>
+    <button class="sidenav-button" color="accent" mat-raised-button>Button 3</button>
+  </mat-sidenav>
+
+  <!------------------------------Page Content----------------------------------------->
+
+ <!-- <app-graph [data]="this.sinAndCos()"></app-graph>
+  <app-graph [data]="this.sinAndCos()"></app-graph>-->
+
+  <button mat-raised-button (click)="socketService.openSidenavs()">Open All Sidenavs</button>
+
+
+</mat-sidenav-container>
