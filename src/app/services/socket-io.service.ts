@@ -8,9 +8,7 @@ export class AppSocketIoService {
     this.socket = io();
   }
 
-  openSidenavs(){
-    this.socket.emit('OpenAllSidenavs');
-  }
+
 
 
 

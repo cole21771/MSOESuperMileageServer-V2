@@ -1,6 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {AppSocketIoService} from "./services/socket-io.service";
-import {MatSidenav} from "@angular/material";
 
 
 @Component({
@@ -12,14 +11,10 @@ export class AppComponent {
   title: string = 'SuperMileage Server';
   socketService: AppSocketIoService = null;
 
-
-  @ViewChild('sidenav') public sidenav: MatSidenav;
   constructor(socketService: AppSocketIoService) {
     this.socketService = socketService;
 
-    this.socketService.socket.on('OpenSidenav', () => {
-      this.sidenav.toggle();
-    });
+
   }
 
   sinAndCos() {

@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "quickBuild": "ng build --sourcemap=false",
     "build": "ng build",
     "productionBuild": "ng build -prod",
     "test": "ng test",
