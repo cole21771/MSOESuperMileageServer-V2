@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('msoesuper-mileage-server App', () => {
+describe('msoesuper-mileage-server-v2 App', () => {
   let page: AppPage;
 
   beforeEach(() => {

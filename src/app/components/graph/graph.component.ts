@@ -1,14 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 
 declare let d3: any;
 
 @Component({
   selector: 'app-graph',
-  template: '<nvd3 [options]="options" [data]="data"></nvd3>',
-  styleUrls: ['./graph.component.css']
+  template: '<nvd3 [class]="theme" [options]="options" [data]="data"></nvd3>',
+  styleUrls: ['./graph.component.css', '../../../../node_modules/nvd3/build/nv.d3.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class GraphComponent implements OnInit {
 
+  @Input() theme;
   @Input() data;
   options: any;
 
@@ -42,9 +44,10 @@ export class GraphComponent implements OnInit {
             return d3.format('.02f')(d);
           },
           axisLabelDistance: -10
-        }
+        },
+        showLegend: false,
+        duration: 0
       }
     };
   }
-
 }

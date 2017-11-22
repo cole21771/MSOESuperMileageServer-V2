@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "msoesuper-mileage-server"
+    "name": "msoesuper-mileage-server-v2"
   },
   "apps": [
     {
@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.scss"
+        "styles.scss",
+        "dark.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
