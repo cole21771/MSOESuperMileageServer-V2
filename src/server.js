@@ -6,6 +6,7 @@ app.use(require('compression')());
 const server = require('http').Server(app);
 const io = require('socket.io').listen(server);
 const path = require('path');
+const externalSocketIO = require(path.join(__dirname, 'socket-io.events'))(io);
 
 // Parsers for POST data
 const bodyParser = require('body-parser');
@@ -22,12 +23,3 @@ app.get('/*', (req, res) => {
 
 let port = 3000;
 server.listen(port, () => console.log(`Listening on port ` + port));
-
-/********************Socket.IO********************************************************/
-io.sockets.on('connection', (socket) => {
-  socket.on('newData', () => {
-    //Do something when receiving new data
-  });
-
-
-});

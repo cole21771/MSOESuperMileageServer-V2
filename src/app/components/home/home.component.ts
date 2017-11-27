@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {ThemeService} from '../../services/theme/theme.service';
 
@@ -7,11 +7,17 @@ import {ThemeService} from '../../services/theme/theme.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   socketService: SocketIoService;
   themeService: ThemeService;
+
   theme: String = 'dark-theme';
+  data: any;
+  location: any;
+
+  dataSub: any;
+  locationSub: any;
 
   constructor(socketService: SocketIoService, themeService: ThemeService) {
     this.socketService = socketService;
@@ -25,6 +31,17 @@ export class HomeComponent implements OnInit {
       });
 
     this.themeService.forceEmit();
+
+    this.dataSub = this.socketService.getData()
+      .subscribe((data) => this.data = data);
+
+    this.locationSub = this.socketService.getLocation()
+      .subscribe((location) => this.location = location);
+  }
+
+  ngOnDestroy() {
+    this.dataSub.unsubscribe();
+    this.locationSub.unsubscribe();
   }
 
   sinAndCos() {
@@ -35,7 +52,7 @@ export class HomeComponent implements OnInit {
     for (let i = 0; i < 100; i++) {
       sin.push({x: i, y: Math.sin(i / 10)});
       sin2.push({x: i, y: i % 10 === 5 ? null : Math.sin(i / 10) * 0.25 + 0.5});
-      cos.push({x: i, y: .5 * Math.cos(i / 10 + 2) + Math.random() / 30});
+      cos.push({x: i, y: .5 * Math.cos(i / 10 + 2) + Math.random() / 10});
     }
 
     // Line chart data should be sent as an array of series objects.

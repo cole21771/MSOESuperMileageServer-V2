@@ -10,7 +10,7 @@ declare let d3: any;
 })
 export class GraphComponent implements OnInit {
 
-  @Input() theme;
+  @Input() theme: String;
   @Input() data;
   options: any;
 
