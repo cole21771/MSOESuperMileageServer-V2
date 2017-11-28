@@ -25,18 +25,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.themeService.getEmittedValue()
+    this.themeService.getTheme()
       .subscribe(value => {
         this.theme = value;
       });
 
-    this.themeService.forceEmit();
+    this.themeService.forceUpdate();
 
     this.dataSub = this.socketService.getData()
       .subscribe((data) => this.data = data);
 
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
+
+    setInterval(() => {
+      this.socketService.sendData(this.sinAndCos());
+    }, 250);
   }
 
   ngOnDestroy() {

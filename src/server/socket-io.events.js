@@ -1,14 +1,9 @@
-module.exports = (io) => {
+module.exports = (io, logger) => {
   io.sockets.on('connection', (socket) => {
-
     socket.on('newData', (data) => {
-      //console.log(data);
+      logger.logData(data);
       io.emit('newData', data);
     });
-
-
-
-
-
   });
 };
+

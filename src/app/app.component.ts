@@ -18,6 +18,6 @@ export class AppComponent {
 
   switchTheme() {
     this.isDarkTheme = !this.isDarkTheme;
-    this.themeService.emit(this.isDarkTheme ? 'dark-theme' : '');
+    this.themeService.setTheme(this.isDarkTheme ? 'dark-theme' : '');
   }
 }
