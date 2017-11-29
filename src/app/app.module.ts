@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {NvD3Module} from 'ng2-nvd3';
 
@@ -14,6 +13,7 @@ import { ReviewDataComponent } from './components/review-data/review-data.compon
 import { HomeComponent } from './components/home/home.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ThemeService} from './services/theme/theme.service';
+import {AppMaterialModule} from './app-material.module';
 
 @NgModule({
   declarations: [
@@ -27,10 +27,7 @@ import {ThemeService} from './services/theme/theme.service';
     BrowserAnimationsModule,
     NvD3Module,
     AppRoutingModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatCardModule,
-    MatToolbarModule
+    AppMaterialModule
   ],
   providers: [SocketIoService, ThemeService],
   bootstrap: [AppComponent]
