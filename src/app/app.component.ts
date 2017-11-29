@@ -20,4 +20,8 @@ export class AppComponent {
     this.isDarkTheme = !this.isDarkTheme;
     this.themeService.setTheme(this.isDarkTheme ? 'dark-theme' : '');
   }
+
+  openLogin() {
+
+  }
 }

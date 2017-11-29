@@ -1,5 +1,5 @@
 <div [class.dark-theme]="isDarkTheme">
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" class="mat-elevation-z6">
     <button mat-icon-button (click)="sidenav.toggle()">
       <svg fill="#FFFFFF" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0h24v24H0z" fill="none"></path>
@@ -7,22 +7,32 @@
       </svg>
     </button>
     {{title}}
+    <div>
+      <button color="accent" mat-raised-button (click)="openLogin()">Login</button>
+    </div>
   </mat-toolbar>
+
 
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav class="sidenav" id="sidenav">
-      <button [routerLink]="['']" class="sidenav-button" color="accent" mat-raised-button (click)="sidenav.close()">Home</button>
+      <button [routerLink]="['']" class="sidenav-button" color="accent" mat-raised-button (click)="sidenav.close()">
+        Home
+      </button>
       <br><br>
-      <button [routerLink]="['/review-data']" class="sidenav-button" color="accent" mat-raised-button (click)="sidenav.close()">Review Data</button>
+      <button [routerLink]="['/review-data']" class="sidenav-button" color="accent" mat-raised-button
+              (click)="sidenav.close()">Review Data
+      </button>
       <br><br>
-      <button [routerLink]="['/admin']" class="sidenav-button" color="accent" mat-raised-button (click)="sidenav.close()">Admin</button>
+      <button [routerLink]="['/admin']" class="sidenav-button" color="accent" mat-raised-button
+              (click)="sidenav.close()">Admin
+      </button>
       <br><br>
       <button class="sidenav-button" color="accent" mat-raised-button (click)="switchTheme()">Switch Theme</button>
     </mat-sidenav>
 
-    <div class="container">
+    <mat-sidenav-content class="content">
       <router-outlet></router-outlet>
-    </div>
+    </mat-sidenav-content>
 
   </mat-sidenav-container>
 </div>
