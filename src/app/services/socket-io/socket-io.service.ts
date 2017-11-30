@@ -6,6 +6,7 @@ export class SocketIoService {
   private socket: SocketIOClient.Socket; // The client instance of socket.io
   @Output() private newDataEmitter: EventEmitter<any> = new EventEmitter();
   @Output() private newLocationEmitter: EventEmitter<any> = new EventEmitter();
+  @Output() private userDataEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor() {
     this.socket = io();
@@ -17,10 +18,10 @@ export class SocketIoService {
     this.socket.on('newLocation', (locationData) => {
       this.newLocationEmitter.emit(locationData);
     });
-  }
 
-  sendData(data: any) {
-    this.socket.emit('newData', data);
+    this.socket.on('loginResponse', (userData) => {
+      this.userDataEmitter.emit(userData);
+    });
   }
 
   getData() {
@@ -29,6 +30,11 @@ export class SocketIoService {
 
   getLocation() {
     return this.newLocationEmitter;
+  }
+
+  attemptLogin(data): EventEmitter<any> {
+    this.socket.emit('attemptLogin', data);
+    return this.userDataEmitter;
   }
 
 

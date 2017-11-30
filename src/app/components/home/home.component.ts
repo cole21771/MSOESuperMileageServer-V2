@@ -37,10 +37,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
-
-    setInterval(() => {
-      this.socketService.sendData(this.sinAndCos());
-    }, 250);
   }
 
   ngOnDestroy() {
@@ -48,7 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locationSub.unsubscribe();
   }
 
-  sinAndCos() {
+  /*sinAndCos() {
     const sin = [], sin2 = [],
       cos = [];
 
@@ -78,5 +74,5 @@ export class HomeComponent implements OnInit, OnDestroy {
         area: true      // area - set to true if you want this line to turn into a filled area chart.
       }
     ];
-  }
+  }*/
 }
