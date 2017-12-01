@@ -36,16 +36,19 @@ export class AppComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
       if (result.error) {
         this.launchSnackBar('If you\'re going to try to hack this, at least try entering some text');
       } else {
         this.socketService.attemptLogin(result)
           .subscribe((result) => {
-            if (result.error) {
-              this.launchSnackBar('Invalid username or password!');
-            } else {
-              this.launchSnackBar('Login Successful!')
-            }
+              if (result.error) {
+                this.launchSnackBar('Invalid username or password!');
+              } else {
+                this.launchSnackBar('Login Successful!')
+              }
           });
       }
     });
