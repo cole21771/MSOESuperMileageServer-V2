@@ -4,10 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "quickBuild": "ng build --sourcemap=false",
-    "build": "ng build",
-    "productionBuild": "ng build -prod",
+    "start": "concurrently \"ng build --watch\" \"nodemon ./src/server/server.js\"",
+    "production": "concurrently \"ng build -prod\" \"node ./src/server/server.js\"",
     "test": "ng test -sm=false",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
