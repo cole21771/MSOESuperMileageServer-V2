@@ -14,12 +14,11 @@
   padding: 20px;
   width:70%;
   max-width: 380px;
+  display: flex;
+  flex-direction: column;
+
 }
 
-.sidenav-button {
-  width: 100%;
-}
-
-.toolbarButton {
+.toolbar-button {
   margin-left: auto;
 }

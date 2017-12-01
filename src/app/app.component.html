@@ -6,25 +6,26 @@
       <mat-icon>menu</mat-icon>
     </button>
     {{title}}
-    <button class="toolbarButton" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+    <button *ngIf="!admin" class="toolbar-button" color="accent" mat-raised-button (click)="openLogin()">Login</button>
   </mat-toolbar>
 
 
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav class="sidenav" id="sidenav">
-      <button [routerLink]="['']" class="sidenav-button" color="accent" mat-raised-button (click)="sidenav.close()">
+      <button [routerLink]="['']" color="accent" mat-raised-button (click)="sidenav.close()">
         Home
       </button>
-      <br><br>
-      <button [routerLink]="['/review-data']" class="sidenav-button" color="accent" mat-raised-button
+      <br>
+      <button [routerLink]="['/review-data']" color="accent" mat-raised-button
               (click)="sidenav.close()">Review Data
       </button>
-      <br><br>
-      <button [routerLink]="['/admin']" class="sidenav-button" color="accent" mat-raised-button
+      <br>
+      <button *ngIf="admin" [routerLink]="['/admin']" color="accent" mat-raised-button
               (click)="sidenav.close()">Admin
       </button>
-      <br><br>
-      <button class="sidenav-button" color="accent" mat-raised-button (click)="switchTheme()">Switch Theme</button>
+      <br *ngIf="admin">
+      <button class="sidenav-button bottom" color="accent" mat-raised-button (click)="switchTheme()">Switch Theme
+      </button>
     </mat-sidenav>
 
     <mat-sidenav-content class="content">

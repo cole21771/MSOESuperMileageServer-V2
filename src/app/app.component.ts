@@ -14,7 +14,10 @@ export class AppComponent {
   title = 'SuperMileage Server';
   themeService: ThemeService;
   socketService: SocketIoService;
+
   isDarkTheme: Boolean = true;
+  admin: Boolean = false;
+
   loginDialog: MatDialog;
   snackBar: MatSnackBar;
 
@@ -48,6 +51,7 @@ export class AppComponent {
                 this.launchSnackBar('Invalid username or password!');
               } else {
                 this.launchSnackBar('Login Successful!')
+                this.admin = true;
               }
           });
       }

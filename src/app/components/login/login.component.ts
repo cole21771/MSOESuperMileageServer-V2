@@ -9,7 +9,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class LoginComponent implements OnInit {
   hide: Boolean = true;
-  private loginForm: FormGroup;
+  loginForm: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<LoginComponent>) {
     // dialogRef is the dialog box object
