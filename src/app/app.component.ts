@@ -38,14 +38,12 @@ export class AppComponent {
       width: '250px'
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result) {
+    dialogRef.afterClosed().subscribe((login) => {
+      if (!login) {
         return;
       }
-      if (result.error) {
-        this.launchSnackBar('If you\'re going to try to hack this, at least try entering some text');
-      } else {
-        this.socketService.attemptLogin(result)
+      if (login.isValid) {
+        this.socketService.attemptLogin(login)
           .then((isAdmin: boolean) => {
             if (isAdmin) {
               this.launchSnackBar('Login Successful!');
@@ -54,6 +52,8 @@ export class AppComponent {
               this.launchSnackBar('Invalid username or password!');
             }
           });
+      } else {
+        this.launchSnackBar('If you\'re going to try to hack this, at least try entering some text');
       }
     });
   }
