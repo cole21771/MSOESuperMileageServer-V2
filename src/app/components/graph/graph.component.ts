@@ -4,7 +4,7 @@ declare let d3: any;
 
 @Component({
   selector: 'app-graph',
-  template: '<nvd3 [class]="theme" [options]="options" [data]="data"></nvd3>',
+  template: '<nvd3 [class]="theme + \' graph\'" [options]="options" [data]="data"></nvd3>',
   styleUrls: ['./graph.component.css', '../../../../node_modules/nvd3/build/nv.d3.css'],
   encapsulation: ViewEncapsulation.None
 })

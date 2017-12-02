@@ -19,6 +19,57 @@ export class HomeComponent implements OnInit, OnDestroy {
   dataSub: any;
   locationSub: any;
 
+  dataLabels: any = [
+    {
+      label: 'Speed',
+      color: '#f00',
+      min: 0,
+      max: 35,
+      units: 'MPH',
+      displayAlways: false
+    },
+    {
+      label: 'Motor RPM',
+      color: '#0f0',
+      min: 0,
+      max: 3500,
+      units: 'RPM',
+      displayAlways: false
+    },
+    {
+      label: 'Joules',
+      color: '#00f',
+      min: 0,
+      max: 1000000,
+      units: 'J',
+      displayAlways: true
+    },
+    {
+      label: 'Volts',
+      color: '#0ff',
+      min: 0,
+      max: 30,
+      units: 'V',
+      displayAlways: false
+    },
+    {
+      label: 'Current',
+      color: '#f0f',
+      min: 0,
+      max: 50,
+      units: 'A',
+      displayAlways: false
+    },
+    {
+      label: 'Lap Number',
+      color: '#ff7f00',
+      min: 0,
+      max: 10,
+      units: '',
+      displayAlways: true
+    }
+  ];
+
   constructor(socketService: SocketIoService, themeService: ThemeService) {
     this.socketService = socketService;
     this.themeService = themeService;
@@ -37,6 +88,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
+
+    setInterval(() => {
+      this.socketService.sendData(this.sinAndCos());
+    }, 250);
   }
 
   ngOnDestroy() {
@@ -44,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locationSub.unsubscribe();
   }
 
-  /*sinAndCos() {
+  sinAndCos() {
     const sin = [], sin2 = [],
       cos = [];
 
@@ -74,5 +129,5 @@ export class HomeComponent implements OnInit, OnDestroy {
         area: true      // area - set to true if you want this line to turn into a filled area chart.
       }
     ];
-  }*/
+  }
 }

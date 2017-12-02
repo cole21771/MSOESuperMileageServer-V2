@@ -24,6 +24,10 @@ export class SocketIoService {
     });
   }
 
+  sendData(data: any) {
+    this.socket.emit('newData', data);
+  }
+
   getData() {
     return this.newDataEmitter;
   }
