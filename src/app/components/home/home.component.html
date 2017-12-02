@@ -1,9 +1,3 @@
-<mat-accordion *ngFor="let dataLabel of dataLabels">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{dataLabel.label}}</mat-panel-title>
-      <mat-panel-description>{{dataLabel.units}}</mat-panel-description>
-    </mat-expansion-panel-header>
-    <app-graph [theme]="theme" [data]="data"></app-graph>
-  </mat-expansion-panel>
-</mat-accordion>
+<div *ngFor="let graph of graphs">
+  <app-graph [theme]="theme" [graph]="graph"></app-graph>
+</div>

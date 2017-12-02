@@ -1,53 +1,35 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-
-declare let d3: any;
+import {Component, Input, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {Graph} from "../../models/Graph";
 
 @Component({
   selector: 'app-graph',
-  template: '<nvd3 [class]="theme + \' graph\'" [options]="options" [data]="data"></nvd3>',
-  styleUrls: ['./graph.component.css', '../../../../node_modules/nvd3/build/nv.d3.css'],
+  template: `
+    <ngx-charts-line-chart [view]="view"
+                           [results]="graph.chartData"
+                           [gradient]="gradient"
+                           xAxis="true"
+                           yAxis="true"
+                           showXAxisLabel="true"
+                           showYAxisLabel="true"
+                           [xAxisLabel]="graph.xAxisName"
+                           [yAxisLabel]="graph.yAxisName"
+                           autoScale=true></ngx-charts-line-chart>`,
+  styleUrls: ['./graph.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnChanges {
+  ngOnChanges(changes: SimpleChanges): void {
+    //console.log(changes.data.currentValue);
+  }
 
   @Input() theme: String;
-  @Input() data;
-  options: any;
+  @Input() graph: Graph;
+
+  view: any[] = [700, 500];
+  gradient: Boolean = false;
 
   constructor() {
   }
 
-  ngOnInit() {
-    this.options = {
-      chart: {
-        type: 'lineChart',
-        height: 450,
-        margin: {
-          top: 20,
-          right: 20,
-          bottom: 40,
-          left: 55
-        },
-        x: function (d) {
-          return d.x;
-        },
-        y: function (d) {
-          return d.y;
-        },
-        useInteractiveGuideline: true,
-        xAxis: {
-          axisLabel: 'Time (ms)'
-        },
-        yAxis: {
-          axisLabel: 'Voltage (v)',
-          tickFormat: function (d) {
-            return d3.format('.02f')(d);
-          },
-          axisLabelDistance: -10
-        },
-        showLegend: false,
-        duration: 0
-      }
-    };
-  }
+
 }

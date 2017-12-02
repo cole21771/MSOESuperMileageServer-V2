@@ -7,6 +7,7 @@ export class SocketIoService {
   @Output() private newDataEmitter: EventEmitter<any> = new EventEmitter();
   @Output() private newLocationEmitter: EventEmitter<any> = new EventEmitter();
   @Output() private userDataEmitter: EventEmitter<any> = new EventEmitter();
+  @Output() private dataFormatEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor() {
     this.socket = io();
@@ -22,6 +23,15 @@ export class SocketIoService {
     this.socket.on('loginResponse', (userData) => {
       this.userDataEmitter.emit(userData);
     });
+
+    this.socket.on('incomingDataFormat', (dataFormat) => {
+      this.dataFormatEmitter.emit(dataFormat);
+    });
+  }
+
+  getIncomingDataFormat() {
+    this.socket.emit('getIncomingDataFormat');
+    return this.dataFormatEmitter;
   }
 
   sendData(data: any) {

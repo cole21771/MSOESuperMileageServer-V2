@@ -1,4 +1,4 @@
-module.exports = (io, logger) => {
+module.exports = (io, fs, logger) => {
   io.sockets.on('connection', (socket) => {
     socket.on('newData', (data) => {
       //logger.logData(data);
@@ -16,9 +16,12 @@ module.exports = (io, logger) => {
       } else {
         socket.emit('loginResponse', {error: true})
       }
-    })
+    });
 
-
+    socket.on('getIncomingDataFormat', () => {
+      let file = fs.readFileSync('./src/server/models/incomingDataFormat.json', 'utf8');
+      socket.emit('incomingDataFormat', JSON.parse(file));
+    });
   });
 };
 
