@@ -5,6 +5,7 @@ app.use(require('compression')());
 
 const server = require('http').Server(app);
 const io = require('socket.io').listen(server);
+io.use(require('socket.io-as-promised')());
 const path = require('path');
 
 const winston = require('winston');

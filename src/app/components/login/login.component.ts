@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {FormControl, FormGroup} from "@angular/forms";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +22,7 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    if (this.loginForm.value.username == undefined ||
-      this.loginForm.value.password == undefined) {
+    if (!this.loginForm.value.username || !this.loginForm.value.password) {
       this.dialogRef.close({
         error: true
       });

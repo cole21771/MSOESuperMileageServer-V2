@@ -1,10 +1,11 @@
 import {Component, Input, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
-import {Graph} from "../../models/Graph";
+import {Graph} from '../../models/Graph';
 
 @Component({
   selector: 'app-graph',
   template: `
     <ngx-charts-line-chart [view]="view"
+                           [scheme]="graph.color"
                            [results]="graph.chartData"
                            [gradient]="gradient"
                            xAxis="true"

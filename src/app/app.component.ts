@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {ThemeService} from './services/theme/theme.service';
-import {MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar} from "@angular/material";
-import {LoginComponent} from "./components/login/login.component";
-import {SocketIoService} from "./services/socket-io/socket-io.service";
+import {MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar} from '@angular/material';
+import {LoginComponent} from './components/login/login.component';
+import {SocketIoService} from './services/socket-io/socket-io.service';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class AppComponent {
   }
 
   openLogin() {
-    let dialogRef = this.loginDialog.open(LoginComponent, {
+    const dialogRef = this.loginDialog.open(LoginComponent, {
       width: '250px'
     });
 
@@ -46,13 +46,13 @@ export class AppComponent {
         this.launchSnackBar('If you\'re going to try to hack this, at least try entering some text');
       } else {
         this.socketService.attemptLogin(result)
-          .subscribe((result) => {
-              if (result.error) {
-                this.launchSnackBar('Invalid username or password!');
-              } else {
-                this.launchSnackBar('Login Successful!')
-                this.admin = true;
-              }
+          .then((result: any) => {
+            if (result.error) {
+              this.launchSnackBar('Invalid username or password!');
+            } else {
+              this.launchSnackBar('Login Successful!');
+              this.admin = true;
+            }
           });
       }
     });
@@ -72,5 +72,6 @@ export class AppComponent {
   styles: ['.snackBar { color: hotpink }']
 })
 export class SnackBarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any){}
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {
+  }
 }

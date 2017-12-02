@@ -7,7 +7,6 @@
     "start": "concurrently \"ng build --watch\" \"nodemon ./src/server/server.js\"",
     "production": "concurrently \"ng build -prod\" \"node ./src/server/server.js\"",
     "test": "ng test -sm=false",
-    "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "e2e": "ng e2e"
   },
@@ -32,6 +31,7 @@
     "express": "^4.16.2",
     "rxjs": "^5.5.2",
     "socket.io": "^2.0.4",
+    "socket.io-as-promised": "^1.0.0",
     "socket.io-client": "^2.0.4",
     "winston": "^2.4.0",
     "zone.js": "^0.8.14"

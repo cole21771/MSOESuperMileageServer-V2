@@ -1,55 +1,63 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 
 @Injectable()
 export class SocketIoService {
   private socket: SocketIOClient.Socket; // The client instance of socket.io
-  @Output() private newDataEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() private newLocationEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() private userDataEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() private dataFormatEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor() {
     this.socket = io();
 
-    this.socket.on('newData', (data) => {
-      this.newDataEmitter.emit(data);
-    });
-
-    this.socket.on('newLocation', (locationData) => {
-      this.newLocationEmitter.emit(locationData);
-    });
-
-    this.socket.on('loginResponse', (userData) => {
-      this.userDataEmitter.emit(userData);
-    });
-
-    this.socket.on('incomingDataFormat', (dataFormat) => {
-      this.dataFormatEmitter.emit(dataFormat);
-    });
+    this.socket.emit('getVehicles');
   }
 
   getIncomingDataFormat() {
-    this.socket.emit('getIncomingDataFormat');
-    return this.dataFormatEmitter;
+    return new Promise((resolve, reject) => {
+      this.socket.emit('getIncomingDataFormat', (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
+
   }
 
   sendData(data: any) {
     this.socket.emit('newData', data);
   }
 
-  getData() {
-    return this.newDataEmitter;
+  getData(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('newData', (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
   }
 
-  getLocation() {
-    return this.newLocationEmitter;
+  getLocation(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('newLocation', (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
   }
 
-  attemptLogin(data): EventEmitter<any> {
+  attemptLogin(data) {
     this.socket.emit('attemptLogin', data);
-    return this.userDataEmitter;
+    return new Promise((resolve, reject) => {
+      this.socket.emit('loginResponse', (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
   }
-
-
 }

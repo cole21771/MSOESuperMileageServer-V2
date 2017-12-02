@@ -2,7 +2,8 @@ module.exports = (io, fs, logger) => {
   io.sockets.on('connection', (socket) => {
     socket.on('newData', (data) => {
       //logger.logData(data);
-      io.emit('newData', data);
+      //io.emit('newData', data);
+      return Promise.resolve('test');
     });
 
     socket.on('attemptLogin', (data) => {
@@ -19,8 +20,13 @@ module.exports = (io, fs, logger) => {
     });
 
     socket.on('getIncomingDataFormat', () => {
-      let file = fs.readFileSync('./src/server/models/incomingDataFormat.json', 'utf8');
-      socket.emit('incomingDataFormat', JSON.parse(file));
+      let file = fs.readFileSync('./src/server/vehicles/electric/incomingDataFormat.json', 'utf8');
+      return Promise.resolve(JSON.parse(file));
+    });
+
+    socket.on('getVehicles', () => {
+      let vehicles = fs.readdirSync('./src/server/vehicles/');
+      socket.emit('vehiclesList', vehicles.toString());
     });
   });
 };
