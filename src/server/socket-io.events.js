@@ -2,8 +2,8 @@ module.exports = (io, fs, logger) => {
   io.sockets.on('connection', (socket) => {
     socket.on('newData', (data) => {
       //logger.logData(data);
-      //io.emit('newData', data);
-      return Promise.resolve('test');
+      //socket.emit('newData', data);
+      return Promise.resolve(data);
     });
 
     socket.on('attemptLogin', (data) => {
@@ -15,7 +15,7 @@ module.exports = (io, fs, logger) => {
       if (data.username === admin.username && data.password === admin.password) {
         socket.emit('loginResponse', {error: false});
       } else {
-        socket.emit('loginResponse', {error: true})
+        socket.emit('loginResponse', {error: true});
       }
     });
 

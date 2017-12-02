@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   theme: String = 'dark-theme';
 
-  dataFormat: any[];
+  dataFormat: any;
   graphs: Graph[] = [];
   location: any;
 
@@ -27,9 +27,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.themeService = themeService;
 
     this.socketService.getIncomingDataFormat()
-      .then((dataFormat: any[]) => {
+      .then((dataFormat: any) => {
         this.dataFormat = dataFormat;
-        dataFormat.forEach((graphInfo) => {
+        dataFormat.data.forEach((graphInfo) => {
           this.graphs.push(new Graph(graphInfo.label, graphInfo.color, 'Time', graphInfo.label, graphInfo.units));
         });
       });
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.dataSub = this.socketService.getData()
       .then((data) => {
-        this.graphs[Math.floor(Math.random() * this.graphs.length)].addData(data);
+        //this.graphs[Math.floor(Math.random() * this.graphs.length)].addData(data);
       });
 
     this.locationSub = this.socketService.getLocation()
