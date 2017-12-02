@@ -5,13 +5,14 @@ app.use(require('compression')());
 
 const server = require('http').Server(app);
 const io = require('socket.io').listen(server);
-io.use(require('socket.io-as-promised')());
+const promiseIO = io.of('/promise');
+promiseIO.use(require('socket.io-as-promised')());
 const path = require('path');
 
 const winston = require('winston');
 const fs = require('fs');
 const logger = require('./logger')(winston);
-require('./socket-io.events')(io, fs, logger);
+require('./socket-io.events')(io, promiseIO, fs, logger);
 
 // Parsers for POST data
 const bodyParser = require('body-parser');

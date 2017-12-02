@@ -44,12 +44,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.themeService.forceUpdate();
 
     this.dataSub = this.socketService.getData()
-      .then((data) => {
-        //this.graphs[Math.floor(Math.random() * this.graphs.length)].addData(data);
+      .subscribe((data) => {
+        this.graphs[Math.floor(Math.random() * this.graphs.length)].addData(data);
       });
 
-    this.locationSub = this.socketService.getLocation()
-      .then((location) => this.location = location);
+    /*this.locationSub = this.socketService.getLocation()
+      .then((location) => this.location = location);*/
 
     setInterval(() => {
       this.socketService.sendData(Math.random() * 10);
