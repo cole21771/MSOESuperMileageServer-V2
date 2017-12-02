@@ -22,8 +22,12 @@ export class Graph {
 
   addData(data): void {
     console.log(this.title, data);
-    this.chartData = [...this.pushData(data)];
+    this.chartData.series.push({
+      name: new Date,
+      value: data
+    });
 
+    this.chartData.series = [...this.chartData.series];
   }
 
   private pushData(data) {
@@ -33,9 +37,5 @@ export class Graph {
     });
 
     return this.chartData;
-  }
-
-  size(): number {
-    return this.chartData.series.length;
   }
 }
