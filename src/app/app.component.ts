@@ -46,12 +46,12 @@ export class AppComponent {
         this.launchSnackBar('If you\'re going to try to hack this, at least try entering some text');
       } else {
         this.socketService.attemptLogin(result)
-          .then((result: any) => {
-            if (result.error) {
-              this.launchSnackBar('Invalid username or password!');
-            } else {
+          .then((isAdmin: boolean) => {
+            if (isAdmin) {
               this.launchSnackBar('Login Successful!');
               this.admin = true;
+            } else {
+              this.launchSnackBar('Invalid username or password!');
             }
           });
       }
@@ -67,7 +67,7 @@ export class AppComponent {
 }
 
 @Component({
-  selector: 'snack-bar-component',
+  selector: 'app-snack-bar',
   template: '<span class="snackBar">{{data}}</span>',
   styles: ['.snackBar { color: hotpink }']
 })
