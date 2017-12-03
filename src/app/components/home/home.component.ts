@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
-import {ThemeService} from '../../services/theme/theme.service';
 import {Graph} from '../../models/Graph';
 
 @Component({
@@ -11,9 +10,6 @@ import {Graph} from '../../models/Graph';
 export class HomeComponent implements OnInit, OnDestroy {
 
   socketService: SocketIoService;
-  themeService: ThemeService;
-
-  theme: String = 'dark-theme';
 
   dataFormat: any;
   graphs: Graph[] = [];
@@ -22,27 +18,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   dataSub: any;
   locationSub: any;
 
-  constructor(socketService: SocketIoService, themeService: ThemeService) {
+  constructor(socketService: SocketIoService) {
     this.socketService = socketService;
-    this.themeService = themeService;
 
     this.socketService.getIncomingDataFormat()
       .then((dataFormat: any) => {
         this.dataFormat = dataFormat;
         dataFormat.data.forEach((graphInfo) => {
-          this.graphs.push(new Graph(graphInfo.label, graphInfo.color, 'Time', graphInfo.label, graphInfo.units));
+          this.graphs.push(new Graph(graphInfo));
         });
       });
   }
 
   ngOnInit() {
-    this.themeService.getTheme()
-      .subscribe(value => {
-        this.theme = value;
-      });
-
-    this.themeService.forceUpdate();
-
     this.dataSub = this.socketService.getData()
       .subscribe((data) => {
         this.graphs.forEach((graph: Graph, index: number) => {

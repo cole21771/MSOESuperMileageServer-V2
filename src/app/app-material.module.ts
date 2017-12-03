@@ -8,15 +8,13 @@ import {
   exports: [
     MatButtonModule,
     MatSidenavModule,
-    MatCardModule,
     MatToolbarModule,
-    MatDialogModule,
-    MatInputModule,
-    MatFormFieldModule,
     MatIconModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatSnackBarModule,
-    MatGridListModule,
-    MatExpansionModule
+    MatCardModule
   ]
 })
 export class AppMaterialModule {

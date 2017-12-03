@@ -6,24 +6,34 @@ export class Graph {
   xAxisName: String;
   yAxisName: String;
   units: String;
+  min: number;
+  max: number;
+  displayAlways: boolean;
 
-  chartData: ChartData;
+  chartData: ChartData[];
 
-  constructor(title: String, color: String, xAxisName: String, yAxisName: String, units: String) {
-    this.title = title;
-    this.color.domain.push(color);
-    this.xAxisName = xAxisName;
-    this.yAxisName = yAxisName;
-    this.units = units;
+  constructor(graphInfo) {
+    this.color.domain.push(graphInfo.color);
+    this.xAxisName = 'Time';
+    this.yAxisName = graphInfo.label;
+    this.units = graphInfo.units;
+    this.title = this.yAxisName + ' vs ' + this.xAxisName;
+    this.min = graphInfo.min;
+    this.max = graphInfo.max;
+    this.displayAlways = graphInfo.displayAlways;
 
-    this.chartData = new ChartData(this.title);
+    this.chartData = [new ChartData(this.title)];
   }
 
   addData(data: number): void {
     console.log('Received!');
-    this.chartData.series.push(new DataPoint(Date.now(), data));
+    this.chartData[0].series.push(new DataPoint(new Date(), data));
 
-    this.chartData.series = [...this.chartData.series];
+    if (this.chartData[0].series.length > 20) {
+      this.chartData[0].series.shift();
+    }
+
+    this.chartData = [...this.chartData];
   }
 
   /*private pushData(data) {
@@ -47,11 +57,11 @@ class ChartData {
 }
 
 class DataPoint {
-  name: number;
+  name: String = '';
   value: number;
 
-  constructor(name: number, value: number) {
-    this.name = name;
+  constructor(date: Date, value: number) {
+    this.name += date.getHours() % 12 + ':' + date.getMinutes() + ':' + date.getSeconds() + ':' + date.getMilliseconds();
     this.value = value;
   }
 }

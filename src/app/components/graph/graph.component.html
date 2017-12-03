@@ -1,0 +1,25 @@
+<!--<div>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{graph.title}}</mat-card-title>
+      <mat-card-subtitle>{{graph.units}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>-->
+      <ngx-charts-line-chart
+        [scheme]="graph.color"
+        [results]="graph.chartData"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="graph.xAxisName"
+        [yAxisLabel]="graph.yAxisName"
+        [yScaleMin]="graph.min"
+        [yScaleMax]="graph.max"
+        [animations]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-line-chart>
+<!--    </mat-card-content>
+  </mat-card>
+</div>-->

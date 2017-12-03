@@ -9,7 +9,6 @@ import {GraphComponent} from './components/graph/graph.component';
 import {ReviewDataComponent} from './components/review-data/review-data.component';
 import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from './app-routing.module';
-import {ThemeService} from './services/theme/theme.service';
 import {AppMaterialModule} from './app-material.module';
 import { LoginComponent } from './components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -32,7 +31,7 @@ import {LineChartModule} from '@swimlane/ngx-charts';
     AppRoutingModule,
     AppMaterialModule
   ],
-  providers: [SocketIoService, ThemeService],
+  providers: [SocketIoService],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, SnackBarComponent]
 })

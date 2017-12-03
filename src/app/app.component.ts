@@ -1,5 +1,4 @@
 import {Component, Inject} from '@angular/core';
-import {ThemeService} from './services/theme/theme.service';
 import {MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
@@ -12,7 +11,6 @@ import {SocketIoService} from './services/socket-io/socket-io.service';
 })
 export class AppComponent {
   title = 'SuperMileage Server';
-  themeService: ThemeService;
   socketService: SocketIoService;
 
   isDarkTheme: Boolean = true;
@@ -21,8 +19,7 @@ export class AppComponent {
   loginDialog: MatDialog;
   snackBar: MatSnackBar;
 
-  constructor(themeService: ThemeService, socketService: SocketIoService, dialog: MatDialog, snackBar: MatSnackBar) {
-    this.themeService = themeService;
+  constructor(socketService: SocketIoService, dialog: MatDialog, snackBar: MatSnackBar) {
     this.socketService = socketService;
     this.loginDialog = dialog;
     this.snackBar = snackBar;
@@ -30,7 +27,6 @@ export class AppComponent {
 
   switchTheme() {
     this.isDarkTheme = !this.isDarkTheme;
-    this.themeService.setTheme(this.isDarkTheme ? 'dark-theme' : '');
   }
 
   openLogin() {
