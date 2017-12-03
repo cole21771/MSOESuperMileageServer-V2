@@ -7,10 +7,7 @@ export class Graph {
   yAxisName: String;
   units: String;
 
-  chartData: any = {
-    'name': this.title,
-    'series': []
-  };
+  chartData: ChartData = new ChartData(this.title);
 
   constructor(title: String, color: String, xAxisName: String, yAxisName: String, units: String) {
     this.title = title;
@@ -20,22 +17,39 @@ export class Graph {
     this.units = units;
   }
 
-  addData(data): void {
+  addData(data: number): void {
     console.log(this.title, data);
-    this.chartData.series.push({
-      name: new Date,
-      value: data
-    });
+    this.chartData.series.push(new DataPoint(Date.now(), data));
 
     this.chartData.series = [...this.chartData.series];
   }
 
-  private pushData(data) {
+  /*private pushData(data) {
     this.chartData.series.push({
       name: new Date,
       value: data
     });
 
     return this.chartData;
+  }*/
+}
+
+class ChartData {
+  name: String;
+  series: DataPoint[];
+
+  constructor(name: String) {
+    this.name = name;
+    this.series = [];
+  }
+}
+
+class DataPoint {
+  name: number;
+  value: number;
+
+  constructor(name: number, value: number) {
+    this.name = name;
+    this.value = value;
   }
 }

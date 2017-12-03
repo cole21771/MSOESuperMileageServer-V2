@@ -1,10 +1,10 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {Graph} from '../../models/Graph';
 
 @Component({
   selector: 'app-graph',
   template: `
-    <ngx-charts-line-chart [view]="view"
+    <ngx-charts-line-chart id="chart" [view]="view"
                            [scheme]="graph.color"
                            [results]="graph.chartData"
                            [gradient]="gradient"
@@ -18,10 +18,7 @@ import {Graph} from '../../models/Graph';
   styleUrls: ['./graph.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphComponent implements OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-    //console.log(changes.data.currentValue);
-  }
+export class GraphComponent {
 
   @Input() theme: String;
   @Input() graph: Graph;
