@@ -45,15 +45,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.dataSub = this.socketService.getData()
       .subscribe((data) => {
-        this.graphs[Math.floor(Math.random() * this.graphs.length)].addData(data);
+        this.graphs.forEach((graph: Graph, index: number) => {
+          graph.addData(data[index]);
+        });
       });
 
-    /*this.locationSub = this.socketService.getLocation()
-      .then((location) => this.location = location);*/
+    this.locationSub = this.socketService.getLocation()
+      .subscribe((location) => this.location = location);
 
-    setInterval(() => {
+/*    setInterval(() => {
       this.socketService.sendData(Math.random() * 10);
-    }, 250);
+    }, 250);*/
   }
 
   ngOnDestroy() {

@@ -4,7 +4,7 @@ import {Graph} from '../../models/Graph';
 @Component({
   selector: 'app-graph',
   template: `
-    <ngx-charts-line-chart id="chart" [view]="view"
+    <ngx-charts-line-chart id="chart"
                            [scheme]="graph.color"
                            [results]="graph.chartData"
                            [gradient]="gradient"

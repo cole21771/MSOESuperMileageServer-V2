@@ -7,7 +7,7 @@ export class Graph {
   yAxisName: String;
   units: String;
 
-  chartData: ChartData = new ChartData(this.title);
+  chartData: ChartData;
 
   constructor(title: String, color: String, xAxisName: String, yAxisName: String, units: String) {
     this.title = title;
@@ -15,10 +15,12 @@ export class Graph {
     this.xAxisName = xAxisName;
     this.yAxisName = yAxisName;
     this.units = units;
+
+    this.chartData = new ChartData(this.title);
   }
 
   addData(data: number): void {
-    console.log(this.title, data);
+    console.log('Received!');
     this.chartData.series.push(new DataPoint(Date.now(), data));
 
     this.chartData.series = [...this.chartData.series];

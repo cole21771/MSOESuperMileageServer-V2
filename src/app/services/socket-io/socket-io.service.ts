@@ -22,9 +22,9 @@ export class SocketIoService {
     });
   }
 
-  sendData(data: any) {
+/*  sendData(data: any) {
     this.socket.emit('newData', data);
-  }
+  }*/
 
   getData(): EventEmitter<any> {
     this.socket.on('newData', (data) => {
@@ -34,7 +34,7 @@ export class SocketIoService {
     return this.newDataEmitter;
   }
 
-  getLocation() {
+  getLocation(): EventEmitter<any> {
     this.socket.on('newLocation', (location) => {
       this.newLocationEmitter.emit(location);
     });

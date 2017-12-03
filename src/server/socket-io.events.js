@@ -1,13 +1,14 @@
 module.exports = (io, fs, logger) => {
   io.of('/').on('connection', (socket) => {
     socket.on('newData', (data) => {
+      // Verify data matches selected model
       io.emit('newData', data);
     });
 
     socket.on('attemptLogin', (data, callback) => {
       let admin = {
         username: 'admin',
-        password: 'ducksAndShit'
+        password: 'ducks'
       };
 
       callback(data.username === admin.username && data.password === admin.password);
