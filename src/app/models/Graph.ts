@@ -30,6 +30,7 @@ export class Graph {
   min: number;
   max: number;
   displayAlways: boolean;
+  showGraph: boolean;
 
   chartData: ChartData[];
 
@@ -42,17 +43,20 @@ export class Graph {
     this.min = graphInfo.min;
     this.max = graphInfo.max;
     this.displayAlways = graphInfo.displayAlways;
+    this.showGraph = graphInfo.showGraph;
 
     this.chartData = [new ChartData(this.title)];
   }
 
   addData(data: number): void {
-    this.chartData[0].series.push(new DataPoint(new Date(), data));
+    if (this.showGraph) {
+      this.chartData[0].series.push(new DataPoint(new Date(), data));
 
-    if (this.chartData[0].series.length > 20) {
-      this.chartData[0].series.shift();
+      if (this.chartData[0].series.length > 20) {
+        this.chartData[0].series.shift();
+      }
+
+      this.chartData = [...this.chartData];
     }
-
-    this.chartData = [...this.chartData];
   }
 }
