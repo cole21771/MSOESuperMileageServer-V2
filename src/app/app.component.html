@@ -1,12 +1,18 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 <div [class.dark-theme]="isDarkTheme">
   <mat-toolbar color="primary" class="mat-elevation-z6">
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    {{title}}
-    <button *ngIf="!admin" class="toolbar-button" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>{{title}}</span>
+
+      <span class="spacer"></span>
+
+      <button mat-icon-button matTooltip="Refresh UI" matTooltipPosition="left" (click)="communicator.refreshUI()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button *ngIf="!admin" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+    </mat-toolbar-row>
   </mat-toolbar>
 
 

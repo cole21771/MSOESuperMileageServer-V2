@@ -3,13 +3,6 @@
   background-size: cover;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
+.card-style {
+  width: 100%;
 }
-
-.item {
-  margin: 20px;
-}
-
-

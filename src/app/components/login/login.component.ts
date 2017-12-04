@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {FormControl, FormGroup} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
   hide: Boolean = true;
@@ -22,17 +21,17 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    if (this.loginForm.value.username == undefined ||
-      this.loginForm.value.password == undefined) {
+    if (!this.loginForm.value.username || !this.loginForm.value.password) {
       this.dialogRef.close({
-        error: true
+        isValid: false
       });
       return;
     }
 
     this.dialogRef.close({
       username: this.loginForm.value.username,
-      password: this.loginForm.value.password
+      password: this.loginForm.value.password,
+      isValid: true
     });
   }
 

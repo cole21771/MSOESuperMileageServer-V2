@@ -1,12 +1,12 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeComponent} from './home.component';
-import {ThemeService} from '../../services/theme/theme.service';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {GraphComponent} from '../graph/graph.component';
 import 'd3';
-import 'nvd3';
-import {NvD3Module} from 'ng2-nvd3';
+import {CommunicatorService} from '../../services/communicator/communicator.service';
+import {MatCardModule, MatGridListModule} from '@angular/material';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -19,10 +19,12 @@ describe('HomeComponent', () => {
         GraphComponent
       ],
       imports: [
-        NvD3Module
+        MatGridListModule,
+        MatCardModule,
+        NgxChartsModule
       ],
       providers: [
-        ThemeService,
+        CommunicatorService,
         SocketIoService
       ]
     })

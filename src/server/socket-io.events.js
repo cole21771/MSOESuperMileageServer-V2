@@ -1,24 +1,27 @@
-module.exports = (io, logger) => {
-  io.sockets.on('connection', (socket) => {
+module.exports = (io, fs, logger) => {
+  io.of('/').on('connection', (socket) => {
     socket.on('newData', (data) => {
-      //logger.logData(data);
+      // Verify data matches selected model
       io.emit('newData', data);
     });
 
-    socket.on('attemptLogin', (data) => {
+    socket.on('attemptLogin', (data, callback) => {
       let admin = {
         username: 'admin',
-        password: 'ducksAndShit'
+        password: 'ducks'
       };
 
-      if (data.username === admin.username && data.password === admin.password) {
-        socket.emit('loginResponse', {error: false});
-      } else {
-        socket.emit('loginResponse', {error: true})
-      }
-    })
+      callback(data.username === admin.username && data.password === admin.password);
+    });
 
+    socket.on('getVehicles', () => {
+      let vehicles = fs.readdirSync('./src/server/vehicles/');
+      socket.emit('vehiclesList', vehicles.toString());
+    });
 
+    socket.on('getIncomingDataFormat', (data, callback) => {
+      let file = fs.readFileSync('./src/server/vehicles/electric/incomingDataFormat.json', 'utf8');
+      callback(JSON.parse(file));
+    });
   });
 };
-

@@ -1,45 +1,48 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 
 @Injectable()
 export class SocketIoService {
   private socket: SocketIOClient.Socket; // The client instance of socket.io
-  @Output() private newDataEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() private newLocationEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() private userDataEmitter: EventEmitter<any> = new EventEmitter();
+
+  private newDataEmitter: EventEmitter<any> = new EventEmitter<any>();
+  private newLocationEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {
     this.socket = io();
 
+    this.socket.emit('getVehicles');
+  }
+
+  getIncomingDataFormat() {
+    return new Promise(resolve => {
+      this.socket.emit('getIncomingDataFormat', undefined, (dataFormat) => {
+        resolve(dataFormat);
+      });
+    });
+  }
+
+  getData(): EventEmitter<any> {
     this.socket.on('newData', (data) => {
       this.newDataEmitter.emit(data);
     });
 
-    this.socket.on('newLocation', (locationData) => {
-      this.newLocationEmitter.emit(locationData);
-    });
-
-    this.socket.on('loginResponse', (userData) => {
-      this.userDataEmitter.emit(userData);
-    });
-  }
-
-  sendData(data: any) {
-    this.socket.emit('newData', data);
-  }
-
-  getData() {
     return this.newDataEmitter;
   }
 
-  getLocation() {
+  getLocation(): EventEmitter<any> {
+    this.socket.on('newLocation', (location) => {
+      this.newLocationEmitter.emit(location);
+    });
+
     return this.newLocationEmitter;
   }
 
-  attemptLogin(data): EventEmitter<any> {
-    this.socket.emit('attemptLogin', data);
-    return this.userDataEmitter;
+  attemptLogin(data): Promise<boolean> {
+    return new Promise(resolve => {
+      this.socket.emit('attemptLogin', data, (isAdmin) => {
+        resolve(isAdmin);
+      });
+    });
   }
-
-
 }

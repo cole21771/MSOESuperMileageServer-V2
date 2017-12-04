@@ -1,0 +1,15 @@
+<div style="width: 100px">
+  <ngx-charts-line-chart *ngIf="graph" style="width: inherit"
+                         [view]="view"
+                         [scheme]="graph.color"
+                         [results]="graph.chartData"
+                         [xAxis]="showXAxis"
+                         [yAxis]="true"
+                         [showYAxisLabel]="true"
+                         [xAxisLabel]="graph.xAxisName"
+                         [yAxisLabel]="graph.yAxisName"
+                         [yScaleMin]="graph.min"
+                         [yScaleMax]="graph.max"
+                         [animations]="false">
+  </ngx-charts-line-chart>
+</div>
