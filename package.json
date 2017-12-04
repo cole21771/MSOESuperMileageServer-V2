@@ -7,8 +7,7 @@
     "start": "concurrently \"ng build --watch\" \"nodemon ./src/server/server.js\"",
     "production": "concurrently \"ng build -prod\" \"node ./src/server/server.js\"",
     "test": "ng test -sm=false",
-    "lint:fix": "ng lint --fix",
-    "e2e": "ng e2e"
+    "lint:fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {

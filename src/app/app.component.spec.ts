@@ -1,9 +1,10 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {ThemeService} from './services/theme/theme.service';
-import {MatSidenavModule, MatToolbarModule} from '@angular/material';
+import {MatDialogModule, MatIconModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
+import {CommunicatorService} from './services/communicator/communicator.service';
+import {SocketIoService} from './services/socket-io/socket-io.service';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -13,20 +14,24 @@ describe('AppComponent', () => {
       imports: [
         MatToolbarModule,
         MatSidenavModule,
+        MatDialogModule,
+        MatIconModule,
+        MatSnackBarModule,
         RouterTestingModule,
         BrowserAnimationsModule
       ],
       providers: [
-        ThemeService
+        CommunicatorService,
+        SocketIoService
       ]
     }).compileComponents();
   }));
-  it('should create the app', async(() => {
+  it('should create the app', (() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
-  it(`should have as title 'SuperMileage Server'`, async(() => {
+  it(`should have as title 'SuperMileage Server'`, (() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('SuperMileage Server');
