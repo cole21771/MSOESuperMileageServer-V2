@@ -23,5 +23,12 @@ module.exports = (io, fs, logger) => {
       let file = fs.readFileSync('./src/server/vehicles/electric/incomingDataFormat.json', 'utf8');
       callback(JSON.parse(file));
     });
+
+    socket.on('test', (num) => {
+      let visual = "";
+      for (let i = 0; i < num / 10; i++)
+        visual += "~"
+      console.log(socket.id[socket.id.length - 1], visual);
+    });
   });
 };
