@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {Graph} from '../../models/Graph';
+import {CommunicatorService} from '../../services/communicator/communicator.service';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import {Graph} from '../../models/Graph';
 export class HomeComponent implements OnInit, OnDestroy {
 
   socketService: SocketIoService;
+  communicator: CommunicatorService;
 
   dataFormat: any;
   graphs: Graph[] = [];
@@ -21,8 +23,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   cols = 2;
   graphView: number[];
 
-  constructor(socketService: SocketIoService) {
+  constructor(socketService: SocketIoService, communicator: CommunicatorService) {
     this.socketService = socketService;
+    this.communicator = communicator;
 
     this.socketService.getIncomingDataFormat()
       .then((dataFormat: any) => {
@@ -47,6 +50,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.onResize();
     }, 250);
+
+    this.communicator.refreshButtonClicked()
+      .subscribe(() => this.onResize());
   }
 
   onResize() {

@@ -22,10 +22,6 @@ export class SocketIoService {
     });
   }
 
-/*  sendData(data: any) {
-    this.socket.emit('newData', data);
-  }*/
-
   getData(): EventEmitter<any> {
     this.socket.on('newData', (data) => {
       this.newDataEmitter.emit(data);

@@ -18,6 +18,6 @@
   flex-direction: column;
 }
 
-.toolbar-button {
-  margin-left: auto;
+.spacer {
+  flex: 1 1 auto;
 }

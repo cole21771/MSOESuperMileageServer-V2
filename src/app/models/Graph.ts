@@ -1,3 +1,24 @@
+class DataPoint {
+  name: String = '';
+  value: number;
+
+  constructor(date: Date, value: number) {
+    this.name += date.getHours() % 12 + ':' + date.getMinutes() + ':' + date.getSeconds() + ':' + date.getMilliseconds();
+    this.value = value;
+  }
+}
+
+class ChartData {
+  name: String;
+  series: DataPoint[];
+
+  constructor(name: String) {
+    this.name = name;
+    this.series = [];
+  }
+}
+
+
 export class Graph {
   title: String;
   color: any = {
@@ -26,7 +47,6 @@ export class Graph {
   }
 
   addData(data: number): void {
-    console.log('Received!');
     this.chartData[0].series.push(new DataPoint(new Date(), data));
 
     if (this.chartData[0].series.length > 20) {
@@ -34,34 +54,5 @@ export class Graph {
     }
 
     this.chartData = [...this.chartData];
-  }
-
-  /*private pushData(data) {
-    this.chartData.series.push({
-      name: new Date,
-      value: data
-    });
-
-    return this.chartData;
-  }*/
-}
-
-class ChartData {
-  name: String;
-  series: DataPoint[];
-
-  constructor(name: String) {
-    this.name = name;
-    this.series = [];
-  }
-}
-
-class DataPoint {
-  name: String = '';
-  value: number;
-
-  constructor(date: Date, value: number) {
-    this.name += date.getHours() % 12 + ':' + date.getMinutes() + ':' + date.getSeconds() + ':' + date.getMilliseconds();
-    this.value = value;
   }
 }

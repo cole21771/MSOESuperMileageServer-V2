@@ -1,7 +1,9 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar} from '@angular/material';
+import {Component} from '@angular/core';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
+import {CommunicatorService} from './services/communicator/communicator.service';
+import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
 
 
 @Component({
@@ -12,6 +14,7 @@ import {SocketIoService} from './services/socket-io/socket-io.service';
 export class AppComponent {
   title = 'SuperMileage Server';
   socketService: SocketIoService;
+  communicator: CommunicatorService;
 
   isDarkTheme: Boolean = true;
   admin: Boolean = false;
@@ -19,8 +22,9 @@ export class AppComponent {
   loginDialog: MatDialog;
   snackBar: MatSnackBar;
 
-  constructor(socketService: SocketIoService, dialog: MatDialog, snackBar: MatSnackBar) {
+  constructor(socketService: SocketIoService, communicator: CommunicatorService, dialog: MatDialog, snackBar: MatSnackBar) {
     this.socketService = socketService;
+    this.communicator = communicator;
     this.loginDialog = dialog;
     this.snackBar = snackBar;
   }
@@ -59,15 +63,5 @@ export class AppComponent {
       data: message,
       duration: 1500
     });
-  }
-}
-
-@Component({
-  selector: 'app-snack-bar',
-  template: '<span class="snackBar">{{data}}</span>',
-  styles: ['.snackBar { color: hotpink }']
-})
-export class SnackBarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {
   }
 }
