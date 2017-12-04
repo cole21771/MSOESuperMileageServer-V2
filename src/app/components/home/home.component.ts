@@ -50,10 +50,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onResize() {
-    // Figure out column sizes
+    let parent = document.getElementById('tile');
+    this.cols = Math.floor(parent.clientWidth / 420 + 1);
 
-    const parent = document.getElementById('tile');
-    this.graphView = [parent.clientWidth - 100, parent.clientHeight - 100];
+    setTimeout(() => {
+      parent = document.getElementById('tile');
+      this.graphView = [parent.clientWidth - 40, parent.clientHeight - 65];
+    }, 250);
   }
 
   ngOnDestroy() {
