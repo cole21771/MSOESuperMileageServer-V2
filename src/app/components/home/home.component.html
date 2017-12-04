@@ -1,3 +1,14 @@
-<div *ngFor="let graph of graphs">
-  <app-graph *ngIf="!graph.displayAlways" [graph]="graph"></app-graph>
-</div>
+<mat-grid-list [cols]="cols" rowHeight="4:2" gutterSize="10" (window:resize)="onResize()">
+  <mat-grid-tile id="tile" *ngFor="let graph of graphs" class="tile mat-elevation-z6" >
+    <mat-card class="mat-elevation-z6 card-style">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{graph.title}}</mat-card-title>
+        <mat-card-subtitle>{{graph.units}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-graph [graph]="graph" [view]="graphView"></app-graph>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

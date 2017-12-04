@@ -18,6 +18,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   dataSub: any;
   locationSub: any;
 
+  cols = 2;
+  graphView: number[];
+
   constructor(socketService: SocketIoService) {
     this.socketService = socketService;
 
@@ -41,9 +44,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
 
-/*    setInterval(() => {
-      this.socketService.sendData(Math.random() * 10);
-    }, 250);*/
+    setTimeout(() => {
+      this.onResize();
+    }, 250);
+  }
+
+  onResize() {
+    // Figure out column sizes
+
+    const parent = document.getElementById('tile');
+    this.graphView = [parent.clientWidth - 100, parent.clientHeight - 100];
   }
 
   ngOnDestroy() {

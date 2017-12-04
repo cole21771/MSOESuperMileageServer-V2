@@ -9,12 +9,5 @@ import {Graph} from '../../models/Graph';
 })
 export class GraphComponent {
   @Input() graph: Graph;
-
-  constructor() {
-  }
-
-  onSelect(event) {
-    console.log(event);
-  }
-
+  @Input() view: number[];
 }
