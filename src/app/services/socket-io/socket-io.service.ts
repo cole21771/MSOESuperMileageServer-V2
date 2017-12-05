@@ -11,7 +11,7 @@ export class SocketIoService {
   constructor() {
     this.socket = io();
 
-    this.socket.emit('getVehicles');
+    // this.socket.emit('getVehicles');
 
     /*let lastTime = 0;
     setInterval(() => {
