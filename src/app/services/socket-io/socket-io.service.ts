@@ -13,12 +13,12 @@ export class SocketIoService {
 
     this.socket.emit('getVehicles');
 
-    let lastTime = 0;
+    /*let lastTime = 0;
     setInterval(() => {
       const time = Date.now();
-      this.socket.emit('test', time - lastTime);
+      this.socket.emit('testData', time - lastTime);
       lastTime = time;
-    }, 100);
+    }, 100);*/
   }
 
   getIncomingDataFormat() {

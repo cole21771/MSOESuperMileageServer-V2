@@ -8,13 +8,17 @@
 
       <span class="spacer"></span>
 
-      <button mat-icon-button matTooltip="Refresh UI" matTooltipPosition="left" (click)="communicator.refreshUI()">
-        <mat-icon>refresh</mat-icon>
+      <button mat-icon-button matTooltip="activate " mat-tooltipPosition="bottom" (click)="switchTheme()">
+        <svg class="mat-icon material-icons">
+          <path d="M12.7 2C7.33 2.15 3 6.57 3 12c0 5.52 4.48 10 10 10 3.52 0 6.6-1.82 8.4-4.56h-.3c-5.52 0-10-4.48-10-10 0-2 .6-3.87 1.6-5.44z"></path>
+        </svg>
+      </button>
+      <button mat-icon-button matTooltip="Refresh UI" matTooltipPosition="bottom" (click)="communicator.refreshUI()">
+        <mat-icon>swap_calls</mat-icon>
       </button>
       <button *ngIf="!admin" color="accent" mat-raised-button (click)="openLogin()">Login</button>
     </mat-toolbar-row>
   </mat-toolbar>
-
 
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav class="sidenav" id="sidenav">
@@ -30,8 +34,6 @@
               (click)="sidenav.close()">Admin
       </button>
       <br *ngIf="admin">
-      <button class="sidenav-button bottom" color="accent" mat-raised-button (click)="switchTheme()">Switch Theme
-      </button>
     </mat-sidenav>
 
     <mat-sidenav-content class="content">

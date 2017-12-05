@@ -24,11 +24,11 @@ module.exports = (io, fs, logger) => {
       callback(JSON.parse(file));
     });
 
-    socket.on('test', (num) => {
+    /*socket.on('testData', (num) => {
       let visual = "";
-      for (let i = 0; i < num / 10; i++)
+      for (let i = 0; i < Math.floor(num / 10); i++)
         visual += "~"
-      console.log(socket.id[socket.id.length - 1], visual);
-    });
+      console.log(num, visual);
+    });*/
   });
 };
