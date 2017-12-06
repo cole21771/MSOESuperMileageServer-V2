@@ -31,7 +31,7 @@ export class SocketIoService {
 
   getData(): EventEmitter<any> {
     this.socket.on('newData', (data) => {
-      this.newDataEmitter.emit(data);
+      this.newDataEmitter.emit(JSON.parse(data));
     });
 
     return this.newDataEmitter;

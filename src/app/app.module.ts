@@ -15,6 +15,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {LineChartModule} from '@swimlane/ngx-charts';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
+import {MatIconRegistry} from "@angular/material";
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
     ReviewDataComponent,
     HomeComponent,
     LoginComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
