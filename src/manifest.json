@@ -1,5 +1,6 @@
 {
   "name": "MSOE SuperMileage Server",
+  "short_name": "SMV Server",
   "icons": [
     {
       "src": "favicon.png",

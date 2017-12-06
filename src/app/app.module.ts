@@ -15,8 +15,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {LineChartModule} from '@swimlane/ngx-charts';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
-import {MatIconRegistry} from "@angular/material";
 import { AdminComponent } from './components/admin/admin.component';
+import {environment} from "../environments/environment";
+import {ServiceWorkerModule} from "@angular/service-worker";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AdminComponent } from './components/admin/admin.component';
     LineChartModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    AppMaterialModule
+    AppMaterialModule,
+    environment.production ? ServiceWorkerModule.register('/ngsw-worker.js'): []
   ],
   providers: [SocketIoService, CommunicatorService],
   bootstrap: [AppComponent],

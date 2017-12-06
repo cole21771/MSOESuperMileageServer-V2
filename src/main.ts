@@ -9,4 +9,8 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+  .then(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('worker-basic.min.js');
+    }
+  });
