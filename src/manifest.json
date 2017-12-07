@@ -1,6 +1,11 @@
 {
-  "name": "MSOE SuperMileage Server",
   "short_name": "SMV Server",
+  "name": "MSOE SuperMileage Server",
+  "start_url": "index.html",
+  "theme_color": "#1976d2",
+  "background_color": "#1976d2",
+  "display": "fullscreen",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "favicon.png",
@@ -37,11 +42,11 @@
       "sizes": "192x192",
       "type": "image/png",
       "density": 4.0
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "img/png"
     }
-  ],
-  "theme_color": "#1976d2",
-  "background_color": "#1976d2",
-  "start_url": "index.html",
-  "display": "standalone",
-  "orientation": "portrait"
+  ]
 }

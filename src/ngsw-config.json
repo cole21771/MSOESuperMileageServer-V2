@@ -1,5 +1,5 @@
 {
-  "index": "/index.html",
+  "index": "index.html",
   "assetGroups": [{
     "name": "MSOE SuperMileage Server",
     "installMode": "prefetch",
@@ -13,8 +13,6 @@
         "/*.bundle.js",
         "/*.chunk.js"
       ]
-
-
     }
   }, {
     "name": "assets",

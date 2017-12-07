@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
 import {ReviewDataComponent} from './components/review-data/review-data.component';
-import {AdminComponent} from "./components/admin/admin.component";
+import {AdminComponent} from './components/admin/admin.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -16,8 +16,7 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule
-  ],
-  declarations: []
+  ]
 })
 export class AppRoutingModule {
 }

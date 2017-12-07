@@ -10,14 +10,14 @@ import {ReviewDataComponent} from './components/review-data/review-data.componen
 import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AppMaterialModule} from './app-material.module';
-import { LoginComponent } from './components/login/login.component';
+import {LoginComponent} from './components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {LineChartModule} from '@swimlane/ngx-charts';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
-import { AdminComponent } from './components/admin/admin.component';
-import {environment} from "../environments/environment";
-import {ServiceWorkerModule} from "@angular/service-worker";
+import {AdminComponent} from './components/admin/admin.component';
+import {environment} from '../environments/environment';
+import {ServiceWorkerModule} from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import {ServiceWorkerModule} from "@angular/service-worker";
     ReactiveFormsModule,
     AppRoutingModule,
     AppMaterialModule,
-    environment.production ? ServiceWorkerModule.register('/ngsw-worker.js'): []
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
   providers: [SocketIoService, CommunicatorService],
   bootstrap: [AppComponent],

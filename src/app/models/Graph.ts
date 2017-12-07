@@ -52,7 +52,7 @@ export class Graph {
     if (this.showGraph) {
       this.chartData[0].series.push(new DataPoint(new Date(), data));
 
-      if (this.chartData[0].series.length > 20) {
+      if (this.chartData[0].series.length > 100) {
         this.chartData[0].series.shift();
       }
 

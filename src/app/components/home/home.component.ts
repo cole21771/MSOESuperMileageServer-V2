@@ -56,11 +56,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onResize() {
-    let parent = document.getElementById('tile');
+    let parent = document.getElementsByClassName('tile mat-elevation-z6')[0];
     this.cols = Math.floor(parent.clientWidth / 420 + 1);
 
     setTimeout(() => {
-      parent = document.getElementById('tile');
+      parent = document.getElementsByClassName('tile mat-elevation-z6')[0];
       this.graphView = [parent.clientWidth - 40, parent.clientHeight - 65];
     }, 250);
   }
