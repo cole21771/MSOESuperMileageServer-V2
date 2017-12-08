@@ -16,8 +16,6 @@ import {LineChartModule} from '@swimlane/ngx-charts';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
 import {AdminComponent} from './components/admin/admin.component';
-import {environment} from '../environments/environment';
-import {ServiceWorkerModule} from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -35,8 +33,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
     LineChartModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    AppMaterialModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    AppMaterialModule
   ],
   providers: [SocketIoService, CommunicatorService],
   bootstrap: [AppComponent],
