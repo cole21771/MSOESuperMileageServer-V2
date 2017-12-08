@@ -21,3 +21,7 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+.bottom-spacer {
+    padding-bottom: 50px;
+}

@@ -30,12 +30,12 @@
               (click)="sidenav.close()">Review Data
       </button>
       <br>
+      <span class="spacer"></span>
       <button *ngIf="admin" [routerLink]="['/admin']" color="accent" mat-raised-button
               (click)="sidenav.close()">Admin
       </button>
-      <br *ngIf="admin">
-      <!--<span class="spacer"></span>-->
       <button *ngIf="!admin" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+      <span class="bottom-spacer"></span>
     </mat-sidenav>
 
     <mat-sidenav-content class="content">
