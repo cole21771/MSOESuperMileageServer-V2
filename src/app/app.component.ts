@@ -28,7 +28,8 @@ export class AppComponent {
     this.loginDialog = dialog;
     this.snackBar = snackBar;
 
-    registry.addSvgIcon('moon', 'assets/moon.svg');
+
+    registry.addSvgIcon('moon', '/assets/moon.svg');
   }
 
   switchTheme() {

@@ -8,11 +8,13 @@
 
       <span class="spacer"></span>
 
-      <button aria-label="Switch Theme" mat-icon-button matTooltip="Activate {{!isDarkTheme ? 'Dark Theme' : 'Light Theme'}}" (click)="switchTheme()">
+      <button aria-label="Switch Theme" mat-icon-button
+              matTooltip="Activate {{!isDarkTheme ? 'Dark Theme' : 'Light Theme'}}" (click)="switchTheme()">
         <svg *ngIf="!isDarkTheme" class="mat-icon material-icons">
-          <path d="M12.7 2C7.33 2.15 3 6.57 3 12c0 5.52 4.48 10 10 10 3.52 0 6.6-1.82 8.4-4.56h-.3c-5.52 0-10-4.48-10-10 0-2 .6-3.87 1.6-5.44z"></path>
+          <path
+            d="M12.7 2C7.33 2.15 3 6.57 3 12c0 5.52 4.48 10 10 10 3.52 0 6.6-1.82 8.4-4.56h-.3c-5.52 0-10-4.48-10-10 0-2 .6-3.87 1.6-5.44z"></path>
         </svg>
-        <mat-icon *ngIf="isDarkTheme">{{isDarkTheme ? 'wb_sunny' : 'moon'}}</mat-icon>
+        <mat-icon *ngIf="isDarkTheme">wb_sunny</mat-icon>
       </button>
       <button aria-label="Switch Graph Mode" mat-icon-button matTooltip="Refresh UI" (click)="communicator.refreshUI()">
         <mat-icon>swap_calls</mat-icon>
@@ -31,10 +33,13 @@
       </button>
       <br>
       <span class="spacer"></span>
+      <button *ngIf="!admin" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+
       <button *ngIf="admin" [routerLink]="['/admin']" color="accent" mat-raised-button
               (click)="sidenav.close()">Admin
       </button>
-      <button *ngIf="!admin" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+      <br *ngIf="admin">
+      <button *ngIf="admin" color="accent" mat-raised-button (click)="admin = false">Logout</button>
       <span class="bottom-spacer"></span>
     </mat-sidenav>
 

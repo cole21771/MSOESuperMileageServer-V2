@@ -53,6 +53,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.communicator.refreshButtonClicked()
       .subscribe(() => this.onResize());
+
+
   }
 
   onResize() {

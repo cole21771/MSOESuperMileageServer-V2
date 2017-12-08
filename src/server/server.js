@@ -30,6 +30,8 @@ app.get('/*', (req, res) => {
 });
 
 const options = {
+  /*key: fs.readFileSync(path.join(__dirname, 'certificates/server.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'certificates/server.crt')),*/
   spdy: {
     plain: true,
     ssl: false
