@@ -1,0 +1,27 @@
+{
+  "vehicleType": "string",
+  "incomingData": [
+    {
+      "label": "string (unique indentifier)",
+      "min": "number",
+      "max": "number",
+      "units": "string"
+    }
+  ],
+  "graphs": [
+    {
+      "xAxis": "label string",
+      "yAxis": "label string",
+      "color": "string"
+    }
+  ],
+  "models": [
+    {
+      "label": "string",
+      "formula": "label1 * label2"
+    }
+  ],
+  "displayAlways": [
+	"label1", "label2"
+  ]
+}
