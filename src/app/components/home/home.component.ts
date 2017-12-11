@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   locationSub: any;
 
   cols = 2;
-  graphView: number[];
 
   constructor(socketService: SocketIoService, communicator: CommunicatorService) {
     this.socketService = socketService;
@@ -47,24 +46,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
 
-    setTimeout(() => {
+    /*requestAnimationFrame(() => {
       this.onResize();
-    }, 250);
+    });*/
 
     this.communicator.refreshButtonClicked()
       .subscribe(() => this.onResize());
-
-
   }
 
   onResize() {
-    let parent = document.getElementsByClassName('tile mat-elevation-z6')[0];
-    this.cols = Math.floor(parent.clientWidth / 420 + 1);
+    const parent = document.getElementsByClassName('tile mat-elevation-z6')[0];
 
-    setTimeout(() => {
-      parent = document.getElementsByClassName('tile mat-elevation-z6')[0];
-      this.graphView = [parent.clientWidth - 40, parent.clientHeight - 65];
-    }, 250);
+    requestAnimationFrame(() => {
+      this.cols = Math.floor(parent.clientWidth / 420 + 1);
+    });
   }
 
   ngOnDestroy() {

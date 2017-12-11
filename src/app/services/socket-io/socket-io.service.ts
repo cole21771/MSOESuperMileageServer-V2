@@ -11,12 +11,17 @@ export class SocketIoService {
   constructor() {
     this.socket = io();
 
-    /*let lastTime = 0;
+    let lastPerformance = 0;
     setInterval(() => {
-      const time = Date.now();
-      this.socket.emit('testData', time - lastTime);
-      lastTime = time;
-    }, 100);*/
+      const currentPerformance = performance.now();
+      console.log(currentPerformance - lastPerformance);
+      if (currentPerformance - lastPerformance > 920 && this.socket.connected) {
+        this.disconnect();
+      } else if (!this.socket.connected) {
+        this.reconnect();
+      }
+      lastPerformance = currentPerformance;
+    }, 800);
   }
 
   disconnect() {

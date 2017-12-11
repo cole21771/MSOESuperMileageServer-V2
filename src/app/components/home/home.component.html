@@ -7,8 +7,8 @@
           <mat-card-title>{{graph.title}}</mat-card-title>
           <mat-card-subtitle>{{graph.units}}</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
-          <app-graph [showXAxis]="cols !== 1" [graph]="graph" [view]="graphView"></app-graph>
+        <mat-card-content class="inherit">
+          <app-graph [showXAxis]="cols !== 1" [graph]="graph" class="inherit"></app-graph>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

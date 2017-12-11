@@ -1,10 +1,20 @@
 class DataPoint {
-  name: String = '';
+  name: String;
   value: number;
 
-  constructor(date: Date, value: number) {
-    this.name += date.getHours() % 12 + ':' + date.getMinutes() + ':' + date.getSeconds() + ':' + date.getMilliseconds();
+  constructor(currentTime: number, value: number) {
+    this.name = this.msToTime(currentTime);
     this.value = value;
+  }
+
+  private msToTime(ms): String {
+    const milliseconds = ms % 1000;
+    ms = (ms - milliseconds) / 1000;
+    const seconds = ms % 60;
+    ms = (ms - seconds) / 60;
+    const minutes = ms % 60;
+
+    return minutes + (seconds.toString().length === 1 ? ':0' : ':') + (seconds + milliseconds / 1000).toFixed(2);
   }
 }
 
@@ -50,7 +60,7 @@ export class Graph {
 
   addData(data: number): void {
     if (this.showGraph) {
-      this.chartData[0].series.push(new DataPoint(new Date(), data));
+      this.chartData[0].series.push(new DataPoint(Date.now(), data));
 
       if (this.chartData[0].series.length > 100) {
         this.chartData[0].series.shift();

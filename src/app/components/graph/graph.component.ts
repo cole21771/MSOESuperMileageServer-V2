@@ -9,6 +9,5 @@ import {Graph} from '../../models/Graph';
 })
 export class GraphComponent {
   @Input() graph: Graph;
-  @Input() view: number[];
   @Input() showXAxis: boolean;
 }
