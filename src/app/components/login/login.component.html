@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm" novalidate (keydown)="login($event)">
+<form [formGroup]="loginForm" novalidate>
   <mat-form-field>
     <input matInput formControlName="username" placeholder="Username">
   </mat-form-field>
@@ -8,9 +8,10 @@
     <mat-icon style="cursor: pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}
     </mat-icon>
   </mat-form-field>
-</form>
 
-<div>
-  <button mat-raised-button color="primary" (click)="login()">Login</button>
-  <button mat-raised-button color="accent" (click)="dialogRef.close()">Cancel</button>
-</div>
+
+  <div>
+    <button mat-raised-button color="primary" type="submit" (click)="login()">Login</button>
+    <button mat-raised-button color="accent" (click)="dialogRef.close()">Cancel</button>
+  </div>
+</form>

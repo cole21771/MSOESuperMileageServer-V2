@@ -14,13 +14,7 @@ export class LoginComponent implements OnInit {
     // dialogRef is the dialog box object
   }
 
-  login(event?) {
-    if (event) {
-      if (event.keyCode !== 13) { // Enter key
-        return;
-      }
-    }
-
+  login() {
     if (!this.loginForm.value.username || !this.loginForm.value.password) {
       this.dialogRef.close({
         isValid: false

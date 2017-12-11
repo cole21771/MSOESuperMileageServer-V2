@@ -1,6 +1,9 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {MatDialogModule, MatIconModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule} from '@angular/material';
+import {
+  MatDialogModule, MatIconModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule,
+  MatTooltipModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
 import {CommunicatorService} from './services/communicator/communicator.service';
@@ -18,7 +21,8 @@ describe('AppComponent', () => {
         MatIconModule,
         MatSnackBarModule,
         RouterTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatTooltipModule
       ],
       providers: [
         CommunicatorService,
