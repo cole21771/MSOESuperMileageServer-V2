@@ -14,7 +14,7 @@ export class SocketIoService {
     let lastPerformance = 0;
     setInterval(() => {
       const currentPerformance = performance.now();
-      console.log(currentPerformance - lastPerformance);
+
       if (currentPerformance - lastPerformance > 920 && this.socket.connected) {
         this.disconnect();
       } else if (currentPerformance - lastPerformance < 920 && !this.socket.connected) {
