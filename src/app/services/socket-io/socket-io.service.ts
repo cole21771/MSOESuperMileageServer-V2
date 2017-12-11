@@ -17,11 +17,11 @@ export class SocketIoService {
       console.log(currentPerformance - lastPerformance);
       if (currentPerformance - lastPerformance > 920 && this.socket.connected) {
         this.disconnect();
-      } else if (!this.socket.connected) {
+      } else if (currentPerformance - lastPerformance < 920 && !this.socket.connected) {
         this.reconnect();
       }
       lastPerformance = currentPerformance;
-    }, 800);
+    }, 700);
   }
 
   disconnect() {
@@ -43,6 +43,7 @@ export class SocketIoService {
   getData(): EventEmitter<any> {
     this.socket.on('newData', (data) => {
       this.newDataEmitter.emit(JSON.parse(data));
+      console.log('Data:', data);
     });
 
     return this.newDataEmitter;
