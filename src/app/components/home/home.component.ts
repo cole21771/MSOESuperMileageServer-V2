@@ -46,10 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
 
-    /*requestAnimationFrame(() => {
-      this.onResize();
-    });*/
-
     this.communicator.refreshButtonClicked()
       .subscribe(() => this.onResize());
   }
