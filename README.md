@@ -13,3 +13,14 @@ Run `npm run-script production` for a production server. Navigate to `http://loc
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+
+## Communication with App
+### Request Configuration File
+Event: "getConfig", Parameters: undefined, Callback: (configJSON)
+
+### Send new data
+Event: "newData", Parameters: "[data]", Callback: undefined
+
+### Authentication
+Event: "appAuth", Parameters: undefined, Callback: (int authCode)
