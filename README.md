@@ -23,4 +23,4 @@ Event: "getConfig", Parameters: undefined, Callback: (configJSON)
 Event: "newData", Parameters: "[data]", Callback: undefined
 
 ### Authentication
-Event: "appAuth", Parameters: undefined, Callback: (int authCode)
+Event: "appAuth", Parameters: undefined, Callback: undefined 
