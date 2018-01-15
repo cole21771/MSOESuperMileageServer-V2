@@ -4,6 +4,7 @@ import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
   title = 'SuperMileage Server';
   socketService: SocketIoService;
   communicator: CommunicatorService;
+  router: Router;
 
   isDarkTheme: Boolean = true;
   isLoggedIn: Boolean = false;
@@ -22,11 +24,12 @@ export class AppComponent {
   snackBar: MatSnackBar;
 
   constructor(socketService: SocketIoService, communicator: CommunicatorService, dialog: MatDialog,
-              snackBar: MatSnackBar, registry: MatIconRegistry) {
+              snackBar: MatSnackBar, registry: MatIconRegistry, router: Router) {
     this.socketService = socketService;
     this.communicator = communicator;
     this.loginDialog = dialog;
     this.snackBar = snackBar;
+    this.router = router;
 
 
     registry.addSvgIcon('moon', '/assets/moon.svg'); //TODO this still doesn't work
@@ -64,6 +67,9 @@ export class AppComponent {
   logout() {
     this.socketService.logout();
     this.isLoggedIn = false;
+
+    if (this.router.url === '/admin')
+      this.router.navigate(['']);
   }
 
   private launchSnackBar(message: String) {
