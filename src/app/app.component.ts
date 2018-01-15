@@ -16,7 +16,7 @@ export class AppComponent {
   communicator: CommunicatorService;
 
   isDarkTheme: Boolean = true;
-  admin: Boolean = false;
+  isLoggedIn: Boolean = false;
 
   loginDialog: MatDialog;
   snackBar: MatSnackBar;
@@ -29,7 +29,7 @@ export class AppComponent {
     this.snackBar = snackBar;
 
 
-    registry.addSvgIcon('moon', '/assets/moon.svg');
+    registry.addSvgIcon('moon', '/assets/moon.svg'); //TODO this still doesn't work
   }
 
   switchTheme() {
@@ -41,16 +41,16 @@ export class AppComponent {
       width: '250px'
     });
 
-    dialogRef.afterClosed().subscribe((login) => {
-      if (!login) {
+    dialogRef.afterClosed().subscribe((loginData) => {
+      if (!loginData) {
         return;
       }
-      if (login.isValid) {
-        this.socketService.attemptLogin(login)
-          .then((isAdmin: boolean) => {
-            if (isAdmin) {
+      if (loginData.isValid) {
+        this.socketService.attemptLogin(loginData)
+          .then((loginSuccessful: boolean) => {
+            if (loginSuccessful) {
               this.launchSnackBar('Login Successful!');
-              this.admin = true;
+              this.isLoggedIn = true;
             } else {
               this.launchSnackBar('Invalid username or password!');
             }
@@ -59,6 +59,11 @@ export class AppComponent {
         this.launchSnackBar('If you\'re going to try to hack this, at least try entering some text');
       }
     });
+  }
+
+  logout() {
+    this.socketService.logout();
+    this.isLoggedIn = false;
   }
 
   private launchSnackBar(message: String) {

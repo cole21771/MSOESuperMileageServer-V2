@@ -1,0 +1,12 @@
+<mat-card style="height: 60%; width: 40%;">
+  <mat-card-title style="width: 100%; text-align: right;" class="mat-elevation-z6">
+    <div style="padding:15px;">{{title}}</div>
+  </mat-card-title>
+  <mat-card-content>
+    <mat-grid-list cols="4">
+      <mat-grid-tile *ngFor="let button of buttons">
+        <button mat-raised-button color="primary" (click)="buttonClicked(button)">{{button.name}}</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>

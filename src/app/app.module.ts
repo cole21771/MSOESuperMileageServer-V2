@@ -16,6 +16,8 @@ import {LineChartModule} from '@swimlane/ngx-charts';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
 import {AdminComponent} from './components/admin/admin.component';
+import { CalculatorComponent } from './components/calculator/calculator.component';
+import {AdminGuard} from "./gaurds/admin/admin.guard";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import {AdminComponent} from './components/admin/admin.component';
     HomeComponent,
     LoginComponent,
     SnackBarComponent,
-    AdminComponent
+    AdminComponent,
+    CalculatorComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ import {AdminComponent} from './components/admin/admin.component';
     AppRoutingModule,
     AppMaterialModule
   ],
-  providers: [SocketIoService, CommunicatorService],
+  providers: [SocketIoService, CommunicatorService, AdminGuard],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, SnackBarComponent]
 })

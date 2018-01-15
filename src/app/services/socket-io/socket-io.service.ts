@@ -60,9 +60,21 @@ export class SocketIoService {
 
   attemptLogin(data): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('attemptLogin', data, (isAdmin) => {
-        resolve(isAdmin);
+      this.socket.emit('attemptLogin', data, (loginSuccessful) => {
+        resolve(loginSuccessful);
       });
     });
+  }
+
+  isLoggedIn(): Promise<boolean> {
+    return new Promise(resolve => {
+      this.socket.emit('isLoggedIn', undefined, (isLoggedIn) => {
+        resolve(isLoggedIn);
+      });
+    });
+  }
+
+  logout(): void {
+    this.socket.emit('logout');
   }
 }

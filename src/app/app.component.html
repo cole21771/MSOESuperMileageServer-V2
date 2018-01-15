@@ -32,14 +32,18 @@
               (click)="sidenav.close()">Review Data
       </button>
       <br>
+      <button [routerLink]="['/calculator']" color="accent" mat-raised-button
+              (click)="sidenav.close()">Calculator
+      </button>
+      <br>
       <span class="spacer"></span>
-      <button *ngIf="!admin" color="accent" mat-raised-button (click)="openLogin()">Login</button>
+      <button *ngIf="!isLoggedIn" color="accent" mat-raised-button (click)="openLogin()">Login</button>
 
-      <button *ngIf="admin" [routerLink]="['/admin']" color="accent" mat-raised-button
+      <button *ngIf="isLoggedIn" [routerLink]="['/admin']" color="accent" mat-raised-button
               (click)="sidenav.close()">Admin
       </button>
-      <br *ngIf="admin">
-      <button *ngIf="admin" color="accent" mat-raised-button (click)="admin = false">Logout</button>
+      <br *ngIf="isLoggedIn">
+      <button *ngIf="isLoggedIn" color="accent" mat-raised-button (click)="logout()">Logout</button>
       <span class="bottom-spacer"></span>
     </mat-sidenav>
 
