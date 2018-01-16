@@ -17,7 +17,7 @@ import {CommunicatorService} from './services/communicator/communicator.service'
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
 import {AdminComponent} from './components/admin/admin.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
-import {AdminGuard} from "./gaurds/admin/admin.guard";
+import {AdminGuard} from './gaurds/admin/admin.guard';
 
 @NgModule({
   declarations: [

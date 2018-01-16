@@ -3,8 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
 import {ReviewDataComponent} from './components/review-data/review-data.component';
 import {AdminComponent} from './components/admin/admin.component';
-import {CalculatorComponent} from "./components/calculator/calculator.component";
-import {AdminGuard} from "./gaurds/admin/admin.guard";
+import {CalculatorComponent} from './components/calculator/calculator.component';
+import {AdminGuard} from './gaurds/admin/admin.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},

@@ -10,9 +10,7 @@ export class LoginComponent implements OnInit {
   hide: Boolean = true;
   loginForm: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<LoginComponent>) {
-    // dialogRef is the dialog box object
-  }
+  constructor(public dialogRef: MatDialogRef<LoginComponent>) {}
 
   login() {
     if (!this.loginForm.value.username || !this.loginForm.value.password) {

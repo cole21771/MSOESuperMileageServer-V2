@@ -4,7 +4,7 @@ import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,27 +12,17 @@ import {Router} from "@angular/router";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'SuperMileage Server';
-  socketService: SocketIoService;
-  communicator: CommunicatorService;
-  router: Router;
+  public title = 'SuperMileage Server';
+  public router: Router;
 
-  isDarkTheme: Boolean = true;
-  isLoggedIn: Boolean = false;
+  public isDarkTheme: Boolean = true;
+  public isLoggedIn: Boolean = false;
 
-  loginDialog: MatDialog;
-  snackBar: MatSnackBar;
-
-  constructor(socketService: SocketIoService, communicator: CommunicatorService, dialog: MatDialog,
-              snackBar: MatSnackBar, registry: MatIconRegistry, router: Router) {
-    this.socketService = socketService;
-    this.communicator = communicator;
-    this.loginDialog = dialog;
-    this.snackBar = snackBar;
+  constructor(private socketService: SocketIoService, private communicator: CommunicatorService, private loginDialog: MatDialog,
+              private snackBar: MatSnackBar, private registry: MatIconRegistry, router: Router) {
     this.router = router;
 
-
-    registry.addSvgIcon('moon', '/assets/moon.svg'); //TODO this still doesn't work
+    registry.addSvgIcon('moon', '/assets/moon.svg'); // TODO this still doesn't work
   }
 
   switchTheme() {
@@ -68,8 +58,9 @@ export class AppComponent {
     this.socketService.logout();
     this.isLoggedIn = false;
 
-    if (this.router.url === '/admin')
+    if (this.router.url === '/admin') {
       this.router.navigate(['']);
+    }
   }
 
   private launchSnackBar(message: String) {

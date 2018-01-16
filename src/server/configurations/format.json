@@ -2,7 +2,7 @@
   "vehicleType": "string",
   "incomingData": [
     {
-      "label": "string (unique indentifier)",
+      "label": "string (unique identifier)",
       "min": "number",
       "max": "number",
       "units": "string"

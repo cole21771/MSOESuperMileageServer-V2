@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+
 const FormulaParser = require('hot-formula-parser').Parser;
 
 @Component({
@@ -9,7 +10,7 @@ const FormulaParser = require('hot-formula-parser').Parser;
 export class CalculatorComponent implements OnInit {
 
   buttons: Button[];
-  title: string = "";
+  title = '';
   calculation: Button[] = [];
   parser: any;
 
@@ -44,7 +45,7 @@ export class CalculatorComponent implements OnInit {
   }
 
   buttonClicked(button: Button) {
-    if (button.type == 'special') {
+    if (button.type === 'special') {
       switch (button.name) {
         case 'CE':
         case 'C':
@@ -60,10 +61,11 @@ export class CalculatorComponent implements OnInit {
       return;
     }
 
-    if (button.type == 'operation')
+    if (button.type === 'operation') {
       this.title += ` ${button.name} `;
-    else // Number, decimal point, or negative symbol
+    } else {// Number, decimal point, or negative symbol
       this.title += button.name;
+    }
 
     this.calculation.push(button);
   }
@@ -72,14 +74,15 @@ export class CalculatorComponent implements OnInit {
     let calculationString = '';
 
     this.calculation.forEach((button: Button) => {
-      if (button.value != undefined)
+      if (button.value !== undefined) {
         calculationString += button.value;
-      else
+      } else {
         calculationString += button.name;
+      }
     });
 
 
-    let result = this.parser.parse(calculationString);
+    const result = this.parser.parse(calculationString);
     if (!result.error) {
       this.title = result.result.toString();
       this.calculation = [];
@@ -99,12 +102,13 @@ export class CalculatorComponent implements OnInit {
   }
 
   backspace() {
-    let poppedButton = this.calculation.pop();
+    const poppedButton = this.calculation.pop();
 
-    if (poppedButton.type == 'operation')
+    if (poppedButton.type === 'operation') {
       this.title = this.title.slice(0, -3);
-    else
+    } else {
       this.title = this.title.slice(0, -1);
+    }
   }
 }
 

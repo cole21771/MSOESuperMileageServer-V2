@@ -1,5 +1,5 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core';
-import {Graph} from '../../models/Graph';
+import {Chart} from '../../models/Chart';
 
 @Component({
   selector: 'app-graph',
@@ -8,6 +8,6 @@ import {Graph} from '../../models/Graph';
   encapsulation: ViewEncapsulation.None
 })
 export class GraphComponent {
-  @Input() graph: Graph;
+  @Input() graph: Chart;
   @Input() showXAxis: boolean;
 }

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
-import {Graph} from '../../models/Graph';
+import {Chart} from '../../models/Chart';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
 
 @Component({
@@ -10,27 +10,20 @@ import {CommunicatorService} from '../../services/communicator/communicator.serv
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  socketService: SocketIoService;
-  communicator: CommunicatorService;
+  public graphs: Chart[] = [];
+  public location: any;
+  public cols = 2;
 
-  dataFormat: any;
-  graphs: Graph[] = [];
-  location: any;
+  private dataSub: any;
+  private dataFormat: any;
+  private locationSub: any;
 
-  dataSub: any;
-  locationSub: any;
-
-  cols = 2;
-
-  constructor(socketService: SocketIoService, communicator: CommunicatorService) {
-    this.socketService = socketService;
-    this.communicator = communicator;
-
+  constructor(private socketService: SocketIoService, private communicator: CommunicatorService) {
     this.socketService.getIncomingDataFormat()
       .then((dataFormat: any) => {
         this.dataFormat = dataFormat;
         dataFormat.data.forEach((graphInfo) => {
-          this.graphs.push(new Graph(graphInfo));
+          this.graphs.push(new Chart(graphInfo));
         });
       });
   }
@@ -38,7 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dataSub = this.socketService.getData()
       .subscribe((data) => {
-        this.graphs.forEach((graph: Graph, index: number) => {
+        this.graphs.forEach((graph: Chart, index: number) => {
           graph.addData(data[index]);
         });
       });
