@@ -16,7 +16,7 @@
         </svg>
         <mat-icon *ngIf="isDarkTheme">wb_sunny</mat-icon>
       </button>
-      <button *ngIf="this.router.url === '/'" aria-label="Switch Graph Mode" mat-icon-button matTooltip="Refresh UI" (click)="communicator.refreshUI()">
+      <button *ngIf="this.router.url === '/'" aria-label="Switch Graph Mode" mat-icon-button matTooltip="Switch Mode" (click)="communicator.refreshUI()">
         <mat-icon>swap_calls</mat-icon>
       </button>
     </mat-toolbar-row>

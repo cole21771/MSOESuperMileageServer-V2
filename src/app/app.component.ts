@@ -63,6 +63,10 @@ export class AppComponent {
     }
   }
 
+  switchGraphMode() {
+    this.communicator.refreshUI();
+  }
+
   private launchSnackBar(message: String) {
     this.snackBar.openFromComponent(SnackBarComponent, {
       data: message,
