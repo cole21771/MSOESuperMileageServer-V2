@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {Chart} from '../../models/Chart';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
+import {Config} from "../../models/Config";
 
 @Component({
   selector: 'app-home',
@@ -15,14 +16,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   public cols = 2;
 
   private dataSub: any;
-  private dataFormat: any;
+  private selectedConfiguration: any;
   private locationSub: any;
 
   constructor(private socketService: SocketIoService, private communicator: CommunicatorService) {
-    this.socketService.getIncomingDataFormat()
-      .then((dataFormat: any) => {
-        this.dataFormat = dataFormat;
-        dataFormat.data.forEach((graphInfo) => {
+    this.socketService.getSelectedConfig()
+      .then((selectedConfiguration: Config) => {
+        this.selectedConfiguration = selectedConfiguration;
+
+        selectedConfiguration.graphs.forEach((graphInfo) => {
           this.graphs.push(new Chart(graphInfo));
         });
       });

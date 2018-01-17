@@ -1,12 +1,17 @@
+const serverConfigPath = './src/server/server-configuration.json';
 let loggedInUsers = [];
 
 module.exports = (io, fs, logger) => {
+  let serverConfig;
+  fs.readFile(serverConfigPath, 'utf8', (err, file) => {
+    serverConfig = JSON.parse(file);
+  });
+
   io.of('/').on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       loggedInUsers.splice(loggedInUsers.findIndex(value => value === socket), 1);
     });
-
 
     socket.on('newData', (data) => {
       // Verify data matches selected model
@@ -31,9 +36,38 @@ module.exports = (io, fs, logger) => {
       loggedInUsers.splice(loggedInUsers.findIndex(value => value === socket), 1);
     });
 
-    socket.on('getIncomingDataFormat', (data, callback) => {
-      let file = fs.readFileSync('./src/server/configurations/incomingDataFormat.json', 'utf8');
+    socket.on('getSelectedConfig', (data, callback) => {
+      let file = fs.readFileSync(serverConfig.selectedConfiguration, 'utf8');
       callback(JSON.parse(file));
+    });
+
+    /**
+     * Sets the configuration file
+     */
+    socket.on('setSelectedConfig', (newConfigFilename, callback) => {
+      if (fs.existsSync(`${serverConfig.configPath}/${newConfigFilename}`)) {
+        serverConfig.selectedConfig = newConfigFilename;
+        fs.writeFileSync(serverConfigPath, serverConfig, 'utf8');
+        callback(true);
+      } else {
+        callback("File doesn't exist!");
+      }
+    });
+
+    socket.on('createConfig', (data, callback) => {
+      if (!fs.existsSync(data.filename)) {
+        fs.writeFileSync(`${serverConfig.configPath}/${data.filename}`, data.config, 'utf8');
+      } else {
+        callback("File already exists, cannot overwrite it!");
+      }
+    });
+
+    socket.on('updateConfig', (data, callback) => {
+      if (fs.existsSync(`${serverConfig.configPath}/${data.filename}`)) {
+        fs.writeFileSync(`${serverConfig.configPath}/${data.filename}`, data.config, 'utf8');
+      } else {
+        callback("Can't update a file that doesn't exist!");
+      }
     });
 
     socket.on('isLoggedIn', (undefined, callback) => {

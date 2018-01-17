@@ -34,9 +34,9 @@ export class SocketIoService {
     this.socket.connect();
   }
 
-  getIncomingDataFormat() {
+  getSelectedConfig() {
     return new Promise(resolve => {
-      this.socket.emit('getIncomingDataFormat', undefined, (dataFormat) => {
+      this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
         resolve(dataFormat);
       });
     });
