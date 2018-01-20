@@ -1,6 +1,11 @@
 {
   "vehicleType": "electric",
-  "incomingData": [
+  "incomingData": {
+	"Speed": {min, max}
+	"Motor_RPM": {}
+  }
+  
+  [
     {
       "label": "Speed",
       "min": 0,

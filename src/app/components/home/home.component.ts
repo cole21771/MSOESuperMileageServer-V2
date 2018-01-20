@@ -3,6 +3,9 @@ import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {Chart} from '../../models/Chart';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
 import {Config} from "../../models/Config";
+import {Graph} from "../../models/Graph";
+import {IncomingData} from "../../models/IncomingData";
+import {unescapeHtml} from "@angular/platform-browser/src/browser/transfer_state";
 
 @Component({
   selector: 'app-home',
@@ -10,7 +13,6 @@ import {Config} from "../../models/Config";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
   public graphs: Chart[] = [];
   public location: any;
   public cols = 2;
@@ -23,11 +25,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.socketService.getSelectedConfig()
       .then((selectedConfiguration: Config) => {
         this.selectedConfiguration = selectedConfiguration;
+        selectedConfiguration.graphs.forEach((graph: Graph) => {
 
-        selectedConfiguration.graphs.forEach((graphInfo) => {
-          this.graphs.push(new Chart(graphInfo));
+          if (this.getRelevantData(graph.xAxis) && this.getRelevantData(graph.yAxis)) {
+            // this.graphs.push(new Chart(graph));
+          }
         });
       });
+  }
+
+  private getRelevantData(label: string): IncomingData {
+    this.selectedConfiguration.incomingData.forEach((incomingData: IncomingData) => {
+      if (incomingData.label === label)
+        return incomingData;
+    });
+    return null;
   }
 
   ngOnInit() {

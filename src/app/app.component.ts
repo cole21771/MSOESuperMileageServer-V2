@@ -3,8 +3,8 @@ import {MatDialog, MatIconRegistry, MatSnackBar} from '@angular/material';
 import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {CommunicatorService} from './services/communicator/communicator.service';
-import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
 import {Router} from '@angular/router';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -19,10 +19,11 @@ export class AppComponent {
   public isLoggedIn: Boolean = false;
 
   constructor(private socketService: SocketIoService, private communicator: CommunicatorService, private loginDialog: MatDialog,
-              private snackBar: MatSnackBar, private registry: MatIconRegistry, router: Router) {
+              private snackBar: MatSnackBar, private registry: MatIconRegistry, router: Router, sanitizer: DomSanitizer) {
     this.router = router;
 
-    registry.addSvgIcon('moon', '/assets/moon.svg'); // TODO this still doesn't work
+    registry.addSvgIcon('moon',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/moon.svg')); // TODO this still doesn't work
   }
 
   switchTheme() {
@@ -67,10 +68,9 @@ export class AppComponent {
     this.communicator.refreshUI();
   }
 
-  private launchSnackBar(message: String) {
-    this.snackBar.openFromComponent(SnackBarComponent, {
-      data: message,
-      duration: 1500
+  private launchSnackBar(message: string) {
+    this.snackBar.open(message, undefined, {
+      duration: 2000
     });
   }
 }

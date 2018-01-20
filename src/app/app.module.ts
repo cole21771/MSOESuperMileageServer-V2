@@ -14,7 +14,6 @@ import {LoginComponent} from './components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {LineChartModule} from '@swimlane/ngx-charts';
 import {CommunicatorService} from './services/communicator/communicator.service';
-import {SnackBarComponent} from './components/snack-bar/snack-bar.component';
 import {AdminComponent} from './components/admin/admin.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import {AdminGuard} from './gaurds/admin/admin.guard';
@@ -26,7 +25,6 @@ import {AdminGuard} from './gaurds/admin/admin.guard';
     ReviewDataComponent,
     HomeComponent,
     LoginComponent,
-    SnackBarComponent,
     AdminComponent,
     CalculatorComponent,
   ],
@@ -40,7 +38,7 @@ import {AdminGuard} from './gaurds/admin/admin.guard';
   ],
   providers: [SocketIoService, CommunicatorService, AdminGuard],
   bootstrap: [AppComponent],
-  entryComponents: [LoginComponent, SnackBarComponent]
+  entryComponents: [LoginComponent]
 })
 export class AppModule {
 }
