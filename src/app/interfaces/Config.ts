@@ -6,6 +6,6 @@ export interface Config {
   vehicleType: string;
   incomingData: IncomingData[];
   graphs: Graph[];
-  model: Model[];
+  models: Model[];
   displayAlways: string[];
 }
