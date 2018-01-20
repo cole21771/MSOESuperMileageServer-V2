@@ -1,49 +1,14 @@
 {
   "vehicleType": "electric",
-  "incomingData": [
-    {
-      "label": "Speed",
-      "min": 0,
-      "max": 35,
-      "units": "MPH"
-    },
-    {
-      "label": "Motor_RPM",
-      "min": 0,
-      "max": 3500,
-      "units": "RPM"
-    },
-    {
-      "label": "Joules",
-      "min": 0,
-      "max": 1000000,
-      "units": "J"
-    },
-    {
-      "label": "Volts",
-      "min": 0,
-      "max": 30,
-      "units": "V"
-    },
-    {
-      "label": "Current",
-      "min": 0,
-      "max": 50,
-      "units": "A"
-    },
-    {
-      "label": "Lap_Number",
-      "min": 0,
-      "max": 10,
-      "units": ""
-    },
-    {
-      "label": "Time",
-      "min": 0,
-      "max": null,
-      "units": "ms"
-    }
-  ],
+  "incomingData": {
+	"Speed": {"min": 0, "max": 35, "units": "MPH"},
+	"Motor_RPM": {"min": 0, "max": 3500, "units": "RPM"},
+	"Joules": {"min": 0, "max": 1000000, "units": "J"},
+	"Volts": {"min": 0, "max": 30, "units": "V"},
+	"Current": {"min": 0, "max": 50, "units": "A"},
+	"Lap_Number": {"min": 0, "max": 10, "units": ""}
+	"Time": {"min": 0, "max": null, "units": "ms"}
+  },
   "graphs": [
     {
       "id": 0,

@@ -37,7 +37,7 @@ module.exports = (io, fs, logger) => {
     });
 
     socket.on('getSelectedConfig', (data, callback) => {
-      let file = fs.readFileSync(serverConfig.selectedConfiguration, 'utf8');
+      let file = fs.readFileSync(`${serverConfig.configPath}/${serverConfig.selectedConfiguration}`, 'utf8');
       callback(JSON.parse(file));
     });
 
