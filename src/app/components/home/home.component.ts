@@ -2,10 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {Chart} from '../../models/Chart';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
-import {Config} from "../../models/Config";
-import {Graph} from "../../models/Graph";
-import {IncomingData} from "../../models/IncomingData";
-import {unescapeHtml} from "@angular/platform-browser/src/browser/transfer_state";
+import {ConfigService} from "../../services/config/config.service";
 
 @Component({
   selector: 'app-home',
@@ -18,28 +15,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   public cols = 2;
 
   private dataSub: any;
-  private selectedConfiguration: any;
   private locationSub: any;
 
-  constructor(private socketService: SocketIoService, private communicator: CommunicatorService) {
-    this.socketService.getSelectedConfig()
-      .then((selectedConfiguration: Config) => {
-        this.selectedConfiguration = selectedConfiguration;
-        selectedConfiguration.graphs.forEach((graph: Graph) => {
-
-          if (this.getRelevantData(graph.xAxis) && this.getRelevantData(graph.yAxis)) {
-            // this.graphs.push(new Chart(graph));
-          }
-        });
-      });
-  }
-
-  private getRelevantData(label: string): IncomingData {
-    this.selectedConfiguration.incomingData.forEach((incomingData: IncomingData) => {
-      if (incomingData.label === label)
-        return incomingData;
-    });
-    return null;
+  constructor(private communicator: CommunicatorService,
+              private configService: ConfigService,
+              private socketService: SocketIoService) {
+    this.graphs = this.configService.getGraphs;
   }
 
   ngOnInit() {
@@ -57,16 +38,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(() => this.onResize());
   }
 
+  ngOnDestroy() {
+    this.dataSub.unsubscribe();
+    this.locationSub.unsubscribe();
+  }
+
   onResize() {
     const parent = document.getElementsByClassName('tile mat-elevation-z6')[0];
 
     requestAnimationFrame(() => {
       this.cols = Math.floor(parent.clientWidth / 420 + 1);
     });
-  }
-
-  ngOnDestroy() {
-    this.dataSub.unsubscribe();
-    this.locationSub.unsubscribe();
   }
 }
