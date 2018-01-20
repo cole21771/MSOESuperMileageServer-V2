@@ -11,24 +11,33 @@ const FormulaParser = require('hot-formula-parser').Parser;
 @Injectable()
 export class ConfigService {
 
+  private parser: any;
+
   private config: Config;
 
   private graphs: Chart[];
-  private models: Model[];
+  private dataModels: IncomingData[];
 
   constructor(private socketService: SocketIoService) {
+    this.parser = new FormulaParser;
     this.graphs = [];
-    this.models = [];
+    this.dataModels = [];
 
     this.socketService.getSelectedConfig().then((config: Config) => {
       this.config = config;
 
       config.models.forEach((model: Model) => {
         if (this.isValidModel(model)) {
-          this.models.push(model);
+
+          // TODO create IncomingData based on items from formula
+
+          /*let data: IncomingData = {
+            label: model.label;
+          min:
+            }
+          this.dataModels.push(data);*/
         }
       });
-
 
       config.graphs.forEach((graph: Graph) => {
         let data = this.getLabelData(graph.xAxis);
@@ -47,20 +56,25 @@ export class ConfigService {
     return this.config.incomingData.find((data: IncomingData) => data.label === label);
   }
 
+  private doesIncomingDataOrModelExist(label: string): boolean {
+    return !!this.getLabelData(label) ||
+      !!this.dataModels.find((model: IncomingData) => model.label === label);
+  }
+
   private isValidModel(model: Model): boolean {
     let valid = true;
     if (!this.getLabelData(model.label)) {
-      let items = model.formula.split(" ");
-      items.forEach((item: string) => {
-        if (item.match(/[A-z]+/)) {
-          if (!this.getLabelData(item))
-            valid = false;
-        }
-      });
+      let labels = this.getLabelsFromModel(model);
+      valid = labels.every((label: string) => !!this.getLabelData(label));
     } else {
       valid = false;
     }
 
     return valid;
+  }
+
+  getLabelsFromModel(model: Model): string[] {
+    let items = model.formula.split(" ");
+    return items.filter((item: string) => item.match(/[A-z]+/));
   }
 }
