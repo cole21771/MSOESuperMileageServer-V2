@@ -4,7 +4,7 @@ import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {Router} from '@angular/router';
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',

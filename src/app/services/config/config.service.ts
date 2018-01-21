@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Chart} from "../../models/Chart";
-import {Graph} from "../../interfaces/Graph";
-import {Config} from "../../interfaces/Config";
-import {SocketIoService} from "../socket-io/socket-io.service";
-import {IncomingData} from "../../interfaces/IncomingData";
-import {Model} from "../../interfaces/Model";
+import {Chart} from '../../models/Chart';
+import {Graph} from '../../interfaces/Graph';
+import {Config} from '../../interfaces/Config';
+import {SocketIoService} from '../socket-io/socket-io.service';
+import {IncomingData} from '../../interfaces/IncomingData';
+import {Model} from '../../interfaces/Model';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -26,26 +26,49 @@ export class ConfigService {
     this.socketService.getSelectedConfig().then((config: Config) => {
       this.config = config;
 
+      // Sets of models
       config.models.forEach((model: Model) => {
         if (this.isValidModel(model)) {
-
-          // TODO create IncomingData based on items from formula
-
-          /*let data: IncomingData = {
-            label: model.label;
-          min:
-            }
-          this.dataModels.push(data);*/
+          this.dataModels.push(this.createDataModel(model));
         }
       });
 
+      // Sets of graphs
       config.graphs.forEach((graph: Graph) => {
-        let data = this.getLabelData(graph.xAxis);
-        if (data && this.getLabelData(graph.yAxis)) {
-          this.graphs.push(new Chart(data, graph));
+
+        const xData = this.getIncomingDataOrModelData(graph.xAxis);
+        const yData = this.getIncomingDataOrModelData(graph.yAxis);
+        if (xData && yData) {
+          this.graphs.push(new Chart(xData, graph));
         }
       });
     });
+  }
+
+  private createDataModel(model: Model): IncomingData {
+    const labels = this.getLabelsFromModel(model);
+    labels.forEach((label: string) => {
+      const data = this.getLabelData(label);
+      this.parser.setVariable(label, data.min);
+    });
+
+    const min = this.parser.parse(model.formula);
+
+    labels.forEach((label: string) => {
+      const data = this.getLabelData(label);
+      this.parser.setVariable(label, data.max);
+    });
+
+    const max = this.parser.parse(model.formula);
+
+    if (!min.error && !max.error) {
+      return {
+        label: model.label,
+        min: min.result,
+        max: max.result,
+        units: model.units
+      };
+    }
   }
 
   get getGraphs(): Chart[] {
@@ -56,15 +79,23 @@ export class ConfigService {
     return this.config.incomingData.find((data: IncomingData) => data.label === label);
   }
 
-  private doesIncomingDataOrModelExist(label: string): boolean {
-    return !!this.getLabelData(label) ||
-      !!this.dataModels.find((model: IncomingData) => model.label === label);
+  private getIncomingDataOrModelData(label: string): IncomingData {
+    const labelData = this.getLabelData(label);
+    const modelData = this.dataModels.find((model: IncomingData) => model.label === label);
+
+    if (labelData) {
+      return labelData;
+    } else if (modelData) {
+      return modelData;
+    }
+
+    return undefined;
   }
 
   private isValidModel(model: Model): boolean {
     let valid = true;
     if (!this.getLabelData(model.label)) {
-      let labels = this.getLabelsFromModel(model);
+      const labels = this.getLabelsFromModel(model);
       valid = labels.every((label: string) => !!this.getLabelData(label));
     } else {
       valid = false;
@@ -73,8 +104,8 @@ export class ConfigService {
     return valid;
   }
 
-  getLabelsFromModel(model: Model): string[] {
-    let items = model.formula.split(" ");
+  private getLabelsFromModel(model: Model): string[] {
+    const items = model.formula.split(' ');
     return items.filter((item: string) => item.match(/[A-z]+/));
   }
 }

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {Chart} from '../../models/Chart';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
-import {ConfigService} from "../../services/config/config.service";
+import {ConfigService} from '../../services/config/config.service';
 
 @Component({
   selector: 'app-home',

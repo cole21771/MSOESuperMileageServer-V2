@@ -1,7 +1,7 @@
 import {ChartData} from './ChartData';
 import {DataPoint} from './DataPoint';
-import {Graph} from "../interfaces/Graph";
-import {IncomingData} from "../interfaces/IncomingData";
+import {IncomingData} from '../interfaces/IncomingData';
+import {Graph} from '../interfaces/Graph';
 
 export class Chart {
   title: String;
@@ -14,20 +14,6 @@ export class Chart {
   min: number;
   max: number;
   chartData: ChartData[];
-
-  /*constructor(graphInfo) {
-    this.color.domain.push(graphInfo.color);
-    this.xAxisName = 'Time';
-    this.yAxisName = graphInfo.label;
-    this.units = graphInfo.units;
-    this.title = this.yAxisName + ' vs ' + this.xAxisName;
-    this.min = graphInfo.min;
-    this.max = graphInfo.max;
-    this.displayAlways = graphInfo.displayAlways;
-    this.showGraph = graphInfo.showGraph;
-
-    this.chartData = [new ChartData(this.title)];
-  }*/
 
   constructor(data: IncomingData, graph: Graph) {
     this.title = `${graph.yAxis} vs ${graph.xAxis}`;
