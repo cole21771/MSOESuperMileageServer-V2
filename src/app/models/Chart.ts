@@ -16,6 +16,10 @@ export class Chart {
   chartData: ChartData[];
 
   constructor(data: IncomingData, graph: Graph) {
+    graph.xAxis = graph.xAxis.replace('_', ' ');
+    graph.yAxis = graph.yAxis.replace('_', ' ');
+
+
     this.title = `${graph.yAxis} vs ${graph.xAxis}`;
     this.color.domain.push(graph.color);
     this.xAxisName = graph.xAxis;
