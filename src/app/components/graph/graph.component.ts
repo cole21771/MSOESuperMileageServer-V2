@@ -8,6 +8,6 @@ import {Chart} from '../../models/Chart';
   encapsulation: ViewEncapsulation.None
 })
 export class GraphComponent {
-  @Input() graph: Chart;
+  @Input() chart: Chart;
   @Input() showXAxis: boolean;
 }

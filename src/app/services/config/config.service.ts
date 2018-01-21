@@ -49,25 +49,25 @@ export class ConfigService {
     const labels = this.getLabelsFromModel(model);
     labels.forEach((label: string) => {
       const data = this.getLabelData(label);
-      this.parser.setVariable(label, data.min);
+      this.parser.setVariable(label, data.min ? data.min : 0);
     });
-
     const min = this.parser.parse(model.formula);
 
     labels.forEach((label: string) => {
       const data = this.getLabelData(label);
-      this.parser.setVariable(label, data.max);
+      this.parser.setVariable(label, data.max ? data.max : 0);
     });
-
     const max = this.parser.parse(model.formula);
 
     if (!min.error && !max.error) {
       return {
         label: model.label,
         min: min.result,
-        max: max.result,
+        max: max.result === 0 ? null : max.result,
         units: model.units
       };
+    } else {
+      throw new Error('Formula calculation had an error');
     }
   }
 

@@ -101,7 +101,7 @@
   "models": [
     {
       "label": "Distance",
-      "formula": "Speed * 0.44704 * Time * .001",
+      "formula": "Speed * 0.44704 * Time * 0.001",
 	  "units": "m/s"
     }
   ],
