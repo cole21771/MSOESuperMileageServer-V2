@@ -3,13 +3,13 @@ import {DataPoint} from './DataPoint';
 import {IncomingData} from '../interfaces/IncomingData';
 import {Graph} from '../interfaces/Graph';
 
-export class Chart {
-  title: String;
+export class GraphInfo {
+  title: string;
   color: any = {
     domain: []
   };
-  xAxisName: String;
-  yAxisName: String;
+  xAxisName: string;
+  yAxisName: string;
   units: String;
   min: number;
   max: number;
@@ -31,7 +31,7 @@ export class Chart {
     this.chartData = [new ChartData(this.title)];
   }
 
-  addData(data: number): void {
+  addData(data: number): void { // TODO account for formula
     this.chartData[0].series.push(new DataPoint(Date.now(), data));
 
     if (this.chartData[0].series.length > 100) {

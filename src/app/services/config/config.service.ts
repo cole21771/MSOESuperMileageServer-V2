@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Chart} from '../../models/Chart';
+import {GraphInfo} from '../../models/GraphInfo';
 import {Graph} from '../../interfaces/Graph';
 import {Config} from '../../interfaces/Config';
 import {SocketIoService} from '../socket-io/socket-io.service';
@@ -15,7 +15,7 @@ export class ConfigService {
 
   private config: Config;
 
-  private graphs: Chart[];
+  private graphs: GraphInfo[];
   private dataModels: IncomingData[];
 
   constructor(private socketService: SocketIoService) {
@@ -34,12 +34,11 @@ export class ConfigService {
       });
 
       // Sets of graphs
-      config.graphs.forEach((graph: Graph) => {
-
+      config.graphs.forEach((graph: Graph) => { // TODO Rethink some this stuff considering GraphInfo and DataService
         const xData = this.getIncomingDataOrModelData(graph.xAxis);
         const yData = this.getIncomingDataOrModelData(graph.yAxis);
         if (xData && yData) {
-          this.graphs.push(new Chart(xData, graph));
+          this.graphs.push(new GraphInfo(xData, graph));
         }
       });
     });
@@ -71,8 +70,12 @@ export class ConfigService {
     }
   }
 
-  get getGraphs(): Chart[] {
+  get getGraphs(): GraphInfo[] {
     return this.graphs;
+  }
+
+  get getOrder(): string[] {
+    return this.config.incomingData.map((data: IncomingData) => data.label);
   }
 
   private getLabelData(label: string): IncomingData {

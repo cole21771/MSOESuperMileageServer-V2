@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
-import {Chart} from '../../models/Chart';
+import {GraphInfo} from '../../models/GraphInfo';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
 import {ConfigService} from '../../services/config/config.service';
 
@@ -10,7 +10,7 @@ import {ConfigService} from '../../services/config/config.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public graphs: Chart[] = [];
+  public graphs: GraphInfo[] = [];
   public location: any;
   public cols = 2;
 
@@ -24,13 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.dataSub = this.socketService.getData()
-      .subscribe((data) => {
-        this.graphs.forEach((graph: Chart, index: number) => {
-          graph.addData(data[index]);
-        });
-      });
-
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
 

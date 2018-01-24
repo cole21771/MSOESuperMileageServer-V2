@@ -42,7 +42,7 @@ export class SocketIoService {
     });
   }
 
-  getData(): EventEmitter<any> {
+  getData(): EventEmitter<number[]> {
     this.socket.on('newData', (data) => {
       this.newDataEmitter.emit(JSON.parse(data));
     });

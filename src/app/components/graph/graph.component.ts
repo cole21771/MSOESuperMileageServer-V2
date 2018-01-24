@@ -1,5 +1,6 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core';
-import {Chart} from '../../models/Chart';
+import {GraphInfo} from '../../models/GraphInfo';
+import {DataService} from "../../services/data/data.service";
 
 @Component({
   selector: 'app-graph',
@@ -8,6 +9,13 @@ import {Chart} from '../../models/Chart';
   encapsulation: ViewEncapsulation.None
 })
 export class GraphComponent {
-  @Input() chart: Chart;
+
+  constructor(private dataService: DataService) {
+    dataService.getEmitterFor(this.chart.xAxisName).subscribe((data: number) => {
+      this.chart.addData(data);
+    });
+  }
+
+  @Input() chart: GraphInfo;
   @Input() showXAxis: boolean;
 }
