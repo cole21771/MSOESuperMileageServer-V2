@@ -10,7 +10,10 @@ export class SocketIoService {
 
   constructor() {
     this.socket = io();
+    this.performanceSetup();
+  }
 
+  private performanceSetup() {
     setTimeout(() => {
       let lastPerformance = 0;
       setInterval(() => {
@@ -26,11 +29,11 @@ export class SocketIoService {
     }, 5000);
   }
 
-  disconnect() {
+  private disconnect() {
     this.socket.disconnect();
   }
 
-  reconnect() {
+  private reconnect() {
     this.socket.connect();
   }
 
@@ -42,7 +45,7 @@ export class SocketIoService {
     });
   }
 
-  getData(): EventEmitter<number[]> {
+  getNewDataEmitter(): EventEmitter<number[]> {
     this.socket.on('newData', (data) => {
       this.newDataEmitter.emit(JSON.parse(data));
     });

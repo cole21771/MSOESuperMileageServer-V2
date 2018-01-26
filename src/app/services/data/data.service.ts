@@ -1,25 +1,37 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from "../config/config.service";
+import {SocketIoService} from "../socket-io/socket-io.service";
+import Emitter = SocketIOClient.Emitter;
 
 @Injectable()
 export class DataService {
-  labelEmitterMap: Map<string, EventEmitter<number>>;
-  emitters: EventEmitter<number>[];
+  labelDataMap: Map<string, number>;
+  labels: string[];
+  dataNotifierEmitter: EventEmitter<undefined>;
 
-  constructor(private configService: ConfigService) {
-    this.labelEmitterMap = new Map();
-    this.configService.getOrder.forEach((label: string) => {
-      this.labelEmitterMap.set(label, new EventEmitter<number>());
+  constructor(private configService: ConfigService, private socketService: SocketIoService) {
+    this.labelDataMap = new Map();
+
+    this.labels = this.configService.getLabels;
+
+    this.socketService.getNewDataEmitter().subscribe((data: number[]) => {
+      this.addData(data);
     });
   }
 
-  getEmitterFor(label: string): EventEmitter<number> {
-    return this.labelEmitterMap.get(label);
+  getLatestData(label: string) {
+    return this.labelDataMap.get(label);
+  }
+
+  dataNotifier(): EventEmitter<undefined> {
+    return this.dataNotifierEmitter;
   }
 
   addData(data: number[]) {
-    this.emitters.forEach((emitter: EventEmitter<number>, index: number) => {
-      emitter.emit(data[index]);
+    this.labels.forEach((label: string, index: number) => {
+      this.labelDataMap.set(label, data[index]);
     });
+
+    this.dataNotifierEmitter.emit();
   }
 }

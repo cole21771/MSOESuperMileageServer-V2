@@ -3,4 +3,5 @@ export interface IncomingData {
   min: number;
   max: number;
   units: string;
+  formula?: string;
 }

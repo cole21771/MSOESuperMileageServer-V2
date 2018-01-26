@@ -8,7 +8,6 @@ module.exports = (io, fs, logger) => {
   });
 
   io.of('/').on('connection', (socket) => {
-
     socket.on('disconnect', () => {
       loggedInUsers.splice(loggedInUsers.findIndex(value => value === socket), 1);
     });

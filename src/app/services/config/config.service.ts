@@ -14,31 +14,30 @@ export class ConfigService {
   private parser: any;
 
   private config: Config;
-
   private graphs: GraphInfo[];
   private dataModels: IncomingData[];
 
   constructor(private socketService: SocketIoService) {
-    this.parser = new FormulaParser;
+    this.parser = new FormulaParser();
     this.graphs = [];
     this.dataModels = [];
 
     this.socketService.getSelectedConfig().then((config: Config) => {
       this.config = config;
 
-      // Sets of models
+      // Sets of models TODO
       config.models.forEach((model: Model) => {
         if (this.isValidModel(model)) {
           this.dataModels.push(this.createDataModel(model));
         }
       });
 
-      // Sets of graphs
+      // Sets of graphs TODO
       config.graphs.forEach((graph: Graph) => { // TODO Rethink some this stuff considering GraphInfo and DataService
-        const xData = this.getIncomingDataOrModelData(graph.xAxis);
-        const yData = this.getIncomingDataOrModelData(graph.yAxis);
+        const xData = this.getData(graph.xAxis);
+        const yData = this.getData(graph.yAxis);
         if (xData && yData) {
-          this.graphs.push(new GraphInfo(xData, graph));
+          this.graphs.push(new GraphInfo(xData, yData, graph));
         }
       });
     });
@@ -63,7 +62,8 @@ export class ConfigService {
         label: model.label,
         min: min.result,
         max: max.result === 0 ? null : max.result,
-        units: model.units
+        units: model.units,
+        formula: model.formula
       };
     } else {
       throw new Error('Formula calculation had an error');
@@ -74,7 +74,7 @@ export class ConfigService {
     return this.graphs;
   }
 
-  get getOrder(): string[] {
+  get getLabels(): string[] {
     return this.config.incomingData.map((data: IncomingData) => data.label);
   }
 
@@ -82,7 +82,7 @@ export class ConfigService {
     return this.config.incomingData.find((data: IncomingData) => data.label === label);
   }
 
-  private getIncomingDataOrModelData(label: string): IncomingData {
+  private getData(label: string): IncomingData {
     const labelData = this.getLabelData(label);
     const modelData = this.dataModels.find((model: IncomingData) => model.label === label);
 

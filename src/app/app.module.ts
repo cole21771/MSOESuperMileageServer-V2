@@ -18,6 +18,7 @@ import {AdminComponent} from './components/admin/admin.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import {AdminGuard} from './gaurds/admin/admin.guard';
 import {ConfigService} from './services/config/config.service';
+import {DataService} from "./services/data/data.service";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import {ConfigService} from './services/config/config.service';
     AppRoutingModule,
     AppMaterialModule
   ],
-  providers: [SocketIoService, CommunicatorService, AdminGuard, ConfigService],
+  providers: [SocketIoService, CommunicatorService, AdminGuard, ConfigService, DataService],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent]
 })
