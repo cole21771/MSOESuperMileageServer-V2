@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {GraphInfo} from '../../models/GraphInfo';
 import {Config} from '../../interfaces/Config';
 import {SocketIoService} from '../socket-io/socket-io.service';
@@ -9,13 +9,15 @@ const FormulaParser = require('hot-formula-parser').Parser;
 
 @Injectable()
 export class ConfigService {
-
   private parser: any;
   private config: Config;
   private graphs: GraphInfo[];
   private dataModels: IncomingData[];
 
+  private onReadyEventEmitter: EventEmitter<undefined>;
+
   constructor(private socketService: SocketIoService) {
+    this.onReadyEventEmitter = new EventEmitter<undefined>();
     this.parser = new FormulaParser();
     this.graphs = [];
     this.dataModels = [];
@@ -33,7 +35,12 @@ export class ConfigService {
           return new GraphInfo(xData, yData, graph);
         }
       });
+      this.onReadyEventEmitter.emit();
     });
+  }
+
+  onReady(): EventEmitter<undefined> {
+    return this.onReadyEventEmitter;
   }
 
   /**
@@ -89,7 +96,7 @@ export class ConfigService {
    * Returns the GraphInfo objects that the service created
    * @returns {GraphInfo[]}
    */
-  get getGraphs(): GraphInfo[] {
+  get getGraphInfo(): GraphInfo[] {
     return this.graphs;
   }
 

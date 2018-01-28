@@ -11,9 +11,12 @@ export class DataService {
   private modelMap: Map<string, string>;
   private labels: string[];
   private dataNotifierEmitter: EventEmitter<undefined>;
+  private onReadyEventEmitter: EventEmitter<undefined>;
   private parser: any;
 
   constructor(private configService: ConfigService, private socketService: SocketIoService) {
+    this.dataNotifierEmitter = new EventEmitter<undefined>();
+    this.onReadyEventEmitter = new EventEmitter<undefined>();
     this.labelDataMap = new Map();
     this.modelMap = new Map();
     this.parser = new FormulaParser();
@@ -27,6 +30,11 @@ export class DataService {
     this.configService.getModels.forEach((model: Model) => {
       this.modelMap.set(model.label, model.formula);
     });
+    this.onReadyEventEmitter.emit();
+  }
+
+  onReady(): EventEmitter<undefined> {
+    return this.onReadyEventEmitter;
   }
 
   getLatestData(label: string): number {

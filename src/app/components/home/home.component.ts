@@ -10,17 +10,18 @@ import {ConfigService} from '../../services/config/config.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public graphs: GraphInfo[] = [];
+  public graphInfoArray: GraphInfo[] = [];
   public location: any;
   public cols = 2;
 
-  private dataSub: any;
   private locationSub: any;
 
   constructor(private communicator: CommunicatorService,
               private configService: ConfigService,
               private socketService: SocketIoService) {
-    this.graphs = this.configService.getGraphs;
+    this.configService.onReady().subscribe(() => {
+      this.graphInfoArray = this.configService.getGraphInfo;
+    });
   }
 
   ngOnInit() {
@@ -32,7 +33,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.dataSub.unsubscribe();
     this.locationSub.unsubscribe();
   }
 
