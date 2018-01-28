@@ -31,11 +31,11 @@ export class GraphInfo {
     this.min = xData.min;
     this.max = xData.max;
 
-    this.chartData = [new ChartData(this.title)];
+    this.chartData = [new ChartData(this.title)]; // TODO Add support for multiple lines on a graph
   }
 
   addData(x: number, y: number): void {
-    this.chartData[0].series.push(new DataPoint(x, y));
+    this.chartData[0].series.push(new DataPoint(`${x}`, y));
 
     if (this.chartData[0].series.length > 100) {
       this.chartData[0].series.shift();
