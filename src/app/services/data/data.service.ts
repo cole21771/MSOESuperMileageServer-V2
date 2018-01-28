@@ -1,26 +1,54 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {ConfigService} from "../config/config.service";
-import {SocketIoService} from "../socket-io/socket-io.service";
-import Emitter = SocketIOClient.Emitter;
+import {ConfigService} from '../config/config.service';
+import {SocketIoService} from '../socket-io/socket-io.service';
+import {Model} from '../../interfaces/Model';
+
+const FormulaParser = require('hot-formula-parser').Parser;
 
 @Injectable()
 export class DataService {
-  labelDataMap: Map<string, number>;
-  labels: string[];
-  dataNotifierEmitter: EventEmitter<undefined>;
+  private labelDataMap: Map<string, number>;
+  private modelMap: Map<string, string>;
+  private labels: string[];
+  private dataNotifierEmitter: EventEmitter<undefined>;
+  private parser: any;
 
   constructor(private configService: ConfigService, private socketService: SocketIoService) {
     this.labelDataMap = new Map();
+    this.modelMap = new Map();
+    this.parser = new FormulaParser();
 
     this.labels = this.configService.getLabels;
 
     this.socketService.getNewDataEmitter().subscribe((data: number[]) => {
       this.addData(data);
     });
+
+    this.configService.getModels.forEach((model: Model) => {
+      this.modelMap.set(model.label, model.formula);
+    });
   }
 
-  getLatestData(label: string) {
-    return this.labelDataMap.get(label);
+  getLatestData(label: string): number {
+    const data = this.labelDataMap.get(label);
+    if (data) {
+      return data;
+    }
+
+    const formula = this.modelMap.get(label);
+    if (formula) {
+      this.configService.getLabelsFromFormula(formula).forEach((variable) => {
+        this.parser.setVariable(variable, this.labelDataMap.get(variable));
+      });
+
+      const results = this.parser.parse(formula);
+
+      if (!results.error) {
+        return results.result;
+      } else {
+        throw new Error('Parser Error: ' + results.error);
+      }
+    }
   }
 
   dataNotifier(): EventEmitter<undefined> {

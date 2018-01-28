@@ -1,9 +1,9 @@
 export class DataPoint {
-  x: number;
-  y: number;
+  name: number;
+  value: number;
 
   constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    this.name = x;
+    this.value = y;
   }
 }

@@ -1,6 +1,10 @@
 const serverConfigPath = './src/server/server-configuration.json';
 let loggedInUsers = [];
 
+class ServerConfig {
+
+}
+
 module.exports = (io, fs, logger) => {
   let serverConfig;
   fs.readFile(serverConfigPath, 'utf8', (err, file) => {
@@ -36,8 +40,9 @@ module.exports = (io, fs, logger) => {
     });
 
     socket.on('getSelectedConfig', (data, callback) => {
-      let file = fs.readFileSync(`${serverConfig.configPath}/${serverConfig.selectedConfiguration}`, 'utf8');
-      callback(JSON.parse(file));
+      fs.readFile(`${serverConfig.configPath}/${serverConfig.selectedConfiguration}`, 'utf8', (err, file) => {
+        callback(JSON.parse(file));
+      });
     });
 
     /**

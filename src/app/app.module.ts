@@ -18,7 +18,7 @@ import {AdminComponent} from './components/admin/admin.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import {AdminGuard} from './gaurds/admin/admin.guard';
 import {ConfigService} from './services/config/config.service';
-import {DataService} from "./services/data/data.service";
+import {DataService} from './services/data/data.service';
 
 @NgModule({
   declarations: [

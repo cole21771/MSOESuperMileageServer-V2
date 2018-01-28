@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {GraphInfo} from '../../models/GraphInfo';
-import {DataService} from "../../services/data/data.service";
+import {DataService} from '../../services/data/data.service';
 
 @Component({
   selector: 'app-graph',
@@ -8,7 +8,7 @@ import {DataService} from "../../services/data/data.service";
   styleUrls: ['./graph.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphComponent implements OnInit{
+export class GraphComponent implements OnInit {
   @Input() graphInfo: GraphInfo;
   @Input() showXAxis: boolean;
 
@@ -16,13 +16,17 @@ export class GraphComponent implements OnInit{
 
   ngOnInit() {
     if (this.graphInfo.isValid) {
-      //this.graphInfo.
-
       this.dataService.dataNotifier().subscribe(() => {
-
+        const x = this.dataService.getLatestData(this.graphInfo.xLabel);
+        const y = this.dataService.getLatestData(this.graphInfo.yLabel);
+        if (x && y) {
+          this.graphInfo.addData(x, y);
+        } else {
+          throw new Error(`${this.graphInfo.title} encountered a problem with getting data from DataService`);
+        }
       });
     } else {
-      throw new Error("Graph Information is not valid!");
+      throw new Error('Graph Information is not valid!');
     }
   }
 }

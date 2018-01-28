@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {GraphInfo} from '../../models/GraphInfo';
-import {Graph} from '../../interfaces/Graph';
 import {Config} from '../../interfaces/Config';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {IncomingData} from '../../interfaces/IncomingData';
@@ -12,7 +11,6 @@ const FormulaParser = require('hot-formula-parser').Parser;
 export class ConfigService {
 
   private parser: any;
-
   private config: Config;
   private graphs: GraphInfo[];
   private dataModels: IncomingData[];
@@ -22,93 +20,123 @@ export class ConfigService {
     this.graphs = [];
     this.dataModels = [];
 
-    this.socketService.getSelectedConfig().then((config: Config) => {
+    this.socketService.getSelectedConfig().then(config => {
       this.config = config;
 
-      // Sets of models TODO
-      config.models.forEach((model: Model) => {
-        if (this.isValidModel(model)) {
-          this.dataModels.push(this.createDataModel(model));
-        }
-      });
+      this.dataModels = config.models.filter(this.isValidModel.bind(this))
+        .map(this.createDataModel.bind(this));
 
-      // Sets of graphs TODO
-      config.graphs.forEach((graph: Graph) => { // TODO Rethink some this stuff considering GraphInfo and DataService
-        const xData = this.getData(graph.xAxis);
-        const yData = this.getData(graph.yAxis);
+      this.graphs = config.graphs.map(graph => {
+        const xData = this.getDataFromLabel(graph.xAxis);
+        const yData = this.getDataFromLabel(graph.yAxis);
         if (xData && yData) {
-          this.graphs.push(new GraphInfo(xData, yData, graph));
+          return new GraphInfo(xData, yData, graph);
         }
       });
     });
   }
 
+  /**
+   * Creates an IncomingData object from the information in a Model object
+   *
+   * @param {Model} model the model to be converted
+   * @returns {IncomingData} the calculated IncomingData object
+   */
   private createDataModel(model: Model): IncomingData {
-    const labels = this.getLabelsFromModel(model);
-    labels.forEach((label: string) => {
-      const data = this.getLabelData(label);
-      this.parser.setVariable(label, data.min ? data.min : 0);
-    });
-    const min = this.parser.parse(model.formula);
+    const labels = this.getLabelsFromFormula(model.formula);
 
-    labels.forEach((label: string) => {
-      const data = this.getLabelData(label);
-      this.parser.setVariable(label, data.max ? data.max : 0);
-    });
-    const max = this.parser.parse(model.formula);
+    const min = this.calculate(labels.map(label => [label, this.getDataFromLabel(label).min]), model.formula);
+    const max = this.calculate(labels.map(label => [label, this.getDataFromLabel(label).max]), model.formula);
 
-    if (!min.error && !max.error) {
-      return {
-        label: model.label,
-        min: min.result,
-        max: max.result === 0 ? null : max.result,
-        units: model.units,
-        formula: model.formula
-      };
-    } else {
-      throw new Error('Formula calculation had an error');
+    if (isNaN(min) || isNaN(max)) {
+      throw new Error('ConfigService, createDataModel: min or max is NaN');
     }
+
+    return {
+      label: model.label,
+      min: min,
+      max: max > 0 ? max : null, // TODO Deal with this in graph later
+      units: model.units
+    };
   }
 
+  get getModels(): Model[] {
+    return [];
+  }
+
+  /**
+   * Given an array of arrays containing a label and number, and a formula string, it calculates
+   * the formula given the variables provided
+   *
+   * @param {any[][]} data The json that acts as a half-map
+   * @param {string} formula The formula to be calculated given the variable's values
+   * @returns {number} The result of the calculation
+   */
+  calculate(data: any[][], formula: string): number {
+    data.forEach(labelNum => {
+      this.parser.setVariable(labelNum[0], labelNum[1] ? labelNum[1] : -1);
+    });
+
+    const results = this.parser.parse(formula);
+    if (results.error) {
+      throw new Error(`ConfigService, calculate: ${results.error1}`);
+    }
+
+    return results.result;
+  }
+
+  /**
+   * Returns the GraphInfo objects that the service created
+   * @returns {GraphInfo[]}
+   */
   get getGraphs(): GraphInfo[] {
     return this.graphs;
   }
 
+  /**
+   * Getter for getting the labels of the IncomingData
+   * @returns {string[]}
+   */
   get getLabels(): string[] {
-    return this.config.incomingData.map((data: IncomingData) => data.label);
+    return this.config.incomingData.map(data => data.label);
   }
 
-  private getLabelData(label: string): IncomingData {
-    return this.config.incomingData.find((data: IncomingData) => data.label === label);
-  }
-
-  private getData(label: string): IncomingData {
-    const labelData = this.getLabelData(label);
-    const modelData = this.dataModels.find((model: IncomingData) => model.label === label);
-
+  private getDataFromLabel(label: string): IncomingData {
+    const labelData = this.config.incomingData.find(data => data.label === label);
     if (labelData) {
       return labelData;
-    } else if (modelData) {
+    }
+
+    const modelData = this.dataModels.find(model => model.label === label);
+    if (modelData) {
       return modelData;
     }
 
     return undefined;
   }
 
+  /**
+   * Given a model, it checks to make sure it is a valid model by: Making sure the name
+   * isn't already used in the IncomingData section, and making sure all variables in
+   * the formula exist in the IncomingData section.
+   *
+   * @param {Model} model The model to be checked for validity
+   * @returns {boolean} true if valid, false if invalid
+   */
   private isValidModel(model: Model): boolean {
-    let valid = true;
-    if (!this.getLabelData(model.label)) {
-      const labels = this.getLabelsFromModel(model);
-      valid = labels.every((label: string) => !!this.getLabelData(label));
-    } else {
-      valid = false;
-    }
-
-    return valid;
+    return !this.getDataFromLabel(model.label) &&
+      this.getLabelsFromFormula(model.formula).every(label => !!this.getDataFromLabel(label));
   }
 
-  private getLabelsFromModel(model: Model): string[] {
-    const items = model.formula.split(' ');
-    return items.filter((item: string) => item.match(/[A-z]+/));
+  /**
+   * Given a formula string, it returns an array of strings representing the 'variables'
+   * in the given formula.
+   *
+   * @param {string} formula The string to be checked for variables
+   * @returns {string[]} An array of strings filled with the variables it found in the formula
+   */
+  getLabelsFromFormula(formula: string): string[] {
+    const items = formula.split(' ');
+    return items.filter(item => item.match(/[A-z]+/));
   }
 }

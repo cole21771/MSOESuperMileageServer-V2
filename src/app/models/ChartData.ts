@@ -1,10 +1,10 @@
 import {DataPoint} from './DataPoint';
 
 export class ChartData {
-  name: String;
+  name: string;
   series: DataPoint[];
 
-  constructor(name: String) {
+  constructor(name: string) {
     this.name = name;
     this.series = [];
   }

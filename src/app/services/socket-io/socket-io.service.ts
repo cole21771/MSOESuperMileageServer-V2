@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
+import {Config} from '../../interfaces/Config';
 
 @Injectable()
 export class SocketIoService {
@@ -37,9 +38,9 @@ export class SocketIoService {
     this.socket.connect();
   }
 
-  getSelectedConfig() {
+  getSelectedConfig(): Promise<Config> {
     return new Promise(resolve => {
-      this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
+      this.socket.emit('getSelectedConfig', undefined, dataFormat => {
         resolve(dataFormat);
       });
     });
