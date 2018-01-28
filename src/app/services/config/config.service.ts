@@ -28,11 +28,13 @@ export class ConfigService {
       this.dataModels = config.models.filter(this.isValidModel.bind(this))
         .map(this.createDataModel.bind(this));
 
-      this.graphs = config.graphs.map(graph => {
+      config.graphs.map(graph => {
         const xData = this.getDataFromLabel(graph.xAxis);
         const yData = this.getDataFromLabel(graph.yAxis);
         if (xData && yData) {
-          return new GraphInfo(xData, yData, graph);
+          this.graphs.push(new GraphInfo(xData, yData, graph));
+        } else {
+          console.error('ConfigService, constructor: Error creating graphs');
         }
       });
       this.onReadyEventEmitter.emit();
@@ -62,7 +64,7 @@ export class ConfigService {
     return {
       label: model.label,
       min: min,
-      max: max > 0 ? max : null, // TODO Deal with this in graph later
+      max: max > 0 ? max : undefined, // TODO Deal with this in graph later
       units: model.units
     };
   }
