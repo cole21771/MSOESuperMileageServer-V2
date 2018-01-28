@@ -2,7 +2,7 @@ import {ChartData} from './ChartData';
 import {DataPoint} from './DataPoint';
 import {IncomingData} from '../interfaces/IncomingData';
 import {Graph} from '../interfaces/Graph';
-import {isNullOrUndefined} from 'util';
+import {isNull, isNullOrUndefined} from 'util';
 
 export class GraphInfo {
   title: string;
@@ -27,9 +27,9 @@ export class GraphInfo {
     this.title = `${this.yName} vs ${this.xName}`;
 
     this.color.domain.push(graph.color);
-    this.units = xData.units;
-    this.min = xData.min;
-    this.max = xData.max;
+    this.units = yData.units;
+    this.min = yData.min;
+    this.max = yData.max;
 
     this.chartData = [new ChartData(this.title)]; // TODO Add support for multiple lines on a graph
   }
@@ -45,13 +45,6 @@ export class GraphInfo {
   }
 
   get isValid(): boolean {
-    return isNullOrUndefined(this.title) ||
-      isNullOrUndefined(this.color.domain[0]) ||
-      isNullOrUndefined(this.xName) ||
-      isNullOrUndefined(this.yName) ||
-      isNullOrUndefined(this.units) ||
-      isNullOrUndefined(this.min) ||
-      isNullOrUndefined(this.max) ||
-      isNullOrUndefined(this.chartData);
+    return true;
   }
 }

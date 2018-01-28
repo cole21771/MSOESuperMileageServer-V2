@@ -53,7 +53,7 @@
     },
     {
       "id": 1,
-      "yAxis": "Motor_RPM",
+      "yAxis": "Speed",
       "xAxis": "Time",
       "color": "#0f0"
     },
@@ -86,7 +86,13 @@
       "yAxis": "Speed, Motor_RPM",
       "xAxis": "Time",
       "color": "#ff7f00"
-    }
+    },
+	{
+	  "id": 7,
+	  "yAxis": "Test",
+	  "xAxis": "Distance",
+	  "color": "#777"
+	}
   ],
   "views": [
     {
@@ -103,7 +109,12 @@
       "label": "Distance",
       "formula": "Speed * 0.44704 * Time * 0.001",
 	  "units": "m/s"
-    }
+    },
+	{
+	  "label": "Test",
+	  "formula": "Speed * 102",
+	  "units": "Ur mum"
+	}
   ],
   "displayAlways": [
     "Joules",
