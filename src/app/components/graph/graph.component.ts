@@ -8,23 +8,20 @@ import {DataService} from '../../services/data/data.service';
   styleUrls: ['./graph.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent {
   @Input() graphInfo: GraphInfo;
   @Input() showXAxis: boolean;
 
   constructor(private dataService: DataService) {
-  }
-
-  ngOnInit() {
     this.dataService.onReady().subscribe(() => {
       if (this.graphInfo.isValid) {
         this.dataService.dataNotifier().subscribe(() => {
           const x = this.dataService.getLatestData(this.graphInfo.xLabel);
           const y = this.dataService.getLatestData(this.graphInfo.yLabel);
-          if (x && y) {
-            this.graphInfo.addData(x, y);
-          } else {
+          if (isNaN(x) || isNaN(y)) {
             throw new Error(`${this.graphInfo.title} encountered a problem with getting data from DataService`);
+          } else {
+            this.graphInfo.addData(x, y);
           }
         });
       } else {

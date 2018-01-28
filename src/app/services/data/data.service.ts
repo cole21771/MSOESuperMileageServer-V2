@@ -30,7 +30,9 @@ export class DataService {
     this.configService.getModels.forEach((model: Model) => {
       this.modelMap.set(model.label, model.formula);
     });
-    this.onReadyEventEmitter.emit();
+    setTimeout(() => {
+      this.onReadyEventEmitter.emit();
+    }, 500);
   }
 
   onReady(): EventEmitter<undefined> {
@@ -56,6 +58,8 @@ export class DataService {
       } else {
         throw new Error('Parser Error: ' + results.error);
       }
+    } else {
+      throw new Error('DataService, getLatestData: model doesn\'t exist');
     }
   }
 
@@ -67,7 +71,6 @@ export class DataService {
     this.labels.forEach((label: string, index: number) => {
       this.labelDataMap.set(label, data[index]);
     });
-
     this.dataNotifierEmitter.emit();
   }
 }

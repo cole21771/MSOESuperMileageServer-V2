@@ -70,7 +70,7 @@ export class ConfigService {
   }
 
   get getModels(): Model[] {
-    return [];
+    return this.config.models;
   }
 
   /**
