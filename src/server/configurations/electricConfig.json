@@ -53,7 +53,7 @@
     },
     {
       "id": 1,
-      "yAxis": "Speed",
+      "yAxis": "Motor_RPM",
       "xAxis": "Time",
       "color": "#0f0"
     },

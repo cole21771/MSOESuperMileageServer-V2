@@ -14,10 +14,7 @@ export class ConfigService {
   private graphs: GraphInfo[];
   private dataModels: IncomingData[];
 
-  private onReadyEventEmitter: EventEmitter<undefined>;
-
   constructor(private socketService: SocketIoService) {
-    this.onReadyEventEmitter = new EventEmitter<undefined>();
     this.parser = new FormulaParser();
     this.graphs = [];
     this.dataModels = [];
@@ -37,12 +34,7 @@ export class ConfigService {
           console.error('ConfigService, constructor: Error creating graphs');
         }
       });
-      this.onReadyEventEmitter.emit();
     });
-  }
-
-  onReady(): EventEmitter<undefined> {
-    return this.onReadyEventEmitter;
   }
 
   /**
@@ -54,8 +46,16 @@ export class ConfigService {
   private createDataModel(model: Model): IncomingData {
     const labels = this.getLabelsFromFormula(model.formula);
 
-    const min = this.calculate(labels.map(label => [label, this.getDataFromLabel(label).min]), model.formula);
-    const max = this.calculate(labels.map(label => [label, this.getDataFromLabel(label).max]), model.formula);
+    const incomingData = labels.map<IncomingData>(this.getDataFromLabel.bind(this));
+
+    const min = this.calculate(incomingData.map<ParserVariable>(data => {
+      return {label: data.label, value: data.min};
+    }), model.formula);
+
+    const max = this.calculate(incomingData.map<ParserVariable>(data => {
+      return {label: data.label, value: data.max};
+    }), model.formula);
+
 
     if (isNaN(min) || isNaN(max)) {
       throw new Error('ConfigService, createDataModel: min or max is NaN');
@@ -64,7 +64,7 @@ export class ConfigService {
     return {
       label: model.label,
       min: min,
-      max: max > 0 ? max : undefined, // TODO Deal with this in graph later
+      max: max > 0 ? max : undefined,
       units: model.units
     };
   }
@@ -81,9 +81,9 @@ export class ConfigService {
    * @param {string} formula The formula to be calculated given the variable's values
    * @returns {number} The result of the calculation
    */
-  calculate(data: any[][], formula: string): number {
-    data.forEach(labelNum => {
-      this.parser.setVariable(labelNum[0], labelNum[1] ? labelNum[1] : -1);
+  calculate(data: ParserVariable[], formula: string): number {
+    data.forEach(variable => {
+      this.parser.setVariable(variable.label, variable.value ? variable.value : -1);
     });
 
     const results = this.parser.parse(formula);

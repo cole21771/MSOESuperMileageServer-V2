@@ -8,12 +8,14 @@ import {DataService} from '../../services/data/data.service';
   styleUrls: ['./graph.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphComponent {
+export class GraphComponent implements OnInit {
   @Input() graphInfo: GraphInfo;
   @Input() showXAxis: boolean;
 
   constructor(private dataService: DataService) {
-    this.dataService.onReady().subscribe(() => {
+  }
+
+  ngOnInit() {
       if (this.graphInfo.isValid) {
         this.dataService.dataNotifier().subscribe(() => {
           const x = this.dataService.getLatestData(this.graphInfo.xLabel);
@@ -27,6 +29,5 @@ export class GraphComponent {
       } else {
         throw new Error('Graph Information is not valid!');
       }
-    });
   }
 }
