@@ -88,7 +88,7 @@ export class ConfigService {
 
     const results = this.parser.parse(formula);
     if (results.error) {
-      throw new Error(`ConfigService, calculate: ${results.error1}`);
+      throw new Error(`ConfigService, calculate: ${results.error}`);
     }
 
     return results.result;
