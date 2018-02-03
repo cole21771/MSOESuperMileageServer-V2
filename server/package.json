@@ -1,0 +1,33 @@
+{
+  "name": "msoe-super-mileage-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "client": "cd ../client && ng build -pr",
+    "client-prod": "cd ../client && ng build -prod -pr",
+    "server": "nodemon --exec ts-node -- ./src/server.ts",
+    "server-prod": "ts-node -- ./src/server.ts",
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "production": "concurrently \"npm run client-prod\" \"npm run server-prod\"",
+    "production-linux": "concurrently \"npm run client-prod\" \"NODE_ENV=production npm run server-prod\""
+  },
+  "author": "Cole Abbeduto",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^9.4.0",
+    "@types/socket.io-client": "^1.4.32",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.14.12",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1"
+  }
+}
