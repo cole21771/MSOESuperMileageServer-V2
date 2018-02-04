@@ -42,7 +42,7 @@ export class SocketIoService {
     return new Promise(resolve => {
       this.socket.emit('getSelectedConfig', undefined, dataFormat => {
         resolve(dataFormat);
-      });//
+      });
     });
   }
 
