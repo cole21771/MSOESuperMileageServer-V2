@@ -12,7 +12,7 @@ export class SocketIoEvents {
 
         io.on('connection', socket => {
             const auth = new AuthManager(socket);
-            const data = new DataManager(io, socket);
+            const data = new DataManager(socket);
 
             const config = new ConfigManager(socket, fs);
             config.setServerConfig(this.serverConfig);
@@ -102,14 +102,14 @@ class ConfigManager {
 }
 
 class DataManager {
-    constructor(private io, private socket) {
+    constructor(private socket) {
         this.init();
     }
 
     init() {
         this.socket.on('newData', data => {
-            // Verify data matches selected model
-            this.io.emit('newData', data);
+            // TODO Verify data matches selected model
+            this.socket.broadcast.emit('newData', data);
         });
     }
 }
