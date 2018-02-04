@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 app.use(require('compression')());
 
-const winston = require('winston');
+// const winston = require('winston');
 // const logger = require('./logger')(winston);
 
 // Parsers for POST data

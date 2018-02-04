@@ -5,87 +5,111 @@ interface ServerConfig {
 
 export class SocketIoEvents {
     private SERVER_CONFIG = './server-config.json';
-
     private serverConfig: ServerConfig;
-    private loggedInUsers: any[];
 
     constructor(private fs, private io) {
-        this.loggedInUsers = [];
-
-        fs.readFile(this.SERVER_CONFIG, 'utf8', (err, file) => {
-            if (err) {
-                throw err;
-            }
-            this.serverConfig = JSON.parse(file);
-        });
+        this.serverConfig = JSON.parse(fs.readFileSync(this.SERVER_CONFIG, 'utf8'));
 
         io.on('connection', socket => {
-            socket.on('disconnect', () => {
-                this.loggedInUsers.splice(this.loggedInUsers.findIndex(value => value === socket), 1);
+            const auth = new AuthManager(socket);
+            const data = new DataManager(io, socket);
+
+            const config = new ConfigManager(socket, fs);
+            config.setServerConfig(this.serverConfig);
+        });
+    }
+}
+
+class AuthManager {
+    private isLoggedIn: boolean;
+
+    constructor(private socket) {
+        this.isLoggedIn = false;
+        this.init();
+    }
+
+    init() {
+        this.socket.on('disconnect', () => {
+            this.isLoggedIn = false;
+        });
+
+        this.socket.on('attemptLogin', (data, callback) => {
+            const admin = {
+                username: 'admin',
+                password: 'ducks'
+            };
+
+            this.isLoggedIn = data.username === admin.username && data.password === admin.password;
+
+            callback(this.isLoggedIn);
+        });
+
+        this.socket.on('logout', () => {
+            this.isLoggedIn = false;
+        });
+
+        this.socket.on('isLoggedIn', (data, callback) => {
+            callback(this.isLoggedIn);
+        });
+    }
+}
+
+class ConfigManager {
+    private SERVER_CONFIG = './server-config.json';
+    private serverConfig: ServerConfig;
+
+    constructor(private socket, private fs) {
+        this.init();
+    }
+
+    setServerConfig(serverConfig: ServerConfig) {
+        this.serverConfig = serverConfig;
+    }
+
+    init() {
+        this.socket.on('getSelectedConfig', (data, callback) => {
+            this.fs.readFile(`${this.serverConfig.configPath}/${this.serverConfig.selectedConfig}`, 'utf8', (err, file) => {
+                callback(JSON.parse(file));
             });
+        });
 
-            socket.on('newData', data => {
-                // Verify data matches selected model
-                io.emit('newData', data);
-            });
+        this.socket.on('setSelectedConfig', (newConfigFilename, callback) => {
+            if (this.fs.existsSync(`${this.serverConfig.configPath}/${newConfigFilename}`)) {
+                this.serverConfig.selectedConfig = newConfigFilename;
+                this.fs.writeFileSync(this.SERVER_CONFIG, this.serverConfig, 'utf8');
+                callback(true);
+            } else {
+                callback('File doesn\'t exist!');
+            }
+        });
 
-            socket.on('attemptLogin', (data, callback) => {
-                const admin = {
-                    username: 'admin',
-                    password: 'ducks'
-                };
+        this.socket.on('createConfig', (data, callback) => {
+            if (!this.fs.existsSync(data.filename)) {
+                this.fs.writeFileSync(`${this.serverConfig.configPath}/${data.filename}`, data.config, 'utf8');
+            } else {
+                callback('File already exists, cannot overwrite it!');
+            }
+        });
 
-                const isLoggedIn = data.username === admin.username && data.password === admin.password;
+        this.socket.on('updateConfig', (data, callback) => {
+            if (this.fs.existsSync(`${this.serverConfig.configPath}/${data.filename}`)) {
+                this.fs.writeFileSync(`${this.serverConfig.configPath}/${data.filename}`, data.config, 'utf8');
+            } else {
+                callback('Can\'t update a file that doesn\'t exist!');
+            }
+        });
+    }
+}
 
-                if (isLoggedIn) {
-                    this.loggedInUsers.push(socket);
-                }
+class DataManager {
+    constructor(private io, private socket) {
+        this.init();
+    }
 
-                callback(isLoggedIn);
-            });
-
-            socket.on('logout', () => {
-                this.loggedInUsers.splice(this.loggedInUsers.findIndex(value => value === socket), 1);
-            });
-
-            socket.on('getSelectedConfig', (data, callback) => {
-                fs.readFile(`${this.serverConfig.configPath}/${this.serverConfig.selectedConfig}`, 'utf8', (err, file) => {
-                    callback(JSON.parse(file));
-                });
-            });
-//
-            /**
-             * Sets the configuration file
-             */
-            socket.on('setSelectedConfig', (newConfigFilename, callback) => {
-                if (fs.existsSync(`${this.serverConfig.configPath}/${newConfigFilename}`)) {
-                    this.serverConfig.selectedConfig = newConfigFilename;
-                    fs.writeFileSync(this.SERVER_CONFIG, this.serverConfig, 'utf8');
-                    callback(true);
-                } else {
-                    callback('File doesn\'t exist!');
-                }
-            });
-
-            socket.on('createConfig', (data, callback) => {
-                if (!fs.existsSync(data.filename)) {
-                    fs.writeFileSync(`${this.serverConfig.configPath}/${data.filename}`, data.config, 'utf8');
-                } else {
-                    callback('File already exists, cannot overwrite it!');
-                }
-            });
-
-            socket.on('updateConfig', (data, callback) => {
-                if (fs.existsSync(`${this.serverConfig.configPath}/${data.filename}`)) {
-                    fs.writeFileSync(`${this.serverConfig.configPath}/${data.filename}`, data.config, 'utf8');
-                } else {
-                    callback('Can\'t update a file that doesn\'t exist!');
-                }
-            });
-
-            socket.on('isLoggedIn', (data, callback) => {
-                callback(this.loggedInUsers.includes(socket));
-            });
+    init() {
+        this.socket.on('newData', data => {
+            // Verify data matches selected model
+            this.io.emit('newData', data);
         });
     }
 }
