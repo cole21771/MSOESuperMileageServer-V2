@@ -1,5 +1,7 @@
+import {ServerConfig} from '../interfaces/ServerConfig';
+
 export class ConfigManager {
-    private SERVER_CONFIG = './server-config.json';
+    private SERVER_CONFIG = './../server-config.json';
     private serverConfig: ServerConfig;
 
     constructor(private socket, private fs) {
