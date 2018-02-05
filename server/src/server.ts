@@ -1,4 +1,4 @@
-import {SocketIoEvents} from './socket-io.events';
+import {SocketIoEvents} from './managers/socket-io.events';
 
 import * as bodyParser from 'body-parser';
 import * as compression from 'compression';

@@ -1,7 +1,7 @@
-import {ServerConfig} from './interfaces/ServerConfig';
-import {AuthManager} from './managers/auth';
-import {ConfigManager} from './managers/config';
-import {DataManager} from './managers/data';
+import {ServerConfig} from '../interfaces/ServerConfig';
+import {AuthManager} from './auth';
+import {ConfigManager} from './config';
+import {DataManager} from './data';
 
 export class SocketIoEvents {
     private SERVER_CONFIG = './server-config.json';
