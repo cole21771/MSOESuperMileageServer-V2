@@ -1,9 +1,10 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {GraphInfo} from '../../models/GraphInfo';
 import {Config} from '../../interfaces/Config';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {IncomingData} from '../../interfaces/IncomingData';
 import {Model} from '../../interfaces/Model';
+import {isNullOrUndefined} from 'util';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -83,11 +84,13 @@ export class ConfigService {
    */
   calculate(data: ParserVariable[], formula: string): number {
     data.forEach(variable => {
-      this.parser.setVariable(variable.label, variable.value ? variable.value : -1);
+      this.parser.setVariable(variable.label, isNullOrUndefined(variable.value) ? -1 : variable.value);
     });
 
     const results = this.parser.parse(formula);
-    if (results.error) {
+    if (results.error === '#VALUE!') {
+      return 0;
+    } else if (results.error) {
       throw new Error(`ConfigService, calculate: ${results.error}`);
     }
 
