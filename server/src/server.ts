@@ -30,6 +30,7 @@ const server = http.createServer(app);
 const io = socketIo.listen(server);
 
 const socketIoEvents = new SocketIoEvents(fs, io);
+socketIoEvents.init();
 
 const port = 3000;
 server.listen(port, (err) => {

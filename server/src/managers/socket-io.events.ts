@@ -9,12 +9,16 @@ export class SocketIoEvents {
 
     constructor(private fs, private io) {
         this.serverConfig = JSON.parse(fs.readFileSync(this.SERVER_CONFIG, 'utf8'));
+    }
 
-        io.on('connection', (socket) => {
+    init() {
+        this.io.on('connection', (socket) => {
             const auth = new AuthManager(socket);
+            auth.init();
             const data = new DataManager(socket);
+            data.init();
 
-            const config = new ConfigManager(socket, fs);
+            const config = new ConfigManager(socket, this.fs);
             config.setServerConfig(this.serverConfig);
         });
     }

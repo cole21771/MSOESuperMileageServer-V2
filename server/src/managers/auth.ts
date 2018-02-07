@@ -3,7 +3,6 @@ export class AuthManager {
 
     constructor(private socket) {
         this.isLoggedIn = false;
-        this.init();
     }
 
     public init() {
