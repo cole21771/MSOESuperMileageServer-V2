@@ -13,3 +13,17 @@ Run `npm run-script production` for a production server. Navigate to `http://loc
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+
+## TODO List
+### Review Data
+- [ ] Lots of stuff
+
+### Home
+- [ ] Graph Views
+- [ ] Display Always
+
+### Admin
+- [ ] Allow creation of graphs
+- [ ] Allow creation of views
+- [ ] Change selected config
