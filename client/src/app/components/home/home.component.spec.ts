@@ -5,8 +5,9 @@ import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {GraphComponent} from '../graph/graph.component';
 import 'd3';
 import {CommunicatorService} from '../../services/communicator/communicator.service';
-import {MatCardModule, MatGridListModule} from '@angular/material';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {AppMaterialModule} from '../../app-material.module';
+import {ConfigService} from '../../services/config/config.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -19,13 +20,13 @@ describe('HomeComponent', () => {
         GraphComponent
       ],
       imports: [
-        MatGridListModule,
-        MatCardModule,
+        AppMaterialModule,
         NgxChartsModule
       ],
       providers: [
         CommunicatorService,
-        SocketIoService
+        SocketIoService,
+        ConfigService
       ]
     })
       .compileComponents();

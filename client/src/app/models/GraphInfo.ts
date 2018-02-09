@@ -13,7 +13,7 @@ export class GraphInfo {
   yLabel: string;
   xName: string;
   yName: string;
-  units: String;
+  units: string;
   min: number;
   max: number;
   chartData: ChartData[];
@@ -44,6 +44,7 @@ export class GraphInfo {
     this.chartData = [...this.chartData];
   }
 
+  // TODO Fix this
   get isValid(): boolean {
     return true;
   }

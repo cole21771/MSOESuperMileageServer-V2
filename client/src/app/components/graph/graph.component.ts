@@ -17,7 +17,7 @@ export class GraphComponent implements OnInit {
 
   ngOnInit() {
       if (this.graphInfo.isValid) {
-        this.dataService.dataNotifier().subscribe(() => {
+        this.dataService.dataNotifier.subscribe(() => {
           const x = this.dataService.getLatestData(this.graphInfo.xLabel);
           const y = this.dataService.getLatestData(this.graphInfo.yLabel);
           if (isNaN(x) || isNaN(y)) {

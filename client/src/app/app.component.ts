@@ -39,7 +39,7 @@ export class AppComponent {
       if (!loginData) {
         return;
       }
-      if (loginData.isValid) {
+      if (loginData) {
         this.socketService.attemptLogin(loginData)
           .then((loginSuccessful: boolean) => {
             if (loginSuccessful) {

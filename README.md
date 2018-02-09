@@ -16,6 +16,9 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 
 ## TODO List
+### Dev Tasks
+- [ ] Convert the application to a PWA
+
 ### Review Data
 - [ ] Lots of stuff
 

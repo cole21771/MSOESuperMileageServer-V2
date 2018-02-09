@@ -2,23 +2,27 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {LoginComponent} from './login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule} from '@angular/material';
+import {AppMaterialModule} from '../../app-material.module';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
+  const matDialogRefStub = {};
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [
+        NoopAnimationsModule,
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatDialogModule
+        AppMaterialModule
       ],
       providers: [
-        MatDialogRef
+        MatDialog,
+        {provide: MatDialogRef, useValue: matDialogRefStub}
       ]
     })
       .compileComponents();

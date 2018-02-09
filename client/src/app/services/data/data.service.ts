@@ -54,7 +54,7 @@ export class DataService {
     }
   }
 
-  dataNotifier(): EventEmitter<undefined> {
+  get dataNotifier(): EventEmitter<undefined> {
     return this.dataNotifierEmitter;
   }
 

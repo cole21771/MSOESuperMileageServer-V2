@@ -1,11 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ConfigService } from './config.service';
+import {SocketIoService} from '../socket-io/socket-io.service';
 
 describe('ConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConfigService]
+      providers: [ConfigService, SocketIoService]
     });
   });
 

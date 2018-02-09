@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {GraphInfo} from '../../models/GraphInfo';
 import {Config} from '../../interfaces/Config';
+import {ParserVariable} from '../../interfaces/ParserVariable';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {IncomingData} from '../../interfaces/IncomingData';
 import {Model} from '../../interfaces/Model';
@@ -82,7 +83,7 @@ export class ConfigService {
    * @param {string} formula The formula to be calculated given the variable's values
    * @returns {number} The result of the calculation
    */
-  calculate(data: ParserVariable[], formula: string): number {
+  private calculate(data: ParserVariable[], formula: string): number {
     data.forEach(variable => {
       this.parser.setVariable(variable.label, isNullOrUndefined(variable.value) ? -1 : variable.value);
     });

@@ -8,34 +8,55 @@ import * as http from 'http';
 import * as path from 'path';
 import * as socketIo from 'socket.io';
 
-const app = express();
-app.use(compression());
+class Server {
+    private app;
+    private server;
+    private io;
+    private socketIoEvents: SocketIoEvents;
 
-// const winston = require('winston');
-// const logger = require('./logger')(winston);
+    constructor() {
+        this.app = express();
+        this.initExpress();
 
-// Parsers for POST data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-console.log(__dirname);
-// Point static path to dist
-app.use(express.static(path.join(__dirname, '../../client/dist')));
+        this.server = http.createServer(this.app);
+        this.io = socketIo.listen(this.server);
 
-// Catch all other routes and return the index file
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../dist', 'index.html'));
-});
+        this.socketIoEvents = new SocketIoEvents(fs, this.io);
+        this.socketIoEvents.init();
 
-const server = http.createServer(app);
-const io = socketIo.listen(server);
-
-const socketIoEvents = new SocketIoEvents(fs, io);
-socketIoEvents.init();
-
-const port = 3000;
-server.listen(port, (err) => {
-    if (err) {
-        throw err;
+        this.listen(3000);
     }
-    console.log(`Listening on port ` + port);
-});
+
+    private initLogger() {
+        // const winston = require('winston');
+        // const logger = require('./logger')(winston);
+    }
+
+    private initExpress() {
+        this.app.use(compression());
+
+        // Parsers for POST data
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({extended: false}));
+        console.log(__dirname);
+
+        // Point static path to dist
+        this.app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+        // Catch all other routes and return the index file
+        this.app.get('/*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../../dist', 'index.html'));
+        });
+    }
+
+    private listen(port: number) {
+        this.server.listen(port, (err) => {
+            if (err) {
+                throw err;
+            }
+            console.log(`Listening on port ${port}`);
+        });
+    }
+}
+
+const server = new Server();

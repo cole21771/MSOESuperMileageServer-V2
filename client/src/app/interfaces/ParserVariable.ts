@@ -1,4 +1,4 @@
-interface ParserVariable {
+export interface ParserVariable {
   label: string;
   value: number;
 }
