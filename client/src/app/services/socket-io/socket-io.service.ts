@@ -1,6 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Config} from '../../interfaces/Config';
+import {LoginData} from '../../interfaces/LoginData';
 
 @Injectable()
 export class SocketIoService {
@@ -11,10 +12,14 @@ export class SocketIoService {
 
   constructor() {
     this.socket = io();
-    this.performanceSetup();
+    this.setupPerformanceMonitor();
   }
 
-  private performanceSetup() {
+  /**
+   * This is the performance monitor which will disconnect from the server when it notices that
+   * the user is no longer focused on rendering this application.
+   */
+  private setupPerformanceMonitor() {
     setTimeout(() => {
       let lastPerformance = 0;
       setInterval(() => {
@@ -30,14 +35,25 @@ export class SocketIoService {
     }, 5000);
   }
 
+  /**
+   * Disconnects from the server
+   */
   private disconnect() {
     this.socket.disconnect();
   }
 
+  /**
+   * Reconnects to the server
+   */
   private reconnect() {
     this.socket.connect();
   }
 
+  /**
+   * Sends a request to the server to get the selected configuration.
+   *
+   * @returns {Promise<Config>} a Promise holding the Config file.
+   */
   getSelectedConfig(): Promise<Config> {
     return new Promise(resolve => {
       this.socket.emit('getSelectedConfig', undefined, dataFormat => {
@@ -46,6 +62,12 @@ export class SocketIoService {
     });
   }
 
+  /**
+   * Sets up a listener for newData and returns the newDataEmitter so that the DataService
+   * can subscribe to new data notifications.
+   *
+   * @returns {EventEmitter<number[]>} the new data event emitter
+   */
   getNewDataEmitter(): EventEmitter<number[]> {
     this.socket.on('newData', (data) => {
       this.newDataEmitter.emit(JSON.parse(data));
@@ -54,6 +76,12 @@ export class SocketIoService {
     return this.newDataEmitter;
   }
 
+  /**
+   * Sets up a listener for newLocation and returns the newLocationEmitter so that the LocationService
+   * can subscribe to new location notifications.
+   *
+   * @returns {EventEmitter<any>} the new location event emitter
+   */
   getLocation(): EventEmitter<any> {
     this.socket.on('newLocation', (location) => {
       this.newLocationEmitter.emit(location);
@@ -62,7 +90,13 @@ export class SocketIoService {
     return this.newLocationEmitter;
   }
 
-  attemptLogin(data): Promise<boolean> {
+  /**
+   * Makes a login attempt with the provided LoginData
+   *
+   * @param data the loginData sent to the server
+   * @returns {Promise<boolean>} a promise holding the a boolean that says whether or not the login was successful
+   */
+  attemptLogin(data: LoginData): Promise<boolean> {
     return new Promise(resolve => {
       this.socket.emit('attemptLogin', data, (loginSuccessful) => {
         resolve(loginSuccessful);
@@ -70,6 +104,11 @@ export class SocketIoService {
     });
   }
 
+  /**
+   * Makes a request to the server to check whether or not this socket is logged into the system
+   *
+   * @returns {Promise<boolean>} a promise holding the answer to your problem
+   */
   isLoggedIn(): Promise<boolean> {
     return new Promise(resolve => {
       this.socket.emit('isLoggedIn', undefined, (isLoggedIn) => {
@@ -78,6 +117,9 @@ export class SocketIoService {
     });
   }
 
+  /**
+   * Sends a logout notification to the server
+   */
   logout(): void {
     this.socket.emit('logout');
   }

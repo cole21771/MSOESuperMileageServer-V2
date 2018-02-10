@@ -4,21 +4,21 @@ import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
 import * as express from 'express';
 import * as fs from 'fs';
-import * as http from 'http';
+import { createServer, Server } from 'http';
 import * as path from 'path';
 import * as socketIo from 'socket.io';
 
-class Server {
-    private app;
-    private server;
-    private io;
+export class SmvServer {
+    private app: express.Application;
+    private server: Server;
+    private io: SocketIO.Server;
     private socketIoEvents: SocketIoEvents;
 
     constructor() {
         this.app = express();
         this.initExpress();
 
-        this.server = http.createServer(this.app);
+        this.server = createServer(this.app);
         this.io = socketIo.listen(this.server);
 
         this.socketIoEvents = new SocketIoEvents(fs, this.io);
@@ -27,12 +27,12 @@ class Server {
         this.listen(3000);
     }
 
-    private initLogger() {
+    private initLogger(): void {
         // const winston = require('winston');
         // const logger = require('./logger')(winston);
     }
 
-    private initExpress() {
+    private initExpress(): void {
         this.app.use(compression());
 
         // Parsers for POST data
@@ -49,7 +49,7 @@ class Server {
         });
     }
 
-    private listen(port: number) {
+    private listen(port: number): void {
         this.server.listen(port, (err) => {
             if (err) {
                 throw err;
@@ -58,5 +58,3 @@ class Server {
         });
     }
 }
-
-const server = new Server();

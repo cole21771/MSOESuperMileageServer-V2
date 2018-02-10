@@ -11,5 +11,4 @@ export class CommunicatorService {
   refreshUI(): void {
     this.refreshUIEmitter.emit(null);
   }
-
 }

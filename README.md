@@ -19,6 +19,11 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ### Dev Tasks
 - [ ] Convert the application to a PWA
 
+### Location Stuffs
+- [ ] Decide on how the location will be shown and where to access the Map
+- [ ] Find a Angular 5 Google Maps library
+- [ ] Create LocationService
+
 ### Review Data
 - [ ] Lots of stuff
 

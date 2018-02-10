@@ -1,14 +1,12 @@
-import {ServerConfig} from '../interfaces/ServerConfig';
 import {AuthManager} from './auth';
 import {ConfigManager} from './config';
 import {DataManager} from './data';
 
+/**
+ * Creates the different socket.io managers and initializes them
+ */
 export class SocketIoEvents {
-    private SERVER_CONFIG = './server-config.json';
-    private serverConfig: ServerConfig;
-
     constructor(private fs, private io) {
-        this.serverConfig = JSON.parse(fs.readFileSync(this.SERVER_CONFIG, 'utf8'));
     }
 
     init() {
@@ -19,7 +17,7 @@ export class SocketIoEvents {
             data.init();
 
             const config = new ConfigManager(socket, this.fs);
-            config.setServerConfig(this.serverConfig);
+            config.init();
         });
     }
 }

@@ -5,6 +5,7 @@ import {SocketIoService} from './services/socket-io/socket-io.service';
 import {CommunicatorService} from './services/communicator/communicator.service';
 import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
+import {LoginData} from './interfaces/LoginData';
 
 @Component({
   selector: 'app-root',
@@ -35,11 +36,11 @@ export class AppComponent {
       width: '250px'
     });
 
-    dialogRef.afterClosed().subscribe((loginData) => {
+    dialogRef.afterClosed().subscribe((loginData: LoginData) => {
       if (!loginData) {
         return;
       }
-      if (loginData) {
+      if (loginData.isValid) {
         this.socketService.attemptLogin(loginData)
           .then((loginSuccessful: boolean) => {
             if (loginSuccessful) {

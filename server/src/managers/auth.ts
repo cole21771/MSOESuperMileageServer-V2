@@ -1,3 +1,9 @@
+import {LoginData} from '../interfaces/LoginData';
+
+/**
+ * A class that holds all of the socket.io listeners for anything related to user
+ * authentication.
+ */
 export class AuthManager {
     private isLoggedIn: boolean;
 
@@ -6,11 +12,18 @@ export class AuthManager {
     }
 
     public init() {
+        /**
+         * When the user disconnects from the server, their login status goes away.
+         */
         this.socket.on('disconnect', () => {
             this.isLoggedIn = false;
         });
 
-        this.socket.on('attemptLogin', (data, callback) => {
+        /**
+         * When called, it checks if the username and password match the pre-defined
+         * username and password setup below and returns the status of the user.
+         */
+        this.socket.on('attemptLogin', (data: LoginData, callback) => {
             const admin = {
                 username: 'admin',
                 password: 'ducks',
@@ -21,12 +34,19 @@ export class AuthManager {
             callback(this.isLoggedIn);
         });
 
-        this.socket.on('logout', () => {
-            this.isLoggedIn = false;
-        });
-
+        /**
+         * Used by the auth guard in the frontend to check whether or not this socket
+         * is logged in
+         */
         this.socket.on('isLoggedIn', (data, callback) => {
             callback(this.isLoggedIn);
+        });
+
+        /**
+         * Logout listener
+         */
+        this.socket.on('logout', () => {
+            this.isLoggedIn = false;
         });
     }
 }

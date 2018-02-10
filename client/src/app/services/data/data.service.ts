@@ -30,6 +30,13 @@ export class DataService {
     });
   }
 
+  /**
+   * When provided a label, will search through the labelDataMap to find the latest data. If it
+   * cannot find it there, then it will search through the modelMap to calculate the label's latest value.
+   *
+   * @param {string} label is the identifier for the data that needs to be returned.
+   * @returns {number} the latest data for the label provided.
+   */
   getLatestData(label: string): number {
     const data = this.labelDataMap.get(label);
     if (data) {
@@ -54,10 +61,22 @@ export class DataService {
     }
   }
 
+  /**
+   * A getter for the data notifier event emitter so that graphs can subscribe to it and know
+   * when there is new data to be had.
+   *
+   * @returns {EventEmitter<undefined>} The event emitter that they subscribe to
+   */
   get dataNotifier(): EventEmitter<undefined> {
     return this.dataNotifierEmitter;
   }
 
+  /**
+   * When new data arrives in the system, it will be sent here to be put into the labelDataMap. After it is done
+   * with that, it will send a notification to anybody who is subscribed to the dataNotifierEmitter
+   *
+   * @param {number[]} data is an array of new data that will be put into the labelDataMap
+   */
   addData(data: number[]) {
     this.labels.forEach((label: string, index: number) => {
       this.labelDataMap.set(label, data[index]);

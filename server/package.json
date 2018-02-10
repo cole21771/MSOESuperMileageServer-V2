@@ -6,8 +6,8 @@
   "scripts": {
     "client": "cd ../client && ng build -pr --watch",
     "client-prod": "cd ../client && ng build -prod -pr",
-    "server": "nodemon --exec ts-node -- ./src/server.ts",
-    "server-prod": "ts-node -- ./src/server.ts",
+    "server": "nodemon --exec ts-node -- ./src/index.ts",
+    "server-prod": "ts-node -- ./src/index.ts",
     "start": "concurrently \"npm run client\" \"npm run server\"",
     "production": "concurrently \"npm run client-prod\" \"npm run server-prod\"",
     "production-linux": "concurrently \"npm run client-prod\" \"NODE_ENV=production npm run server-prod\"",
@@ -23,8 +23,9 @@
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "@types/express": "^4.11.1",
     "@types/node": "^9.4.0",
-    "@types/socket.io-client": "^1.4.32",
+    "@types/socket.io": "^1.4.31",
     "concurrently": "^3.5.1",
     "nodemon": "^1.14.12",
     "ts-node": "^4.1.0",
