@@ -6,8 +6,8 @@
   "scripts": {
     "client": "cd ../client && ng build -pr --watch",
     "client-prod": "cd ../client && ng build -prod -pr",
-    "server": "nodemon --exec ts-node -- ./src/index.ts",
-    "server-prod": "ts-node -- ./src/index.ts",
+    "server": "nodemon --exec ts-node ./src/index.ts",
+    "server-prod": "ts-node ./src/index.ts",
     "start": "concurrently \"npm run client\" \"npm run server\"",
     "production": "concurrently \"npm run client-prod\" \"npm run server-prod\"",
     "production-linux": "concurrently \"npm run client-prod\" \"NODE_ENV=production npm run server-prod\"",
