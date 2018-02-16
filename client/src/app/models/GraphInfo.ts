@@ -25,7 +25,8 @@ export class GraphInfo {
     this.xName = this.xLabel.replace('_', ' ');
     this.yName = yData.map(data => data.label)
       .reduce((accumulator, currentLabel, index) =>
-        accumulator.concat(index ? ' & ' : '', currentLabel.replace('_', ' ')), '');
+        accumulator.concat(index ? ' & ' : '', currentLabel), '')
+      .replace(/_/g, ' ');
 
     this.title = `${this.yName} vs ${this.xName}`;
 
