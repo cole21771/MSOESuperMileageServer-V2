@@ -6,6 +6,7 @@ import {SocketIoService} from '../socket-io/socket-io.service';
 import {IncomingData} from '../../interfaces/IncomingData';
 import {Model} from '../../interfaces/Model';
 import {isNullOrUndefined} from 'util';
+import {View} from '../../interfaces/View';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -28,8 +29,9 @@ export class ConfigService {
         .map(this.createDataModel.bind(this));
 
       config.graphs.map(graph => {
-        const xData = this.getDataFromLabel(graph.xAxis);
-        const yData = this.getDataFromLabel(graph.yAxis);
+        const xData = this.getInfoFromLabel(graph.xAxis);
+        const yData = this.getInfoArrayFromLabel(graph.yAxis);
+
         if (xData && yData) {
           this.graphs.push(new GraphInfo(xData, yData, graph));
         } else {
@@ -37,6 +39,10 @@ export class ConfigService {
         }
       });
     });
+  }
+
+  private isMultiGraph(label: string): boolean {
+    return label.includes(',');
   }
 
   /**
@@ -48,7 +54,7 @@ export class ConfigService {
   private createDataModel(model: Model): IncomingData {
     const labels = this.getLabelsFromFormula(model.formula);
 
-    const incomingData = labels.map<IncomingData>(this.getDataFromLabel.bind(this));
+    const incomingData = labels.map<IncomingData>(this.getInfoFromLabel.bind(this));
 
     const min = this.calculate(incomingData.map<ParserVariable>(data => {
       return {label: data.label, value: data.min};
@@ -73,6 +79,10 @@ export class ConfigService {
 
   get getModels(): Model[] {
     return this.config.models;
+  }
+
+  get getViews(): View[] {
+    return this.config ? this.config.views : [];
   }
 
   /**
@@ -114,7 +124,22 @@ export class ConfigService {
     return this.config.incomingData.map(data => data.label);
   }
 
-  private getDataFromLabel(label: string): IncomingData {
+  getMultiGraphLabels(label: string): string[] {
+    return label.replace(' ', '').split(',');
+  }
+
+  private getInfoArrayFromLabel(label: string): IncomingData[] {
+    if (this.isMultiGraph(label)) {
+      const labels = this.getMultiGraphLabels(label);
+
+      return labels.map<IncomingData>(this.getInfoFromLabel.bind(this))
+        .filter(data => !isNullOrUndefined(data));
+    } else {
+      return [this.getInfoFromLabel(label)];
+    }
+  }
+
+  private getInfoFromLabel(label: string): IncomingData {
     const labelData = this.config.incomingData.find(data => data.label === label);
     if (labelData) {
       return labelData;
@@ -137,8 +162,8 @@ export class ConfigService {
    * @returns {boolean} true if valid, false if invalid
    */
   private isValidModel(model: Model): boolean {
-    return !this.getDataFromLabel(model.label) &&
-      this.getLabelsFromFormula(model.formula).every(label => !!this.getDataFromLabel(label));
+    return !this.getInfoFromLabel(model.label) &&
+      this.getLabelsFromFormula(model.formula).every(label => !!this.getInfoFromLabel(label));
   }
 
   /**

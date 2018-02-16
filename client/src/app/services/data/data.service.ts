@@ -2,6 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {Model} from '../../interfaces/Model';
+import {isNullOrUndefined} from "util";
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -39,14 +40,15 @@ export class DataService {
    */
   getLatestData(label: string): number {
     const data = this.labelDataMap.get(label);
-    if (data) {
+    if (!isNullOrUndefined(data)) {
       return data;
     }
 
     const formula = this.modelMap.get(label);
     if (formula) {
       this.configService.getLabelsFromFormula(formula).forEach((variable) => {
-        this.parser.setVariable(variable, this.labelDataMap.get(variable));
+        const value = this.labelDataMap.get(variable);
+        this.parser.setVariable(variable, value ? value : 1); // TODO one
       });
 
       const results = this.parser.parse(formula);
@@ -54,7 +56,7 @@ export class DataService {
       if (!results.error) {
         return results.result;
       } else {
-        throw new Error('Parser Error: ' + results.error);
+        throw new Error('DataService, getLatestData: Parser Error: ' + results.error);
       }
     } else {
       throw new Error('DataService, getLatestData: model doesn\'t exist');

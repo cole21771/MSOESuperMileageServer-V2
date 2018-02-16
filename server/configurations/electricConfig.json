@@ -46,63 +46,59 @@
   ],
   "graphs": [
     {
-      "id": 0,
       "yAxis": "Speed",
       "xAxis": "Time",
-      "color": "#f00"
+      "colors": ["#f00"]
     },
     {
-      "id": 1,
       "yAxis": "Motor_RPM",
       "xAxis": "Time",
-      "color": "#0f0"
+      "colors": ["#0f0"]
     },
     {
-      "id": 2,
       "yAxis": "Joules",
       "xAxis": "Time",
-      "color": "#00f"
+      "colors": ["#00f"]
     },
     {
-      "id": 3,
       "yAxis": "Volts",
       "xAxis": "Time",
-      "color": "#0ff"
+      "colors": ["#0ff"]
     },
     {
-      "id": 4,
       "yAxis": "Current",
       "xAxis": "Time",
-      "color": "#f0f"
+      "colors": ["#f0f"]
     },
     {
-      "id": 5,
       "yAxis": "Motor_RPM",
       "xAxis": "Distance",
-      "color": "#0f0"
+      "colors": ["#0f0"]
     },
     {
-      "id": 6,
-      "yAxis": "Speed, Motor_RPM",
+      "yAxis": "Speed, Small_Motor_RPM",
       "xAxis": "Time",
-      "color": "#ff7f00"
+      "colors": ["#ff7f00", "#abcabc"]
     },
 	{
-	  "id": 7,
 	  "yAxis": "Resistance",
 	  "xAxis": "Time",
-	  "color": "#777"
+	  "colors": ["#777"]
 	}
   ],
   "views": [
     {
       "name": "All",
-      "graphs": [0, 1, 2, 3, 4, 5]
+      "graphs": [0, 1, 2, 3, 4, 5, 6, 7]
     },
     {
       "name": "Other",
       "graphs": [0, 1, 5]
-    }
+    },
+	{
+	  "name": "MultiGraph",
+	  "graphs": [6]
+	}
   ],
   "models": [
     {
@@ -114,6 +110,11 @@
 	  "label": "Resistance",
 	  "formula": "Volts / Current",
 	  "units": "Ω"
+	},
+	{
+	  "label": "Small_Motor_RPM",
+	  "formula": "Motor_RPM / 10",
+	  "units": "RPM"
 	}
   ],
   "displayAlways": [

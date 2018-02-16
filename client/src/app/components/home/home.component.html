@@ -1,5 +1,5 @@
 <mat-grid-list [cols]="cols" rowHeight="4:3" gutterSize="10" (window:resize)="onResize()">
-  <div *ngFor="let graphInfo of graphInfoArray">
+  <div *ngFor="let graphInfo of selectedGraphInfoArray">
     <mat-grid-tile id="{{graphInfo.title}}" class="tile mat-elevation-z6">
       <mat-card class="mat-elevation-z6 card-style">
         <mat-card-header>

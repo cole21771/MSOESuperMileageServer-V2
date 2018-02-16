@@ -43,7 +43,7 @@ describe('GraphComponent', () => {
       title: '',
       color: {domain: []},
       xLabel: '',
-      yLabel: '',
+      yLabels: [''],
       xName: '',
       yName: '',
       units: '',
@@ -51,7 +51,8 @@ describe('GraphComponent', () => {
       max: 0,
       chartData: [new ChartData('')],
       addData: () => {},
-      isValid: true
+      isValid: true,
+      setMinAndMax: () => {} // TODO not private?
     };
     fixture.detectChanges();
   });

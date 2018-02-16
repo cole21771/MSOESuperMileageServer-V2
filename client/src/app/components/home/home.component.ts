@@ -11,6 +11,7 @@ import {ConfigService} from '../../services/config/config.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public graphInfoArray: GraphInfo[];
+  public selectedGraphInfoArray: GraphInfo[];
   public location: any;
   public cols = 2;
 
@@ -24,12 +25,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.graphInfoArray = this.configService.getGraphInfo;
+    this.selectedGraphInfoArray = [...this.graphInfoArray];
 
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
 
     this.communicator.refreshButtonClicked()
       .subscribe(() => this.onResize());
+
+    this.communicator.viewChanged().subscribe((graphs: number[]) => {
+      this.selectedGraphInfoArray = this.graphInfoArray.filter((graph, index) => graphs.includes(index));
+    });
   }
 
   ngOnDestroy() {
