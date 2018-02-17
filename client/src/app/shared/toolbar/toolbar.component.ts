@@ -49,4 +49,8 @@ export class ToolbarComponent implements OnInit {
   toggleSidenav() {
     this.sidenav.toggle();
   }
+
+  get isDarkTheme() {
+    return this.toolbarService.isDarkTheme;
+  }
 }
