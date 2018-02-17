@@ -19,6 +19,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ### Priority Tasks
 - [ ] Redesign CommunicatorService
 - [ ] Redesign AppComponent
+- [ ] Add tests everywhere
 
 ### Dev Tasks
 - [ ] Convert the application to a PWA
@@ -32,7 +33,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 - [ ] Lots of stuff
 
 ### Home
-- [ ] Graph Views
+- [X] Graph Views
 - [ ] Display Always
 
 ### Admin
