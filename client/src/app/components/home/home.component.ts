@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {GraphInfo} from '../../models/GraphInfo';
-import {CommunicatorService} from '../../services/communicator/communicator.service';
+import {ToolbarService} from '../../services/toolbar/toolbar.service';
 import {ConfigService} from '../../services/config/config.service';
+import {View} from "../../interfaces/View";
 
 @Component({
   selector: 'app-home',
@@ -10,32 +11,29 @@ import {ConfigService} from '../../services/config/config.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public graphInfoArray: GraphInfo[];
   public selectedGraphInfoArray: GraphInfo[];
   public location: any;
   public cols = 2;
 
   private locationSub: any;
 
-  constructor(private communicator: CommunicatorService,
+  constructor(private toolbarService: ToolbarService,
               private configService: ConfigService,
               private socketService: SocketIoService) {
-    this.graphInfoArray = [];
+    this.selectedGraphInfoArray = [];
   }
 
   ngOnInit() {
-    this.graphInfoArray = this.configService.getGraphInfo;
-    this.selectedGraphInfoArray = [...this.graphInfoArray];
+    this.toolbarService.viewChanged().subscribe((view: View) => {
+        this.selectedGraphInfoArray = this.configService.getGraphInfo.filter((graph, index) => view.graphs.includes(index));
+      }
+    );
 
     this.locationSub = this.socketService.getLocation()
       .subscribe((location) => this.location = location);
 
-    this.communicator.refreshButtonClicked()
-      .subscribe(() => this.onResize());
-
-    this.communicator.viewChanged().subscribe((graphs: number[]) => {
-      this.selectedGraphInfoArray = this.graphInfoArray.filter((graph, index) => graphs.includes(index));
-    });
+    this.toolbarService.switchGraphListener()
+      .subscribe(this.onResize.bind(this));
   }
 
   ngOnDestroy() {

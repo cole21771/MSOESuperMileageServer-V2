@@ -4,7 +4,7 @@ import {HomeComponent} from './home.component';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
 import {GraphComponent} from '../graph/graph.component';
 import 'd3';
-import {CommunicatorService} from '../../services/communicator/communicator.service';
+import {ToolbarService} from '../../services/toolbar/toolbar.service';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {AppMaterialModule} from '../../app-material.module';
 import {ConfigService} from '../../services/config/config.service';
@@ -24,7 +24,7 @@ describe('HomeComponent', () => {
         NgxChartsModule
       ],
       providers: [
-        CommunicatorService,
+        ToolbarService,
         SocketIoService,
         ConfigService
       ]

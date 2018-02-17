@@ -7,6 +7,7 @@ import {IncomingData} from '../../interfaces/IncomingData';
 import {Model} from '../../interfaces/Model';
 import {isNullOrUndefined} from 'util';
 import {View} from '../../interfaces/View';
+import {ToolbarService} from "../toolbar/toolbar.service";
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -17,7 +18,8 @@ export class ConfigService {
   private graphs: GraphInfo[];
   private dataModels: IncomingData[];
 
-  constructor(private socketService: SocketIoService) {
+  constructor(private socketService: SocketIoService,
+              private toolbarService: ToolbarService) {
     this.parser = new FormulaParser();
     this.graphs = [];
     this.dataModels = [];
@@ -38,9 +40,18 @@ export class ConfigService {
           console.error('ConfigService, constructor: Error creating graphs');
         }
       });
+
+      toolbarService.setView(this.config.views[0]);
     });
   }
 
+  /**
+   * If the label provided contains a comma, then it is indeed a MultiGraph and will return true,
+   * otherwise returns false
+   *
+   * @param {string} label the string to be searched for commas
+   * @returns {boolean} true if MultiGraph, false otherwise
+   */
   private isMultiGraph(label: string): boolean {
     return label.includes(',');
   }

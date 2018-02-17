@@ -84,6 +84,11 @@
 	  "yAxis": "Resistance",
 	  "xAxis": "Time",
 	  "colors": ["#777"]
+	},
+	{
+	  "yAxis": "Speed",
+	  "xAxis": "Motor_RPM",
+	  "colors": ["#10b8f7"]
 	}
   ],
   "views": [
@@ -93,7 +98,7 @@
     },
     {
       "name": "Other",
-      "graphs": [0, 1, 5]
+      "graphs": [0, 1, 5, 8]
     },
 	{
 	  "name": "MultiGraph",

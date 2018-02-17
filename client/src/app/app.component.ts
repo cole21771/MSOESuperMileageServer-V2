@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatIconRegistry, MatSnackBar} from '@angular/material';
 import {LoginComponent} from './components/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
-import {CommunicatorService} from './services/communicator/communicator.service';
+import {ToolbarService} from './services/toolbar/toolbar.service';
 import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LoginData} from './interfaces/LoginData';
@@ -15,29 +15,20 @@ import {View} from "./interfaces/View";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public title = 'SuperMileage Server';
-
-  public isDarkTheme: Boolean = true;
   public isLoggedIn: Boolean = false;
-  public selectedView = {name: 'All', graphs: []};
 
-  constructor(private socketService: SocketIoService,
-              private communicator: CommunicatorService,
+  constructor(private router: Router,
+              private socketService: SocketIoService,
+              private toolbarService: ToolbarService,
               private loginDialog: MatDialog,
               private snackBar: MatSnackBar,
               private registry: MatIconRegistry,
-              private sanitizer: DomSanitizer,
-              public router: Router,
-              public configService: ConfigService) {
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     this.registry.addSvgIcon('moon',
       this.sanitizer.bypassSecurityTrustResourceUrl('/assets/moon.svg')); // TODO this still doesn't work
-  }
-
-  switchTheme() {
-    this.isDarkTheme = !this.isDarkTheme;
   }
 
   openLogin() {
@@ -65,10 +56,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  changeView(view: View) {
-    this.selectedView = view;
-    this.communicator.setGraphs(view.graphs);
+  get isDarkTheme() {
+    return this.toolbarService.isDarkTheme;
   }
+
 
   logout() {
     this.socketService.logout();
@@ -77,14 +68,6 @@ export class AppComponent implements OnInit {
     if (this.router.url === '/admin') {
       this.router.navigate(['']);
     }
-  }
-
-  switchGraphMode() {
-    this.communicator.refreshUI();
-  }
-
-  get isHome() {
-    return this.router.url === '/';
   }
 
   private launchSnackBar(message: string) {

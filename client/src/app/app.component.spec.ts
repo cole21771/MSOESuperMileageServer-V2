@@ -6,7 +6,7 @@ import {
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
-import {CommunicatorService} from './services/communicator/communicator.service';
+import {ToolbarService} from './services/toolbar/toolbar.service';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -25,7 +25,7 @@ describe('AppComponent', () => {
         MatTooltipModule
       ],
       providers: [
-        CommunicatorService,
+        ToolbarService,
         SocketIoService
       ]
     }).compileComponents();

@@ -13,12 +13,13 @@ import {AppMaterialModule} from './app-material.module';
 import {LoginComponent} from './components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {LineChartModule} from '@swimlane/ngx-charts';
-import {CommunicatorService} from './services/communicator/communicator.service';
+import {ToolbarService} from './services/toolbar/toolbar.service';
 import {AdminComponent} from './components/admin/admin.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import {AdminGuard} from './gaurds/admin/admin.guard';
 import {ConfigService} from './services/config/config.service';
 import {DataService} from './services/data/data.service';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {DataService} from './services/data/data.service';
     HomeComponent,
     LoginComponent,
     AdminComponent,
-    CalculatorComponent
+    CalculatorComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,7 @@ import {DataService} from './services/data/data.service';
     AppRoutingModule,
     AppMaterialModule
   ],
-  providers: [SocketIoService, CommunicatorService, AdminGuard, ConfigService, DataService],
+  providers: [SocketIoService, ToolbarService, AdminGuard, ConfigService, DataService],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent]
 })
