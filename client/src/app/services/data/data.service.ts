@@ -2,7 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {Model} from '../../interfaces/Model';
-import {isNullOrUndefined} from "util";
+import {isNullOrUndefined} from 'util';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 

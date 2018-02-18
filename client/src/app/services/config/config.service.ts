@@ -7,7 +7,7 @@ import {IncomingData} from '../../interfaces/IncomingData';
 import {Model} from '../../interfaces/Model';
 import {isNullOrUndefined} from 'util';
 import {View} from '../../interfaces/View';
-import {ToolbarService} from "../toolbar/toolbar.service";
+import {ToolbarService} from '../toolbar/toolbar.service';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 

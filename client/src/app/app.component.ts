@@ -6,8 +6,8 @@ import {ToolbarService} from './services/toolbar/toolbar.service';
 import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LoginData} from './interfaces/LoginData';
-import {ConfigService} from "./services/config/config.service";
-import {View} from "./interfaces/View";
+import {ConfigService} from './services/config/config.service';
+import {View} from './interfaces/View';
 
 @Component({
   selector: 'app-root',

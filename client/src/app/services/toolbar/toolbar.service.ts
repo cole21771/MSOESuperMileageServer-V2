@@ -9,7 +9,7 @@ export class ToolbarService {
   private lastView: View;
 
   constructor() {
-    this.switchGraphModeEmitter = new EventEmitter<undefined>();
+    this.switchGraphModeEmitter = new EventEmitter();
     this.viewChangedEmitter = new EventEmitter<View>();
   }
 
