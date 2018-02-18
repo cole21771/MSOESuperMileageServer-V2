@@ -17,12 +17,13 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## TODO List
 ### Priority Tasks
-- [ ] Redesign CommunicatorService
+- [X] Redesign CommunicatorService
 - [ ] Redesign AppComponent
 - [ ] Add tests everywhere
 
 ### Dev Tasks
 - [ ] Convert the application to a PWA
+- [ ] Research Service runner production instance with auto release pulling
 
 ### Location Stuffs
 - [ ] Decide on how the location will be shown and where to access the Map
