@@ -39,22 +39,6 @@ describe('GraphComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GraphComponent);
     component = fixture.componentInstance;
-    component.graphInfo = {
-      title: '',
-      color: {domain: []},
-      xLabel: '',
-      yLabels: [''],
-      xName: '',
-      yName: '',
-      units: '',
-      min: 0,
-      max: 0,
-      chartData: [new ChartData('')],
-      addData: () => {},
-      isValid: true,
-      setMinAndMax: () => {} // TODO not private?
-    };
-    fixture.detectChanges();
   });
 
   it('should create', () => {

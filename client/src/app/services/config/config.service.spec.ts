@@ -3,10 +3,16 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService } from './config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 
+const socketIoServiceStub = {};
+const configServiceStub = {};
+
 describe('ConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConfigService, SocketIoService]
+      providers: [
+        {provide: ConfigService, useValue: configServiceStub},
+        {provide: SocketIoService, useValue: socketIoServiceStub}
+      ]
     });
   });
 
