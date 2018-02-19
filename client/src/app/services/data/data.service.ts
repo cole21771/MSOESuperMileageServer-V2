@@ -1,7 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
-import {Model} from '../../interfaces/Model';
 import {isNullOrUndefined} from 'util';
 
 const FormulaParser = require('hot-formula-parser').Parser;
@@ -26,7 +25,7 @@ export class DataService {
       this.addData(data);
     });
 
-    this.configService.getModels.forEach((model: Model) => {
+    this.configService.getModels.forEach(model => {
       this.modelMap.set(model.label, model.formula);
     });
   }

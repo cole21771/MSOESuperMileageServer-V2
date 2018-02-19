@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "test": "ng test -sm=false",
+    "test": "ng test",
     "lint:fix": "ng lint --fix"
   },
   "private": true,
