@@ -3,30 +3,30 @@ import {View} from '../../interfaces/View';
 
 @Injectable()
 export class ToolbarService {
-  private switchGraphModeEmitter: EventEmitter<undefined>;
+  private graphModeSwitchedEmitter: EventEmitter<undefined>;
   private viewChangedEmitter: EventEmitter<View>;
   private darkThemeIndicator = true;
   private lastView: View;
 
   constructor() {
-    this.switchGraphModeEmitter = new EventEmitter();
+    this.graphModeSwitchedEmitter = new EventEmitter();
     this.viewChangedEmitter = new EventEmitter<View>();
   }
 
   /**
-   * Allows subscriptions to the switchGraphMode event emitter
+   * Allows subscriptions to the graphModeSwitched event emitter
    *
    * @returns {EventEmitter<null>} the emitter
    */
-  switchGraphListener(): EventEmitter<undefined> {
-    return this.switchGraphModeEmitter;
+  get graphModeSwitched(): EventEmitter<undefined> {
+    return this.graphModeSwitchedEmitter;
   }
 
   /**
    * Emits a switch graph mode event to all subscribers
    */
   switchGraphMode(): void {
-    this.switchGraphModeEmitter.emit();
+    this.graphModeSwitchedEmitter.emit();
   }
 
   /**
@@ -34,7 +34,7 @@ export class ToolbarService {
    *
    * @returns {EventEmitter<number[]>} the emitter
    */
-  viewChanged(): EventEmitter<View> {
+  get viewChanged(): EventEmitter<View> {
     return this.viewChangedEmitter;
   }
 

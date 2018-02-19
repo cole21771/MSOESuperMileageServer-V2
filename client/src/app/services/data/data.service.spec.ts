@@ -63,4 +63,14 @@ describe('DataService', () => {
       expect(dataService.getLatestData('Current')).toBe(4);
       expect(dataService.getLatestData('Power')).toBe(12);
     }));
+
+  it('dataNotifier subscribers should be notified when data is added', done => {
+    inject([DataService], (dataService: DataService) => {
+      dataService.dataNotifier.subscribe(() => {
+        done();
+      });
+
+      dataService.addData([]);
+    })();
+  });
 });

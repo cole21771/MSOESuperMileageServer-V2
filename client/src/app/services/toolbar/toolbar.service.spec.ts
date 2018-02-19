@@ -16,9 +16,9 @@ describe('ToolbarService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should notify subscribers when graph mode is switched', done => {
+  it('graphModeSwitched subscribers should be notified when graph mode is switched', done => {
     inject([ToolbarService], (service: ToolbarService) => {
-      service.switchGraphListener().subscribe(() => {
+      service.graphModeSwitched.subscribe(() => {
         done();
       });
 
@@ -26,14 +26,14 @@ describe('ToolbarService', () => {
     })();
   });
 
-  it('should notify subscribers when view is changed', done => {
+  it('viewChanged subscribers should be notified when view is changed', done => {
     inject([ToolbarService], (service: ToolbarService) => {
       const testView: View = {
         name: 'All',
         graphs: [0, 1, 2]
       };
 
-      service.viewChanged().subscribe((view) => {
+      service.viewChanged.subscribe((view) => {
         expect(view).toEqual(testView);
         done();
       });
@@ -42,7 +42,7 @@ describe('ToolbarService', () => {
     })();
   });
 
-  it('should update isDarkTheme boolean when status is switched',
+  it('switchTheme() should toggle isDarkTheme',
     inject([ToolbarService], (service: ToolbarService) => {
       expect(service.isDarkTheme).toBeTruthy();
       service.switchTheme();

@@ -20,7 +20,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.toolbarService.viewChanged().subscribe((view: View) => {
+    this.toolbarService.viewChanged.subscribe((view: View) => {
       this.selectedView = view;
     });
   }

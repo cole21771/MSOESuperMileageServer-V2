@@ -21,11 +21,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     // Sets up listener for when the "switch graph mode" button is clicked
-    this.toolbarService.switchGraphListener()
-      .subscribe(this.attemptResize.bind(this));
+    this.toolbarService.graphModeSwitched.subscribe(this.attemptResize.bind(this));
 
     // Sets up listener for when the view changes
-    this.toolbarService.viewChanged().subscribe((view: View) => {
+    this.toolbarService.viewChanged.subscribe((view: View) => {
         this.selectedGraphInfoArray = this.configService.getGraphInfo.filter((graph, index) => view.graphs.includes(index));
       }
     );
