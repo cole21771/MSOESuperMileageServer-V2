@@ -3,24 +3,20 @@ import {TestBed, inject} from '@angular/core/testing';
 import {SocketIoService} from './socket-io.service';
 import {LoginData} from '../../interfaces/LoginData';
 
-const socketIoServiceStub = {
-  attemptLogin: (loginData: LoginData) => {}
-};
-
 describe('SocketIoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: SocketIoService, useValue: socketIoServiceStub}
+        SocketIoService
       ]
     });
   });
 
-  it('should be created', inject([SocketIoService], (service: SocketIoService) => {
-    expect(service).toBeTruthy();
+  it('should be created', inject([SocketIoService], socketService => {
+    expect(socketService).toBeTruthy();
   }));
 
-  it('login should login', inject([SocketIoService], (socketService: SocketIoService) => {
+  it('login should login', inject([SocketIoService], socketService => {
     const loginData: LoginData = {
       username: 'username',
       password: 'password',
