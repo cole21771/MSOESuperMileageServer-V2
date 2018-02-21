@@ -15,34 +15,36 @@ const FormulaParser = require('hot-formula-parser').Parser;
 export class ConfigService {
   private parser: any;
   private config: Config;
-  private graphs: GraphInfo[];
+  private graphInfoArray: GraphInfo[];
   private dataModels: IncomingData[];
 
   constructor(private socketService: SocketIoService,
               private toolbarService: ToolbarService) {
     this.parser = new FormulaParser();
-    this.graphs = [];
+    this.graphInfoArray = [];
     this.dataModels = [];
 
-    this.socketService.getSelectedConfig().then(config => {
-      this.config = config;
+    this.setupConfig();
+  }
 
-      this.dataModels = config.models.filter(this.isValidModel.bind(this))
-        .map(this.createDataModel.bind(this));
+  private async setupConfig() {
+    this.config = await this.socketService.getSelectedConfig();
 
-      config.graphs.map(graph => {
-        const xData = this.getInfoFromLabel(graph.xAxis);
-        const yData = this.getInfoArrayFromLabel(graph.yAxis);
+    this.dataModels = this.config.models.filter(this.isValidModel.bind(this))
+      .map(this.createDataModel.bind(this));
 
-        if (xData && yData) {
-          this.graphs.push(new GraphInfo(xData, yData, graph));
-        } else {
-          console.error('ConfigService, constructor: Error creating graphs');
-        }
-      });
+    this.config.graphs.map(graph => {
+      const xData = this.getInfoFromLabel(graph.xAxis);
+      const yData = this.getInfoArrayFromLabel(graph.yAxis);
 
-      toolbarService.setView(this.config.views[0]);
+      if (xData && yData) {
+        this.graphInfoArray.push(new GraphInfo(xData, yData, graph));
+      } else {
+        console.error('ConfigService, constructor: Error creating graphs');
+      }
     });
+
+    this.toolbarService.setView(this.config.views[0]);
   }
 
   /**
@@ -64,7 +66,6 @@ export class ConfigService {
    */
   private createDataModel(model: Model): IncomingData {
     const labels = this.getLabelsFromFormula(model.formula);
-
     const incomingData = labels.map<IncomingData>(this.getInfoFromLabel.bind(this));
 
     const min = this.calculate(incomingData.map<ParserVariable>(data => {
@@ -100,12 +101,12 @@ export class ConfigService {
    * Given an array of arrays containing a label and number, and a formula string, it calculates
    * the formula given the variables provided
    *
-   * @param {any[][]} data The json that acts as a half-map
+   * @param {any[][]} variables The json that acts as a half-map
    * @param {string} formula The formula to be calculated given the variable's values
    * @returns {number} The result of the calculation
    */
-  private calculate(data: ParserVariable[], formula: string): number {
-    data.forEach(variable => {
+  private calculate(variables: ParserVariable[], formula: string): number {
+    variables.forEach(variable => {
       this.parser.setVariable(variable.label, isNullOrUndefined(variable.value) ? -1 : variable.value);
     });
 
@@ -121,10 +122,11 @@ export class ConfigService {
 
   /**
    * Returns the GraphInfo objects that the service created
+   *
    * @returns {GraphInfo[]}
    */
   get getGraphInfo(): GraphInfo[] {
-    return this.graphs;
+    return this.graphInfoArray;
   }
 
   /**
@@ -174,7 +176,7 @@ export class ConfigService {
    */
   private isValidModel(model: Model): boolean {
     return !this.getInfoFromLabel(model.label) &&
-      this.getLabelsFromFormula(model.formula).every(label => !!this.getInfoFromLabel(label));
+      this.getLabelsFromFormula(model.formula).every(label => !isNullOrUndefined(this.getInfoFromLabel(label)));
   }
 
   /**
