@@ -2,6 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Config} from '../../interfaces/Config';
 import {LoginData} from '../../interfaces/LoginData';
+import {isSuccess} from "@angular/http/src/http_utils";
 
 @Injectable()
 export class SocketIoService {
@@ -122,5 +123,21 @@ export class SocketIoService {
    */
   logout(): void {
     this.socket.emit('logout');
+  }
+
+  record(): Promise<boolean> {
+    return new Promise(resolve => {
+      this.socket.emit('record', undefined, (successful) => {
+        resolve(successful);
+      });
+    });
+  }
+
+  stop(filename: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.socket.emit('stop', filename, (successful) => {
+        resolve(successful);
+      });
+    });
   }
 }

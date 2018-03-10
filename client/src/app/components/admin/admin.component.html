@@ -1,3 +1,5 @@
-<p>
-  admin works!
-</p>
+<button mat-icon-button (click)="record()"><mat-icon>fiber_manual_record</mat-icon></button>
+<button mat-icon-button (click)="stop(matInput.value)"><mat-icon>stop</mat-icon></button>
+
+
+<input #matInput matInput placeholder="Filename">

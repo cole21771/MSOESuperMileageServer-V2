@@ -13,7 +13,7 @@ export class SocketIoEvents {
         this.io.on('connection', (socket) => {
             const auth = new AuthManager(socket);
             auth.init();
-            const data = new DataManager(socket);
+            const data = new DataManager(socket, this.fs);
             data.init();
 
             const config = new ConfigManager(socket, this.fs);
