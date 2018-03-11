@@ -14,8 +14,8 @@ export class AdminComponent {
               private dialog: MatDialog) {
   }
 
-  record() {
-    this.socketService.record().then((successful) => {
+  record(filename: string) {
+    this.socketService.record(filename).then((successful) => {
       if (successful) {
         this.snackBar.open('Started Recording!', undefined, {duration: 2000});
       } else {
@@ -24,10 +24,10 @@ export class AdminComponent {
     });
   }
 
-  stop(filename: string) {
-    this.socketService.stop(filename).then((err) => {
+  stop() {
+    this.socketService.stop().then((err) => {
       if (!err) {
-        this.snackBar.open('File saved as ' + filename, undefined, {duration: 2000});
+        this.snackBar.open('File saved in ./server/logs/recordings!', undefined, {duration: 2000});
       } else {
         this.snackBar.open('File not saved!', undefined, {duration: 2000});
       }

@@ -33,7 +33,6 @@ export class SmvServer {
         // Parsers for POST data
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: false}));
-        console.log(__dirname);
 
         // Point static path to dist
         this.app.use(express.static(path.join(__dirname, '../../client/dist')));

@@ -69,11 +69,12 @@ export class ConfigManager {
 
     public getCSVTitle(): string {
         const file = this.fs.readFileSync(`${this.CONFIG_PATH}/${this.serverConfig.selectedConfig}`, 'utf8');
+        const config = JSON.parse(file);
 
         let csv = '';
-        file.incomingData.forEach((data, index) => {
-            csv += data.label;
-            if (index !== file.incomingData.length) {
+        config.incomingData.forEach((data, index) => {
+            csv += data.label.replace(/_/g, ' ');
+            if (index !== config.incomingData.length - 1) {
                 csv += ', ';
             }
         });

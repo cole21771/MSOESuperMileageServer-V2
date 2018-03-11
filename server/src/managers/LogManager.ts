@@ -1,4 +1,5 @@
 import {Location} from '../interfaces/Location';
+import {OpenFile} from '../interfaces/OpenFile';
 import WriteStream = NodeJS.WriteStream;
 import {ConfigManager} from './ConfigManager';
 
@@ -7,7 +8,7 @@ export class LogManager {
     private RECORDING_PATH = `${this.LOG_PATH}/recordings`;
 
     private recordedData: number[][];
-    private openFilePath: string;
+    private openFile: OpenFile;
     private logStream: WriteStream;
 
     constructor(private fs: any, private configManager: ConfigManager) {
@@ -25,17 +26,23 @@ export class LogManager {
 
         const filename = new Date().toString().replace(/:/g, '-').replace(/ *\([^)]*\) */g, '');
         this.logStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.log`);
+
+        this.logStream.write(this.configManager.getCSVTitle(), 'utf8', err => {
+            if (err) {
+                console.error(err);
+            }
+        });
     }
 
     logData(data: number[]): void {
         const csv = this.dataToCSV(data);
-        this.logStream.write(csv, 'utf8', (err) => {
+        this.logStream.write(csv, 'utf8', err => {
             if (err) {
                 console.error('LogManager, logData:', err);
             }
         });
 
-        if (this.openFilePath) {
+        if (this.openFile) {
             this.recordedData.push(data);
         }
     }
@@ -49,10 +56,15 @@ export class LogManager {
             const filePath = `${this.RECORDING_PATH}/${filename}`;
 
             this.fs.open(filePath, 'wx', (err, fd) => {
-                if (!err) {
-                    this.openFilePath = filePath;
-                    console.log('LogManager, startRecording:', fd);
+                if (err) {
+                    console.error('LogManager, startRecording: ', err);
                 }
+
+                this.openFile = {
+                    path: filePath,
+                    descriptor: fd
+                };
+
                 resolve(!err);
             });
         });
@@ -60,19 +72,29 @@ export class LogManager {
 
     stopRecording(): Promise<boolean> {
         return new Promise(resolve => {
-            if (this.openFilePath) {
-                this.fs.writeFile(this.openFilePath, this.recordedDataToCSV(this.recordedData), (err) => {
+            if (this.openFile) {
+                this.fs.writeFile(this.openFile.path, this.recordedDataToCSV(this.recordedData), (writeErr) => {
+                    if (writeErr) {
+                        console.error('LogManager, stopRecording', writeErr);
+                        resolve(false);
+                    }
+
+                    this.fs.close(this.openFile.descriptor, closeErr => {
+                        if (writeErr) {
+                            console.error('LogManager, stopRecording:', closeErr);
+                        }
+                    });
                     this.resetRecordingData();
-                    resolve(!err);
+                    resolve(true);
                 });
-            } else {
-                resolve(false);
             }
+
+            resolve(false);
         });
     }
 
     private resetRecordingData(): void {
-        this.openFilePath = undefined;
+        this.openFile = undefined;
         this.recordedData = [];
     }
 

@@ -125,17 +125,17 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  record(): Promise<boolean> {
+  record(filename): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('record', undefined, (successful) => {
+      this.socket.emit('record', filename, (successful) => {
         resolve(successful);
       });
     });
   }
 
-  stop(filename: string): Promise<boolean> {
+  stop(): Promise<boolean> {
     return new Promise((resolve) => {
-      this.socket.emit('stop', filename, (successful) => {
+      this.socket.emit('stopRecording', undefined, (successful) => {
         resolve(successful);
       });
     });

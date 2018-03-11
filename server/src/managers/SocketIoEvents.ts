@@ -13,12 +13,13 @@ export class SocketIoEvents {
     private config: ConfigManager;
 
     constructor(private fs, private io) {
-        this.logger = new LogManager(this.fs);
+        this.config = new ConfigManager(this.fs);
+
+        this.logger = new LogManager(this.fs, this.config);
         this.logger.init();
 
         this.auth = new AuthManager();
         this.data = new DataManager(this.fs, this.logger);
-        this.config = new ConfigManager(this.fs);
     }
 
     init() {

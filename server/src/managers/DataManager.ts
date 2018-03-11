@@ -6,7 +6,7 @@ export class DataManager {
     }
 
     public init(socket: Socket) {
-        socket.on('newData', (data) => {
+        socket.on('newData', data => {
             this.logger.logData(JSON.parse(data));
             socket.broadcast.emit('newData', data);
         });
@@ -17,7 +17,7 @@ export class DataManager {
             });
         });
 
-        socket.on('stopRecording', (callback) => {
+        socket.on('stopRecording', (undefined, callback) => {
             this.logger.stopRecording().then(isSuccessful => {
                 callback(isSuccessful);
             });
