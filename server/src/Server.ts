@@ -1,10 +1,10 @@
-import {SocketIoEvents} from './managers/socket-io.events';
+import {SocketIoEvents} from './managers/SocketIoEvents';
 
 import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
 import * as express from 'express';
 import * as fs from 'fs';
-import { createServer, Server } from 'http';
+import {createServer, Server} from 'http';
 import * as path from 'path';
 import * as socketIo from 'socket.io';
 
@@ -25,11 +25,6 @@ export class SmvServer {
         this.socketIoEvents.init();
 
         this.listen(3000);
-    }
-
-    private initLogger(): void {
-        // const winston = require('winston');
-        // const logger = require('./logger')(winston);
     }
 
     private initExpress(): void {

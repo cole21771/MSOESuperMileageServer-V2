@@ -78,6 +78,8 @@
         "no-use-before-declare": true,
         "no-var-keyword": true,
         "object-literal-sort-keys": false,
+        "trailing-comma": false,
+        "arrow-parens": false,
         "one-line": [
             true,
             "check-open-brace",

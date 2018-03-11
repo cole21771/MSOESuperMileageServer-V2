@@ -6,9 +6,8 @@ import {ToolbarService} from '../toolbar/toolbar.service';
 import {View} from '../../interfaces/View';
 import {Config} from '../../interfaces/Config';
 import {ParserVariable} from '../../interfaces/ParserVariable';
-import {GraphInfo} from '../../models/GraphInfo';
 import {IncomingData} from '../../interfaces/IncomingData';
-import {Model} from "../../interfaces/Model";
+import {Model} from '../../interfaces/Model';
 
 const mockConfig: Config = {
   vehicleType: 'electric',
