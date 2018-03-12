@@ -66,7 +66,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   stopRecording() {
-    const dialogRef = this.dialog.open(SaveRecordingComponent);
+    const dialogRef = this.dialog.open(SaveRecordingComponent, {
+      width: '200px',
+      height: '100px'
+    });
 
     dialogRef.afterClosed().subscribe((filename) => {
       this.socket.stopRecording(filename).then(message => {

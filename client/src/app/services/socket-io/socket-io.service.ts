@@ -127,7 +127,7 @@ export class SocketIoService {
 
   startRecording(): Promise<string> {
     return new Promise(resolve => {
-      this.socket.emit('startRecording', undefined, (message) => {
+      this.socket.emit('startRecording', undefined, message => {
         resolve(message);
       });
     });
