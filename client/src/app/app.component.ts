@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatIconRegistry, MatSnackBar} from '@angular/material';
-import {LoginComponent} from './components/login/login.component';
+import {LoginComponent} from './components/shared/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {ToolbarService} from './services/toolbar/toolbar.service';
 import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
-import {LoginData} from './interfaces/LoginData';
+import {LoginData} from './models/interfaces/LoginData';
 import {ConfigService} from './services/config/config.service';
-import {View} from './interfaces/View';
+import {View} from './models/interfaces/View';
 
 @Component({
   selector: 'app-root',

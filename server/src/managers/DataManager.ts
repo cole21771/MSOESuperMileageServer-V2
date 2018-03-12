@@ -11,7 +11,7 @@ export class DataManager {
             socket.broadcast.emit('newData', data);
         });
 
-        socket.on('record', (filename, callback) => {
+        socket.on('startRecording', (filename, callback) => {
             this.logger.startRecording(filename).then(isSuccessful => {
                 callback(isSuccessful);
             });

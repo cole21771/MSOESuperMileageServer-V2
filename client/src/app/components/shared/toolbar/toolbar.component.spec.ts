@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ToolbarComponent } from './toolbar.component';
-import {AppMaterialModule} from '../../app-material.module';
-import {ToolbarService} from '../../services/toolbar/toolbar.service';
-import {ConfigService} from '../../services/config/config.service';
+import {AppMaterialModule} from '../../../app-material.module';
+import {ToolbarService} from '../../../services/toolbar/toolbar.service';
+import {ConfigService} from '../../../services/config/config.service';
 import {RouterTestingModule} from '@angular/router/testing';
 
 const toolbarServiceStub = {

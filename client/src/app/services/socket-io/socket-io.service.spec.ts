@@ -1,7 +1,7 @@
 import {TestBed, inject} from '@angular/core/testing';
 
 import {SocketIoService} from './socket-io.service';
-import {LoginData} from '../../interfaces/LoginData';
+import {LoginData} from '../../models/interfaces/LoginData';
 
 describe('SocketIoService', () => {
   beforeEach(() => {

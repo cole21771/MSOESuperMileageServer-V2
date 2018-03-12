@@ -6,7 +6,7 @@ import {FormControl, FormGroup} from '@angular/forms';
   templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
-  hide: Boolean = true;
+  showPassword: Boolean = false;
   loginForm: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<LoginComponent>) {}

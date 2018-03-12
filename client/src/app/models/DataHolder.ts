@@ -1,4 +1,4 @@
-import {IncomingData} from '../interfaces/IncomingData';
+import {IncomingData} from './interfaces/IncomingData';
 
 export class DataHolder {
   formula: string;

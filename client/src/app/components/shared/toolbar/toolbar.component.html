@@ -1,0 +1,49 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <mat-toolbar-row>
+    <button aria-label="Open Side Menu" mat-icon-button (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>SuperMileage Server</span>
+
+    <span class="spacer"></span>
+
+    <button mat-icon-button *ngIf="isHome" aria-label="Graph Options" matTooltip="Graph Options"
+            [matMenuTriggerFor]="graphMenu">
+      <mat-icon>insert_chart</mat-icon>
+      <mat-menu #graphMenu="matMenu">
+        <button mat-menu-item *ngIf="!isRecording" aria-label="Start Recording" (click)="startRecordindg()">
+          <mat-icon>fiber_manual_record</mat-icon>
+          Start Recording
+        </button>
+
+        <button mat-menu-item *ngIf="isRecording" aria-label="Stop Recording" (click)="stopRecording()">
+          <mat-icon>stop</mat-icon>
+          Stop Recording
+        </button>
+
+        <button mat-menu-item aria-label="Switch Graph Mode" (click)="switchGraphMode()">
+          <mat-icon>swap_calls</mat-icon>
+          Switch Mode
+        </button>
+
+        <div *ngIf="isHome && getViews">
+          <button mat-menu-item [matMenuTriggerFor]="viewSelector">View: {{selectedView ? selectedView.name : ''}}
+          </button>
+          <mat-menu #viewSelector="matMenu">
+            <button mat-menu-item *ngFor="let view of getViews" (click)="changeView(view)">{{view.name}}
+            </button>
+          </mat-menu>
+        </div>
+      </mat-menu>
+    </button>
+
+    <button mat-icon-button aria-label="Switch Theme" (click)="switchTheme()"
+            matTooltip="Activate {{!isDarkTheme ? 'Dark Theme' : 'Light Theme'}}">
+      <svg *ngIf="!isDarkTheme" class="mat-icon material-icons">
+        <path
+          d="M12.7 2C7.33 2.15 3 6.57 3 12c0 5.52 4.48 10 10 10 3.52 0 6.6-1.82 8.4-4.56h-.3c-5.52 0-10-4.48-10-10 0-2 .6-3.87 1.6-5.44z"></path>
+      </svg>
+      <mat-icon *ngIf="isDarkTheme">wb_sunny</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>

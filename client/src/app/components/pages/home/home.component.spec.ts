@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeComponent} from './home.component';
 import {SocketIoService} from '../../services/socket-io/socket-io.service';
-import {GraphComponent} from '../graph/graph.component';
+import {GraphComponent} from '../../components/graph/graph.component';
 import 'd3';
 import {ToolbarService} from '../../services/toolbar/toolbar.service';
 import {NgxChartsModule} from '@swimlane/ngx-charts';

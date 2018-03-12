@@ -4,8 +4,8 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput formControlName="password" placeholder="Password" [type]="hide ? 'password' : 'text'">
-    <mat-icon style="cursor: pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}
+    <input matInput formControlName="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'">
+    <mat-icon style="cursor: pointer" matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility_off' : 'visibility'}}
     </mat-icon>
   </mat-form-field>
 

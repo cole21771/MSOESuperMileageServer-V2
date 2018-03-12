@@ -5,7 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {ToolbarService} from './services/toolbar/toolbar.service';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {AppMaterialModule} from './app-material.module';
-import {ToolbarComponent} from './shared/toolbar/toolbar.component';
+import {ToolbarComponent} from './components/shared/toolbar/toolbar.component';
 import {ConfigService} from './services/config/config.service';
 
 const toolbarServiceStub = {};

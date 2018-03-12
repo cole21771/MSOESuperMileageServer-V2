@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import {Config} from '../../interfaces/Config';
-import {LoginData} from '../../interfaces/LoginData';
+import {Config} from '../../models/interfaces/Config';
+import {LoginData} from '../../models/interfaces/LoginData';
 import {isSuccess} from '@angular/http/src/http_utils';
 
 @Injectable()
@@ -125,18 +125,26 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  record(filename): Promise<boolean> {
+  startRecording(): Promise<string> {
     return new Promise(resolve => {
-      this.socket.emit('record', filename, (successful) => {
-        resolve(successful);
+      this.socket.emit('startRecording', undefined, (message) => {
+        resolve(message);
       });
     });
   }
 
-  stop(): Promise<boolean> {
+  doesFileExist(filename: string): Promise<boolean> {
+    return new Promise(resolve => {
+      this.socket.emit('doesFileExist', filename, fileExistsStatus => {
+        resolve(fileExistsStatus);
+      });
+    });
+  }
+
+  stopRecording(filename: string): Promise<string> {
     return new Promise((resolve) => {
-      this.socket.emit('stopRecording', undefined, (successful) => {
-        resolve(successful);
+      this.socket.emit('stopRecording', filename, message => {
+        resolve(message);
       });
     });
   }

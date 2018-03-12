@@ -1,7 +1,7 @@
 import {ChartData} from './ChartData';
 import {DataPoint} from './DataPoint';
-import {IncomingData} from '../interfaces/IncomingData';
-import {Graph} from '../interfaces/Graph';
+import {IncomingData} from './interfaces/IncomingData';
+import {Graph} from './interfaces/Graph';
 import {isNull, isNullOrUndefined} from 'util';
 
 export class GraphInfo {

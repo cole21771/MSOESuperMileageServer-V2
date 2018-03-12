@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {GraphInfo} from '../../models/GraphInfo';
-import {Config} from '../../interfaces/Config';
-import {ParserVariable} from '../../interfaces/ParserVariable';
+import {Config} from '../../models/interfaces/Config';
+import {ParserVariable} from '../../models/interfaces/ParserVariable';
 import {SocketIoService} from '../socket-io/socket-io.service';
-import {IncomingData} from '../../interfaces/IncomingData';
-import {Model} from '../../interfaces/Model';
+import {IncomingData} from '../../models/interfaces/IncomingData';
+import {Model} from '../../models/interfaces/Model';
 import {isNullOrUndefined} from 'util';
-import {View} from '../../interfaces/View';
+import {View} from '../../models/interfaces/View';
 import {ToolbarService} from '../toolbar/toolbar.service';
 
 const FormulaParser = require('hot-formula-parser').Parser;

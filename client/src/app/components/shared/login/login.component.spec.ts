@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {LoginComponent} from './login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {AppMaterialModule} from '../../app-material.module';
+import {AppMaterialModule} from '../../../app-material.module';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
