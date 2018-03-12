@@ -5,7 +5,7 @@ import {View} from '../../../models/interfaces/View';
 import {Router} from '@angular/router';
 import {MatDialog, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
-import {SaveRecordingComponent} from "../save-recording/save-recording.component";
+import {SaveRecordingComponent} from '../save-recording/save-recording.component';
 
 @Component({
   selector: 'app-toolbar',

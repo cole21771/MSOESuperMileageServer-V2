@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {GraphInfo} from "../../../models/GraphInfo";
-import {ToolbarService} from "../../../services/toolbar/toolbar.service";
-import {ConfigService} from "../../../services/config/config.service";
-import {View} from "../../../models/interfaces/View";
+import {GraphInfo} from '../../../models/GraphInfo';
+import {ToolbarService} from '../../../services/toolbar/toolbar.service';
+import {ConfigService} from '../../../services/config/config.service';
+import {View} from '../../../models/interfaces/View';
 
 @Component({
   selector: 'app-home',

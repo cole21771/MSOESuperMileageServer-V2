@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CalculatorComponent } from './calculator.component';
-import {AppMaterialModule} from '../../app-material.module';
+import {AppMaterialModule} from '../../../app-material.module';
 
 describe('CalculatorComponent', () => {
   let component: CalculatorComponent;

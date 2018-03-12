@@ -1,13 +1,13 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeComponent} from './home.component';
-import {SocketIoService} from '../../services/socket-io/socket-io.service';
-import {GraphComponent} from '../../components/graph/graph.component';
 import 'd3';
-import {ToolbarService} from '../../services/toolbar/toolbar.service';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {AppMaterialModule} from '../../app-material.module';
-import {ConfigService} from '../../services/config/config.service';
+import {GraphComponent} from '../../shared/graph/graph.component';
+import {AppMaterialModule} from '../../../app-material.module';
+import {ToolbarService} from '../../../services/toolbar/toolbar.service';
+import {SocketIoService} from '../../../services/socket-io/socket-io.service';
+import {ConfigService} from '../../../services/config/config.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

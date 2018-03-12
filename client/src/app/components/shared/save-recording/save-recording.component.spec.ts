@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SaveRecordingComponent } from './save-recording.component';
+import {AppMaterialModule} from '../../../app-material.module';
+import {ReactiveFormsModule} from '@angular/forms';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('SaveRecordingComponent', () => {
   let component: SaveRecordingComponent;
@@ -8,7 +11,12 @@ describe('SaveRecordingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SaveRecordingComponent ]
+      declarations: [ SaveRecordingComponent ],
+      imports: [
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        AppMaterialModule
+      ]
     })
     .compileComponents();
   }));

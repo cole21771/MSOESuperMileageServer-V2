@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {GraphInfo} from "../../../models/GraphInfo";
-import {DataService} from "../../../services/data/data.service";
+import {GraphInfo} from '../../../models/GraphInfo';
+import {DataService} from '../../../services/data/data.service';
 
 @Component({
   selector: 'app-graph',
