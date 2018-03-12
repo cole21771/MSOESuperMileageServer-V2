@@ -15,7 +15,7 @@ export class LogManager {
         this.recordedData = [];
     }
 
-    init(): void {
+    init() {
         if (!this.fs.existsSync(this.LOG_PATH)) {
             this.fs.mkdirSync(this.LOG_PATH);
         }
@@ -24,8 +24,8 @@ export class LogManager {
             this.fs.mkdirSync(this.RECORDING_PATH);
         }
 
-        const filename = new Date().toString().replace(/:/g, '-').replace(/ *\([^)]*\) */g, '');
-        this.logStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.log`);
+        const filename = this.getFormattedDate(new Date());
+        this.logStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.csv`);
 
         this.logStream.write(this.configManager.getCSVTitle(), 'utf8', err => {
             if (err) {
@@ -117,5 +117,14 @@ export class LogManager {
         });
 
         return csv + '\n';
+    }
+
+    private getFormattedDate(date: Date): string {
+        const time = date.toTimeString()
+            .replace(/G.*$/, '')    // Gets rid of crap on the end
+            .replace(' ', '')     // Gets rid of extra space left by previous replace
+            .replace(/:/g, '-');      // Replaces colons with dashes
+
+        return `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}, ${time}`;
     }
 }

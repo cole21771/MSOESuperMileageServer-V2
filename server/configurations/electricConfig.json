@@ -16,7 +16,7 @@
     {
       "label": "Joules",
       "min": 0,
-      "max": 1000000,
+      "max": null,
       "units": "J"
     },
     {
@@ -81,7 +81,7 @@
       "colors": ["#ff7f00", "#abcabc"]
     },
 	{
-	  "yAxis": "Resistance🚠",
+	  "yAxis": "Resistance",
 	  "xAxis": "Time",
 	  "colors": ["#777"]
 	},
@@ -112,7 +112,7 @@
 	  "units": "m/s"
     },
 	{
-	  "label": "Resistance🚠",
+	  "label": "Resistance",
 	  "formula": "Volts / Current",
 	  "units": "Ω"
 	},
