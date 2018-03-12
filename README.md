@@ -47,3 +47,5 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 - [ ] Allow creation of graphs
 - [ ] Allow creation of views
 - [ ] Change selected config
+- [ ] Make logins stable
+- [ ] Come up with ways to send data back
