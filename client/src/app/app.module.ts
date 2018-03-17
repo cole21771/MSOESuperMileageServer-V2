@@ -44,7 +44,7 @@ import {CalculatorComponent} from './components/pages/calculator/calculator.comp
   ],
   providers: [SocketIoService, ToolbarService, AdminGuard, ConfigService, DataService],
   bootstrap: [AppComponent],
-  entryComponents: [LoginComponent]
+  entryComponents: [LoginComponent, SaveRecordingComponent]
 })
 export class AppModule {
 }

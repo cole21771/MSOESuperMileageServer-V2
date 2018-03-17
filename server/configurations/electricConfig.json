@@ -74,27 +74,12 @@
       "yAxis": "Motor_RPM",
       "xAxis": "Distance",
       "colors": ["#0f0"]
-    },
-    {
-      "yAxis": "Speed, Small_Motor_RPM",
-      "xAxis": "Time",
-      "colors": ["#ff7f00", "#abcabc"]
-    },
-	{
-	  "yAxis": "Resistance",
-	  "xAxis": "Time",
-	  "colors": ["#777"]
-	},
-	{
-	  "yAxis": "Speed",
-	  "xAxis": "Motor_RPM",
-	  "colors": ["#10b8f7"]
-	}
+    }
   ],
   "views": [
     {
       "name": "All",
-      "graphs": [0, 1, 2, 3, 4, 5, 6, 7]
+      "graphs": [0, 1, 2, 3, 4, 5]
     },
     {
       "name": "Other",

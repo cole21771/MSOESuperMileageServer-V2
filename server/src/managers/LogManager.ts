@@ -2,17 +2,18 @@ import {Location} from '../interfaces/Location';
 import {OpenFile} from '../interfaces/OpenFile';
 import WriteStream = NodeJS.WriteStream;
 import {ConfigManager} from './ConfigManager';
+import Socket = SocketIO.Socket;
+import {Recording} from "../interfaces/Recording";
 
 export class LogManager {
     private LOG_PATH = './logs';
     private RECORDING_PATH = `${this.LOG_PATH}/recordings`;
 
-    private recordedData: number[][];
-    private openFile: OpenFile;
+    private socketRecordingMap: Map<Socket, Recording>;
     private logStream: WriteStream;
 
     constructor(private fs: any, private configManager: ConfigManager) {
-        this.recordedData = [];
+        this.socketRecordingMap = new Map();
     }
 
     init() {
@@ -42,60 +43,54 @@ export class LogManager {
             }
         });
 
-        if (this.openFile) {
-            this.recordedData.push(data);
-        }
+        this.socketRecordingMap.forEach(((recording, socket) => {
+            recording.data.push(csv);
+            this.socketRecordingMap.set(socket, recording);
+        }));
     }
 
     logLocation(location: Location): void {
 
     }
 
-    startRecording(filename: string): Promise<boolean> {
-        return new Promise(resolve => {
-            const filePath = `${this.RECORDING_PATH}/${filename}`;
-
-            this.fs.open(filePath, 'wx', (err, fd) => {
-                if (err) {
-                    console.error('LogManager, startRecording: ', err);
+    startRecording(socket: Socket): string {
+        if (!this.socketRecordingMap.get(socket)) {
+            this.socketRecordingMap.set(socket,
+                {
+                    filename: `${this.getFormattedDate(new Date())}.csv`,
+                    data: [this.configManager.getCSVTitle()]
                 }
+            );
 
-                this.openFile = {
-                    path: filePath,
-                    descriptor: fd
-                };
+            return 'Recording successfully started!';
+        }
 
-                resolve(!err);
-            });
-        });
+        return 'Recording already in progress!';
     }
 
-    stopRecording(): Promise<boolean> {
+    stopRecording(socket: Socket, filename: string): Promise<boolean> {
         return new Promise(resolve => {
-            if (this.openFile) {
-                this.fs.writeFile(this.openFile.path, this.recordedDataToCSV(this.recordedData), (writeErr) => {
+            const recording = this.socketRecordingMap.get(socket);
+            if (recording) {
+                if (!this.fs.existsSync(`${this.RECORDING_PATH}/${filename}`)) {
+                    this.fs.writeFile(filename, recording.data, err => {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
+                }
+                this.fs.writeFile(filename, (writeErr) => {
                     if (writeErr) {
                         console.error('LogManager, stopRecording', writeErr);
                         resolve(false);
                     }
-
-                    this.fs.close(this.openFile.descriptor, closeErr => {
-                        if (writeErr) {
-                            console.error('LogManager, stopRecording:', closeErr);
-                        }
-                    });
-                    this.resetRecordingData();
+                    // this.resetRecordingData();
                     resolve(true);
                 });
             }
 
             resolve(false);
         });
-    }
-
-    private resetRecordingData(): void {
-        this.openFile = undefined;
-        this.recordedData = [];
     }
 
     private recordedDataToCSV(array: number[][]): string {

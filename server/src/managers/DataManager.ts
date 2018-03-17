@@ -11,14 +11,16 @@ export class DataManager {
             socket.broadcast.emit('newData', data);
         });
 
-        socket.on('startRecording', (filename, callback) => {
-            this.logger.startRecording(filename).then(isSuccessful => {
-                callback(isSuccessful);
-            });
+        socket.on('newLocation', location => {
+            console.log(location);
         });
 
-        socket.on('stopRecording', (undefined, callback) => {
-            this.logger.stopRecording().then(isSuccessful => {
+        socket.on('startRecording', (undefined, callback) => {
+            callback(this.logger.startRecording(socket));
+        });
+
+        socket.on('stopRecording', (filename, callback) => {
+            this.logger.stopRecording(socket, filename).then(isSuccessful => {
                 callback(isSuccessful);
             });
         });
