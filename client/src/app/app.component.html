@@ -1,0 +1,34 @@
+<div [class.dark-theme]="isDarkTheme">
+  <app-toolbar [sidenav]="sidenav"></app-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav class="sidenav" id="sidenav">
+      <button [routerLink]="['']" color="accent" mat-raised-button (click)="sidenav.close()">
+        Home
+      </button>
+      <br>
+      <button [routerLink]="['/review-data']" color="accent" mat-raised-button
+              (click)="sidenav.close()">Review Data
+      </button>
+      <br>
+      <button [routerLink]="['/calculator']" color="accent" mat-raised-button
+              (click)="sidenav.close()">Calculator
+      </button>
+      <br>
+      <span class="spacer"></span>
+      <button *ngIf="!isLoggedIn" color="accent" mat-raised-button (click)="this.openLogin()">Login</button>
+
+      <button *ngIf="isLoggedIn" [routerLink]="['/admin']" color="accent" mat-raised-button
+              (click)="sidenav.close()">Admin
+      </button>
+      <br *ngIf="isLoggedIn">
+      <button *ngIf="isLoggedIn" color="accent" mat-raised-button (click)="this.logout()">Logout</button>
+      <span class="bottom-spacer"></span>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</div>

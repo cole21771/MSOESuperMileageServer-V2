@@ -1,0 +1,16 @@
+<mat-grid-list [cols]="cols" rowHeight="4:3" gutterSize="10" (window:resize)="attemptResize()">
+  <div *ngFor="let graphInfo of selectedGraphInfoArray">
+    <mat-grid-tile id="{{graphInfo.title}}" class="tile mat-elevation-z6" >
+      <mat-card class="mat-elevation-z6 card-style">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image" matTooltip="{{graphInfo.title}}"></div>
+          <mat-card-title>{{graphInfo.title}}</mat-card-title>
+          <mat-card-subtitle>{{graphInfo.units}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="inherit">
+          <app-graph [showXAxis]="cols !== 1" [graphInfo]="graphInfo" class="inherit"></app-graph>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </div>
+</mat-grid-list>

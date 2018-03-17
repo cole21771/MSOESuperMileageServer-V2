@@ -1,0 +1,16 @@
+<form [formGroup]="loginForm" novalidate>
+  <mat-form-field>
+    <input matInput formControlName="username" placeholder="Username">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput formControlName="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'">
+    <mat-icon style="cursor: pointer" matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility_off' : 'visibility'}}
+    </mat-icon>
+  </mat-form-field>
+
+  <div>
+    <button mat-raised-button color="accent" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" (click)="login()">Login</button>
+  </div>
+</form>
