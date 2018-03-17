@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
 import {isSuccess} from '@angular/http/src/http_utils';
+import {Response} from "../../models/interfaces/Response";
 
 @Injectable()
 export class SocketIoService {
@@ -125,10 +126,10 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  startRecording(): Promise<string> {
+  startRecording(): Promise<Response> {
     return new Promise(resolve => {
-      this.socket.emit('startRecording', undefined, message => {
-        resolve(message);
+      this.socket.emit('startRecording', undefined, response => {
+        resolve(response);
       });
     });
   }
@@ -141,10 +142,10 @@ export class SocketIoService {
     });
   }
 
-  stopRecording(filename: string): Promise<string> {
+  stopRecording(filename: string): Promise<Response> {
     return new Promise((resolve) => {
-      this.socket.emit('stopRecording', filename, message => {
-        resolve(message);
+      this.socket.emit('stopRecording', filename, response => {
+        resolve(response);
       });
     });
   }

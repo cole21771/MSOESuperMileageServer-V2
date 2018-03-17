@@ -3,7 +3,7 @@ import {ToolbarService} from '../../../services/toolbar/toolbar.service';
 import {ConfigService} from '../../../services/config/config.service';
 import {View} from '../../../models/interfaces/View';
 import {Router} from '@angular/router';
-import {MatDialog, MatSidenav, MatSnackBar} from '@angular/material';
+import {MatDialog, MatIconRegistry, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {SaveRecordingComponent} from '../save-recording/save-recording.component';
 
@@ -15,6 +15,7 @@ import {SaveRecordingComponent} from '../save-recording/save-recording.component
 export class ToolbarComponent implements OnInit {
   @Input() sidenav: MatSidenav;
   public selectedView: View;
+  public isRecording = false;
 
   constructor(private toolbarService: ToolbarService,
               private configService: ConfigService,
@@ -60,34 +61,31 @@ export class ToolbarComponent implements OnInit {
   }
 
   startRecording() {
-    this.socket.startRecording().then(message => {
-      this.showDialog(message);
-    });
-
-    const dialogRef = this.dialog.open(SaveRecordingComponent, {
-      width: '200px',
-      height: '100px'
+    this.socket.startRecording().then(response => {
+      this.isRecording = response.successful;
+      this.showDialog(response.message);
     });
   }
 
   stopRecording() {
     const dialogRef = this.dialog.open(SaveRecordingComponent, {
-      width: '200px',
-      height: '100px'
+      width: '300px',
+      height: '200px'
     });
 
-    dialogRef.afterClosed().subscribe((filename) => {
-      this.socket.stopRecording(filename).then(message => {
-        this.showDialog(message);
-      });
+    dialogRef.afterClosed().subscribe(filename => {
+      if (filename) {
+        this.socket.stopRecording(filename).then(response => {
+          if (response.successful) {
+            this.isRecording = false;
+          }
+          this.showDialog(response.message);
+        });
+      }
     });
-  }
-
-  get isRecording(): boolean {
-    return false;
   }
 
   private showDialog(message: string): void {
-    this.snackBar.open(message, undefined, {duration: 2000});
+    this.snackBar.open(message, undefined, {duration: 3000});
   }
 }

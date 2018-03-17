@@ -19,10 +19,12 @@ export class DataManager {
             callback(this.logger.startRecording(socket));
         });
 
-        socket.on('stopRecording', (filename, callback) => {
-            this.logger.stopRecording(socket, filename).then(isSuccessful => {
-                callback(isSuccessful);
-            });
+        socket.on('stopRecording', async (filename, callback) => {
+            callback(await this.logger.stopRecording(socket, filename));
+        });
+
+        socket.on('doesFileExist', async (filename, callback) => {
+            callback(await this.logger.doesFileExist(filename));
         });
     }
 }

@@ -1,9 +1,10 @@
 import {Location} from '../interfaces/Location';
 import {OpenFile} from '../interfaces/OpenFile';
+import Socket = SocketIO.Socket;
+import {Recording} from '../interfaces/Recording';
+import {Response} from '../interfaces/Response';
 import WriteStream = NodeJS.WriteStream;
 import {ConfigManager} from './ConfigManager';
-import Socket = SocketIO.Socket;
-import {Recording} from "../interfaces/Recording";
 
 export class LogManager {
     private LOG_PATH = './logs';
@@ -44,7 +45,7 @@ export class LogManager {
         });
 
         this.socketRecordingMap.forEach(((recording, socket) => {
-            recording.data.push(csv);
+            recording.data += csv;
             this.socketRecordingMap.set(socket, recording);
         }));
     }
@@ -53,43 +54,55 @@ export class LogManager {
 
     }
 
-    startRecording(socket: Socket): string {
+    startRecording(socket: Socket): Response {
         if (!this.socketRecordingMap.get(socket)) {
             this.socketRecordingMap.set(socket,
                 {
                     filename: `${this.getFormattedDate(new Date())}.csv`,
-                    data: [this.configManager.getCSVTitle()]
+                    data: this.configManager.getCSVTitle()
                 }
             );
-
-            return 'Recording successfully started!';
+            return {
+                successful: true,
+                message: 'Recording successfully started!'
+            };
         }
 
-        return 'Recording already in progress!';
+        return {
+            successful: false,
+            message: 'Recording already in progress!'
+        };
     }
 
-    stopRecording(socket: Socket, filename: string): Promise<boolean> {
+    stopRecording(socket: Socket, filename: string): Promise<Response> {
         return new Promise(resolve => {
             const recording = this.socketRecordingMap.get(socket);
+            console.log(recording);
             if (recording) {
                 if (!this.fs.existsSync(`${this.RECORDING_PATH}/${filename}`)) {
-                    this.fs.writeFile(filename, recording.data, err => {
-                        if (err) {
-                            console.error(err);
+                    this.fs.writeFile(`${this.RECORDING_PATH}/${filename}`, recording.data, (writeErr) => {
+                        if (writeErr) {
+                            console.error('LogManager, stopRecording', writeErr);
+                            resolve({successful: false, message: 'Problem writing file!'});
                         }
-                    });
-                }
-                this.fs.writeFile(filename, (writeErr) => {
-                    if (writeErr) {
-                        console.error('LogManager, stopRecording', writeErr);
-                        resolve(false);
-                    }
-                    // this.resetRecordingData();
-                    resolve(true);
-                });
-            }
 
-            resolve(false);
+                        this.socketRecordingMap.delete(socket);
+                        resolve({successful: true, message: 'Recording saved as ' + filename});
+                    });
+                } else {
+                    resolve({successful: false, message: 'File with that name already exists!'});
+                }
+            } else {
+                resolve({successful: false, message: `How did you stop a recording you didn't start?`});
+            }
+        });
+    }
+
+    doesFileExist(filename: string): Promise<boolean> {
+        return new Promise(resolve => {
+            this.fs.exists(filename, exists => {
+                resolve(exists);
+            });
         });
     }
 

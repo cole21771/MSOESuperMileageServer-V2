@@ -12,7 +12,8 @@ import {View} from './models/interfaces/View';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  viewProviders: [MatIconRegistry]
 })
 export class AppComponent implements OnInit {
   public isLoggedIn: Boolean = false;
@@ -24,11 +25,17 @@ export class AppComponent implements OnInit {
               private snackBar: MatSnackBar,
               private registry: MatIconRegistry,
               private sanitizer: DomSanitizer) {
+    this.registry.addSvgIcon('moon',
+      this.sanitizer.bypassSecurityTrustResourceUrl('./assets/moon.svg')); // TODO this still doesn't work
+
+    this.registry.getNamedSvgIcon('moon').subscribe(value => {
+      // document.getElementById('fuggo').outerHTML = value.outerHTML;
+      console.log('', value);
+    });
   }
 
   ngOnInit() {
-    this.registry.addSvgIcon('moon',
-      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/moon.svg')); // TODO this still doesn't work
+
   }
 
   openLogin() {

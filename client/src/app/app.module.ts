@@ -21,6 +21,8 @@ import {ReviewDataComponent} from './components/pages/review-data/review-data.co
 import {HomeComponent} from './components/pages/home/home.component';
 import {AdminComponent} from './components/pages/admin/admin.component';
 import {CalculatorComponent} from './components/pages/calculator/calculator.component';
+import {HttpClientModule} from '@angular/common/http';
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import {CalculatorComponent} from './components/pages/calculator/calculator.comp
     BrowserAnimationsModule,
     LineChartModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    CommonModule,
     AppRoutingModule,
     AppMaterialModule
   ],
