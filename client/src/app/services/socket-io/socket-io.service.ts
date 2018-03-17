@@ -3,7 +3,7 @@ import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
 import {isSuccess} from '@angular/http/src/http_utils';
-import {Response} from "../../models/interfaces/Response";
+import {Response} from '../../models/interfaces/Response';
 
 @Injectable()
 export class SocketIoService {
