@@ -6,8 +6,6 @@ import {ToolbarService} from './services/toolbar/toolbar.service';
 import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LoginData} from './models/interfaces/LoginData';
-import {ConfigService} from './services/config/config.service';
-import {View} from './models/interfaces/View';
 
 @Component({
   selector: 'app-root',
@@ -25,17 +23,11 @@ export class AppComponent implements OnInit {
               private snackBar: MatSnackBar,
               private registry: MatIconRegistry,
               private sanitizer: DomSanitizer) {
-    this.registry.addSvgIcon('moon',
-      this.sanitizer.bypassSecurityTrustResourceUrl('./assets/moon.svg')); // TODO this still doesn't work
-
-    this.registry.getNamedSvgIcon('moon').subscribe(value => {
-      // document.getElementById('fuggo').outerHTML = value.outerHTML;
-      console.log('', value);
-    });
   }
 
   ngOnInit() {
-
+    this.registry.addSvgIcon('moon',
+      this.sanitizer.bypassSecurityTrustResourceUrl('./assets/moon.svg'));
   }
 
   openLogin() {
