@@ -62,15 +62,9 @@ export class LogManager {
                     data: this.configManager.getCSVTitle()
                 }
             );
-            return {
-                error: false,
-                message: 'Recording successfully started!'
-            };
+            return {error: false, message: 'Recording successfully started!'};
         } else {
-            return {
-                error: true,
-                message: 'Recording already in progress!'
-            };
+            return {error: true, message: 'Recording already in progress!'};
         }
     }
 
@@ -103,15 +97,6 @@ export class LogManager {
                 resolve(exists);
             });
         });
-    }
-
-    private recordedDataToCSV(array: number[][]): string {
-        let csv = this.configManager.getCSVTitle();
-        array.forEach((data: any[]) => {
-            csv += this.dataToCSV(data);
-        });
-
-        return csv;
     }
 
     private dataToCSV(data: number[]): string {
