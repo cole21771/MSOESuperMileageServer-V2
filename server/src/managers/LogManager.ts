@@ -10,11 +10,11 @@ export class LogManager {
     private LOG_PATH = './logs';
     private RECORDING_PATH = `${this.LOG_PATH}/recordings`;
 
-    private socketRecordingMap: Map<Socket, Recording>;
+    private uuidRecordingMap: Map<string, Recording>;
     private logStream: WriteStream;
 
     constructor(private fs: any, private configManager: ConfigManager) {
-        this.socketRecordingMap = new Map();
+        this.uuidRecordingMap = new Map();
     }
 
     init() {
@@ -26,7 +26,7 @@ export class LogManager {
             this.fs.mkdirSync(this.RECORDING_PATH);
         }
 
-        const filename = this.getFormattedDate(new Date());
+        const filename = this.getFormattedDate();
         this.logStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.csv`);
 
         this.logStream.write(this.configManager.getCSVTitle(), 'utf8', err => {
@@ -44,9 +44,9 @@ export class LogManager {
             }
         });
 
-        this.socketRecordingMap.forEach(((recording, socket) => {
+        this.uuidRecordingMap.forEach(((recording, uuid) => {
             recording.data += csv;
-            this.socketRecordingMap.set(socket, recording);
+            this.uuidRecordingMap.set(uuid, recording);
         }));
     }
 
@@ -54,46 +54,45 @@ export class LogManager {
 
     }
 
-    startRecording(socket: Socket): Response {
-        if (!this.socketRecordingMap.get(socket)) {
-            this.socketRecordingMap.set(socket,
+    startRecording(uuid: string): Response {
+        if (this.uuidRecordingMap.get(uuid) === undefined) {
+            this.uuidRecordingMap.set(uuid,
                 {
-                    filename: `${this.getFormattedDate(new Date())}.csv`,
+                    filename: `${this.getFormattedDate()}.csv`,
                     data: this.configManager.getCSVTitle()
                 }
             );
             return {
-                successful: true,
+                error: false,
                 message: 'Recording successfully started!'
             };
+        } else {
+            return {
+                error: true,
+                message: 'Recording already in progress!'
+            };
         }
-
-        return {
-            successful: false,
-            message: 'Recording already in progress!'
-        };
     }
 
-    stopRecording(socket: Socket, filename: string): Promise<Response> {
+    stopRecording(uuid: string, filename: string): Promise<Response> {
         return new Promise(resolve => {
-            const recording = this.socketRecordingMap.get(socket);
-            console.log(recording);
-            if (recording) {
+            const recording = this.uuidRecordingMap.get(uuid);
+            if (recording !== undefined) {
                 if (!this.fs.existsSync(`${this.RECORDING_PATH}/${filename}`)) {
                     this.fs.writeFile(`${this.RECORDING_PATH}/${filename}`, recording.data, (writeErr) => {
                         if (writeErr) {
                             console.error('LogManager, stopRecording', writeErr);
-                            resolve({successful: false, message: 'Problem writing file!'});
+                            resolve({error: true, message: 'Problem writing file!'});
                         }
 
-                        this.socketRecordingMap.delete(socket);
-                        resolve({successful: true, message: 'Recording saved as ' + filename});
+                        this.uuidRecordingMap.delete(uuid);
+                        resolve({error: false, message: 'Recording saved as ' + filename});
                     });
                 } else {
-                    resolve({successful: false, message: 'File with that name already exists!'});
+                    resolve({error: true, message: 'File with that name already exists!'});
                 }
             } else {
-                resolve({successful: false, message: `How did you stop a recording you didn't start?`});
+                resolve({error: true, message: `How did you stop a recording you didn't start?`});
             }
         });
     }
@@ -127,7 +126,7 @@ export class LogManager {
         return csv + '\n';
     }
 
-    private getFormattedDate(date: Date): string {
+    private getFormattedDate(date = new Date()): string {
         const time = date.toTimeString()
             .replace(/G.*$/, '')    // Gets rid of crap on the end
             .replace(' ', '')     // Gets rid of extra space left by previous replace

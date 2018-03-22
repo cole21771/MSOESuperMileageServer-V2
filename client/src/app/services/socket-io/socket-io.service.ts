@@ -11,10 +11,13 @@ export class SocketIoService {
 
   private newDataEmitter: EventEmitter<any> = new EventEmitter<any>();
   private newLocationEmitter: EventEmitter<any> = new EventEmitter<any>();
+  private uuid: string;
 
   constructor() {
     this.socket = io();
     this.setupPerformanceMonitor();
+    this.uuid = this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+      this.s4() + '-' + this.s4() + this.s4() + this.s4();
   }
 
   /**
@@ -51,6 +54,12 @@ export class SocketIoService {
     this.socket.connect();
   }
 
+  private s4(): string {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+
   /**
    * Sends a request to the server to get the selected configuration.
    *
@@ -58,7 +67,7 @@ export class SocketIoService {
    */
   getSelectedConfig(): Promise<Config> {
     return new Promise(resolve => {
-      this.socket.emit('getSelectedConfig', undefined, dataFormat => {
+      this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
         resolve(dataFormat);
       });
     });
@@ -96,7 +105,7 @@ export class SocketIoService {
    * Makes a login attempt with the provided LoginData
    *
    * @param data the loginData sent to the server
-   * @returns {Promise<boolean>} a promise holding the a boolean that says whether or not the login was successful
+   * @returns {Promise<boolean>} a promise holding the a boolean that says whether or not the login was error
    */
   attemptLogin(data: LoginData): Promise<boolean> {
     return new Promise(resolve => {
@@ -128,7 +137,7 @@ export class SocketIoService {
 
   startRecording(): Promise<Response> {
     return new Promise(resolve => {
-      this.socket.emit('startRecording', undefined, response => {
+      this.socket.emit('startRecording', this.uuid, (response) => {
         resolve(response);
       });
     });
@@ -136,7 +145,7 @@ export class SocketIoService {
 
   doesFileExist(filename: string): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('doesFileExist', filename, fileExistsStatus => {
+      this.socket.emit('doesFileExist', filename, (fileExistsStatus) => {
         resolve(fileExistsStatus);
       });
     });
@@ -144,7 +153,7 @@ export class SocketIoService {
 
   stopRecording(filename: string): Promise<Response> {
     return new Promise((resolve) => {
-      this.socket.emit('stopRecording', filename, response => {
+      this.socket.emit('stopRecording', this.uuid, filename, (response) => {
         resolve(response);
       });
     });
