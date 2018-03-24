@@ -17,32 +17,4 @@ Run `npm run production` for a production server. Then navigate to `http://local
 ### Linux
 Run `npm run production-linux` for a linux ready production server. Then navigate to `http://localhost:3000`
 
-## Endpoints
-All network communication is done with Socket.IO
-
-## TODO List
-### Priority Tasks
-- [ ] Redesign AppComponent
-- [ ] Add tests everywhere
-
-### Dev Tasks
-- [ ] Convert the application to a PWA
-- [ ] Research Service runner production instance with auto release pulling
-
-### Location Stuffs
-- [ ] Start Component Inheritance For Map
-- [ ] Find a Angular 5 Google Maps library
-- [ ] Create LocationService
-
-### Review Data
-- [ ] Lots of stuff
-
-### Home
-- [X] Graph Views
-- [ ] Display Always
-
-### Admin
-- [ ] Allow creation of graphs
-- [ ] Allow creation of views
-- [ ] Change selected config
-- [ ] Come up with ways to send data back
+[TODO List](https://github.com/cole21771/MSOESuperMileageServer-V2/wiki/TODO-List)
