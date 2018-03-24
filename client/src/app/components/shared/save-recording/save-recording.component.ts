@@ -53,4 +53,8 @@ export class SaveRecordingComponent implements OnInit {
     }
   }
 
+  close(): void {
+    this.dialogRef.close();
+  }
+
 }
