@@ -7,8 +7,13 @@ export class DataManager {
 
     public init(socket: Socket) {
         socket.on('newData', (data) => {
-            this.logger.logData(JSON.parse(data));
-            socket.broadcast.emit('newData', data);
+            const parsedData = JSON.parse(data);
+            if (Array.isArray(parsedData)) {
+                this.logger.logData(parsedData);
+                socket.broadcast.emit('newData', data);
+            } else {
+                console.error('DataManager, newData:', 'parsedData is not an Array!`');
+            }
         });
 
         socket.on('newLocation', (location) => {

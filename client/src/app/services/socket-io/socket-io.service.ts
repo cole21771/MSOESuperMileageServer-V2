@@ -2,7 +2,6 @@ import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
-import {isSuccess} from '@angular/http/src/http_utils';
 import {Response} from '../../models/interfaces/Response';
 
 @Injectable()
@@ -21,23 +20,16 @@ export class SocketIoService {
   }
 
   /**
-   * This is the performance monitor which will disconnect from the server when it notices that
-   * the user is no longer focused on rendering this application.
+   * TODO documentation
    */
   private setupPerformanceMonitor() {
-    setTimeout(() => {
-      let lastPerformance = 0;
-      setInterval(() => {
-        const currentPerformance = performance.now();
-
-        if (currentPerformance - lastPerformance > 920 && this.socket.connected) {
-          this.disconnect();
-        } else if (currentPerformance - lastPerformance < 920 && !this.socket.connected) {
-          this.reconnect();
-        }
-        lastPerformance = currentPerformance;
-      }, 700);
-    }, 5000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.disconnect();
+      } else {
+        this.reconnect();
+      }
+    });
   }
 
   /**
@@ -65,7 +57,7 @@ export class SocketIoService {
    *
    * @returns {Promise<Config>} a Promise holding the Config file.
    */
-  getSelectedConfig(): Promise<Config> {
+  getSelectedConfig(): Promise<Response<Config>> {
     return new Promise(resolve => {
       this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
         resolve(dataFormat);
@@ -135,7 +127,7 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  startRecording(): Promise<Response> {
+  startRecording(): Promise<Response<string>> {
     return new Promise(resolve => {
       this.socket.emit('startRecording', this.uuid, (response) => {
         resolve(response);
@@ -151,7 +143,7 @@ export class SocketIoService {
     });
   }
 
-  stopRecording(filename: string): Promise<Response> {
+  stopRecording(filename: string): Promise<Response<string>> {
     return new Promise((resolve) => {
       this.socket.emit('stopRecording', this.uuid, filename, (response) => {
         resolve(response);

@@ -1,5 +1,6 @@
 import {ServerConfig} from '../interfaces/ServerConfig';
 import Socket = SocketIO.Socket;
+import {error} from "util";
 
 /**
  * A class that holds all of the socket.io listeners for anything related to
@@ -25,9 +26,14 @@ export class ConfigManager {
         /**
          * A listener for any clients to use to get the current selected configuration file.
          */
-        socket.on('getSelectedConfig', (data, callback) => {
+        socket.on('getSelectedConfig', (undefined, callback) => {
             this.fs.readFile(`${this.CONFIG_PATH}/${this.serverConfig.selectedConfig}`, 'utf8', (err, file) => {
-                callback(JSON.parse(file));
+                if (err) {
+                    const errorString = 'ConfigManager, getSelectedConfig: ' + err;
+                    console.error(errorString);
+                    callback({error: true, data: errorString});
+                }
+                callback({error: false, data: JSON.parse(file)});
             });
         });
 
@@ -40,7 +46,7 @@ export class ConfigManager {
                 this.fs.writeFileSync(this.SERVER_CONFIG_PATH, this.serverConfig, 'utf8');
                 callback(true);
             } else {
-                callback('File doesn\'t exist!');
+                callback(`File doesn't exist!`);
             }
         });
 
@@ -62,7 +68,7 @@ export class ConfigManager {
             if (this.fs.existsSync(`${this.CONFIG_PATH}/${data.filename}`)) {
                 this.fs.writeFileSync(`${this.CONFIG_PATH}/${data.filename}`, data.config, 'utf8');
             } else {
-                callback('Can\'t update a file that doesn\'t exist!');
+                callback(`Can't update a file that doesn't exist!`);
             }
         });
     }

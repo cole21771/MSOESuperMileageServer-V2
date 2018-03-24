@@ -54,7 +54,7 @@ export class LogManager {
 
     }
 
-    startRecording(uuid: string): Response {
+    startRecording(uuid: string): Response<string> {
         if (this.uuidRecordingMap.get(uuid) === undefined) {
             this.uuidRecordingMap.set(uuid,
                 {
@@ -62,31 +62,35 @@ export class LogManager {
                     data: this.configManager.getCSVTitle()
                 }
             );
-            return {error: false, message: 'Recording successfully started!'};
+            return {error: false, data: 'Recording successfully started!'};
         } else {
-            return {error: true, message: 'Recording already in progress!'};
+            return {error: true, data: 'Recording already in progress!'};
         }
     }
 
-    stopRecording(uuid: string, filename: string): Promise<Response> {
+    stopRecording(uuid: string, filename?: string): Promise<Response<string>> {
         return new Promise(resolve => {
             const recording = this.uuidRecordingMap.get(uuid);
             if (recording !== undefined) {
-                if (!this.fs.existsSync(`${this.RECORDING_PATH}/${filename}`)) {
-                    this.fs.writeFile(`${this.RECORDING_PATH}/${filename}`, recording.data, (writeErr) => {
+                if (filename) {
+                    recording.filename = filename;
+                }
+
+                if (!this.fs.existsSync(`${this.RECORDING_PATH}/${recording.filename}`)) {
+                    this.fs.writeFile(`${this.RECORDING_PATH}/${recording.filename}`, recording.data, (writeErr) => {
                         if (writeErr) {
                             console.error('LogManager, stopRecording', writeErr);
-                            resolve({error: true, message: 'Problem writing file!'});
+                            resolve({error: true, data: 'Problem writing file!'});
                         }
 
                         this.uuidRecordingMap.delete(uuid);
-                        resolve({error: false, message: 'Recording saved as ' + filename});
+                        resolve({error: false, data: 'Recording saved as ' + recording.filename});
                     });
                 } else {
-                    resolve({error: true, message: 'File with that name already exists!'});
+                    resolve({error: true, data: 'File with that name already exists!'});
                 }
             } else {
-                resolve({error: true, message: `How did you stop a recording you didn't start?`});
+                resolve({error: true, data: `How did you stop a recording you didn't start?`});
             }
         });
     }

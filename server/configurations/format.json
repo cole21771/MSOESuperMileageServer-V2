@@ -1,8 +1,9 @@
 {
+  "name": "string",
   "vehicleType": "string",
   "incomingData": [
     {
-      "label": "string (unique identifier)",
+      "label": "string",
       "min": "number",
       "max": "number",
       "units": "string"
@@ -10,8 +11,8 @@
   ],
   "graphs": [
     {
-      "xAxis": "label string",
-      "yAxis": "label string",
+      "xAxis": "string",
+      "yAxis": "string",
       "color": "string"
     }
   ],
