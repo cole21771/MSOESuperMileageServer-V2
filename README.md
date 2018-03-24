@@ -26,11 +26,6 @@ All network communication is done with Socket.IO
 - [ ] Redesign AppComponent
 - [ ] Add tests everywhere
 
-### Logging
-- [ ] Move recording to toolbar
-- [ ] Decide if per user or server wide
-- [ ] Figure out if users need to be logged in to start a recording
-
 ### Dev Tasks
 - [ ] Fix routing problems with express
 - [ ] Convert the application to a PWA
