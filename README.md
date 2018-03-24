@@ -22,17 +22,15 @@ All network communication is done with Socket.IO
 
 ## TODO List
 ### Priority Tasks
-- [X] Redesign CommunicatorService
 - [ ] Redesign AppComponent
 - [ ] Add tests everywhere
 
 ### Dev Tasks
-- [ ] Fix routing problems with express
 - [ ] Convert the application to a PWA
 - [ ] Research Service runner production instance with auto release pulling
 
 ### Location Stuffs
-- [ ] Decide on how the location will be shown and where to access the Map
+- [ ] Start Component Inheritance For Map
 - [ ] Find a Angular 5 Google Maps library
 - [ ] Create LocationService
 
@@ -47,5 +45,4 @@ All network communication is done with Socket.IO
 - [ ] Allow creation of graphs
 - [ ] Allow creation of views
 - [ ] Change selected config
-- [ ] Make logins stable
 - [ ] Come up with ways to send data back
