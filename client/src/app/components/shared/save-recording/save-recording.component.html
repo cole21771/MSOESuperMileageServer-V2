@@ -11,7 +11,7 @@
     <button mat-raised-button color="primary" type="submit" (click)="save()"
             [disabled]="!form.controls.filename.valid">Save
     </button>
-    <button mat-raised-button color="accent" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="accent" (click)="close()">Cancel</button>
   </mat-dialog-actions>
 
   <div *ngIf="!form.controls.filename.valid">
