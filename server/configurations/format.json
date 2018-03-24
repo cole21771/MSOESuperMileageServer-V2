@@ -1,0 +1,28 @@
+{
+  "name": "string",
+  "vehicleType": "string",
+  "incomingData": [
+    {
+      "label": "string",
+      "min": "number",
+      "max": "number",
+      "units": "string"
+    }
+  ],
+  "graphs": [
+    {
+      "xAxis": "string",
+      "yAxis": "string",
+      "color": "string"
+    }
+  ],
+  "models": [
+    {
+      "label": "string",
+      "formula": "label1 * label2"
+    }
+  ],
+  "displayAlways": [
+	"label1", "label2"
+  ]
+}

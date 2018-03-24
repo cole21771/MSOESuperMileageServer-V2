@@ -1,26 +1,56 @@
 # MSOESuperMileageServerV2
+Development of this project is done in Jetbrains Webstorm with Node.js LTS
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.3.
+## Installation
+Navigate to the `client` folder.
+Open a command prompt and run `npm install`
+
+Navigate to the `server` folder.
+Open a command prompt and run `npm install`
 
 ## Development server
-
 Run `npm start` for a dev server. Navigate to `http://localhost:3000`. The app will automatically reload if you change any of the source files.
 
 ## Production server
+### Windows
+Run `npm run production` for a production server. Then navigate to `http://localhost:3000`.
+### Linux
+Run `npm run production-linux` for a linux ready production server. Then navigate to `http://localhost:3000`
 
-Run `npm run-script production` for a production server. Navigate to `http://localhost:3000`.
+## Endpoints
+All network communication is done with Socket.IO
 
-## Running unit tests
+## TODO List
+### Priority Tasks
+- [X] Redesign CommunicatorService
+- [ ] Redesign AppComponent
+- [ ] Add tests everywhere
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Logging
+- [ ] Move recording to toolbar
+- [ ] Decide if per user or server wide
+- [ ] Figure out if users need to be logged in to start a recording
 
+### Dev Tasks
+- [ ] Fix routing problems with express
+- [ ] Convert the application to a PWA
+- [ ] Research Service runner production instance with auto release pulling
 
-## Communication with App
-### Request Configuration File
-Event: "getConfig", Parameters: undefined, Callback: (configJSON)
+### Location Stuffs
+- [ ] Decide on how the location will be shown and where to access the Map
+- [ ] Find a Angular 5 Google Maps library
+- [ ] Create LocationService
 
-### Send new data
-Event: "newData", Parameters: "[data]", Callback: undefined
+### Review Data
+- [ ] Lots of stuff
 
-### Authentication
-Event: "appAuth", Parameters: undefined, Callback: undefined 
+### Home
+- [X] Graph Views
+- [ ] Display Always
+
+### Admin
+- [ ] Allow creation of graphs
+- [ ] Allow creation of views
+- [ ] Change selected config
+- [ ] Make logins stable
+- [ ] Come up with ways to send data back
