@@ -60,9 +60,4 @@ export class GraphInfo {
 
     this.chartData = [...this.chartData];
   }
-
-  // TODO Fix this
-  get isValid(): boolean {
-    return true;
-  }
 }

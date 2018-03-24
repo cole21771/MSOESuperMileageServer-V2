@@ -62,24 +62,24 @@ export class ToolbarComponent implements OnInit {
 
   startRecording() {
     this.socket.startRecording().then(response => {
-      this.isRecording = response.successful;
-      this.showDialog(response.message);
+      this.isRecording = true;
+      this.showDialog(response.data);
     });
   }
 
   stopRecording() {
     const dialogRef = this.dialog.open(SaveRecordingComponent, {
-      width: '300px',
-      height: '200px'
+      width: '280px',
+      height: '270px'
     });
 
     dialogRef.afterClosed().subscribe(filename => {
       if (filename) {
         this.socket.stopRecording(filename).then(response => {
-          if (response.successful) {
+          if (!response.error) {
             this.isRecording = false;
           }
-          this.showDialog(response.message);
+          this.showDialog(response.data);
         });
       }
     });

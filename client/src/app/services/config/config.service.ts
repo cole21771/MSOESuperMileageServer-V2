@@ -28,7 +28,11 @@ export class ConfigService {
   }
 
   private async setupConfig() {
-    this.config = await this.socketService.getSelectedConfig();
+    const response = await this.socketService.getSelectedConfig();
+    if (response.error) {
+      throw new Error('ConfigService, setupConfig: ' + response.errorMessage);
+    }
+    this.config = response.data;
 
     this.dataModels = this.config.models.filter(this.isValidModel.bind(this))
       .map(this.createDataModel.bind(this));

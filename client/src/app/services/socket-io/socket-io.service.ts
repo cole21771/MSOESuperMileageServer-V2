@@ -1,8 +1,7 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, HostListener, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
-import {isSuccess} from '@angular/http/src/http_utils';
 import {Response} from '../../models/interfaces/Response';
 
 @Injectable()
@@ -11,30 +10,30 @@ export class SocketIoService {
 
   private newDataEmitter: EventEmitter<any> = new EventEmitter<any>();
   private newLocationEmitter: EventEmitter<any> = new EventEmitter<any>();
+  private uuid: string;
 
   constructor() {
     this.socket = io();
     this.setupPerformanceMonitor();
+    this.uuid = this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+      this.s4() + '-' + this.s4() + this.s4() + this.s4();
+
+    window.onbeforeunload = () => {
+      this.socket.emit('client-disconnect', this.uuid);
+    };
   }
 
   /**
-   * This is the performance monitor which will disconnect from the server when it notices that
-   * the user is no longer focused on rendering this application.
+   * Uses the Visibility API to disconnect from the server when the tab is no longer visible
    */
   private setupPerformanceMonitor() {
-    setTimeout(() => {
-      let lastPerformance = 0;
-      setInterval(() => {
-        const currentPerformance = performance.now();
-
-        if (currentPerformance - lastPerformance > 920 && this.socket.connected) {
-          this.disconnect();
-        } else if (currentPerformance - lastPerformance < 920 && !this.socket.connected) {
-          this.reconnect();
-        }
-        lastPerformance = currentPerformance;
-      }, 700);
-    }, 5000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.disconnect();
+      } else {
+        this.reconnect();
+      }
+    });
   }
 
   /**
@@ -51,14 +50,20 @@ export class SocketIoService {
     this.socket.connect();
   }
 
+  private s4(): string {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+
   /**
    * Sends a request to the server to get the selected configuration.
    *
    * @returns {Promise<Config>} a Promise holding the Config file.
    */
-  getSelectedConfig(): Promise<Config> {
+  getSelectedConfig(): Promise<Response<Config>> {
     return new Promise(resolve => {
-      this.socket.emit('getSelectedConfig', undefined, dataFormat => {
+      this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
         resolve(dataFormat);
       });
     });
@@ -96,10 +101,12 @@ export class SocketIoService {
    * Makes a login attempt with the provided LoginData
    *
    * @param data the loginData sent to the server
-   * @returns {Promise<boolean>} a promise holding the a boolean that says whether or not the login was successful
+   * @returns {Promise<boolean>} a promise holding the a boolean that says whether or not the login was error
    */
   attemptLogin(data: LoginData): Promise<boolean> {
     return new Promise(resolve => {
+      data.uuid = this.uuid;
+
       this.socket.emit('attemptLogin', data, (loginSuccessful) => {
         resolve(loginSuccessful);
       });
@@ -113,7 +120,7 @@ export class SocketIoService {
    */
   isLoggedIn(): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('isLoggedIn', undefined, (isLoggedIn) => {
+      this.socket.emit('isLoggedIn', this.uuid, (isLoggedIn) => {
         resolve(isLoggedIn);
       });
     });
@@ -126,9 +133,9 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  startRecording(): Promise<Response> {
+  startRecording(): Promise<Response<string>> {
     return new Promise(resolve => {
-      this.socket.emit('startRecording', undefined, response => {
+      this.socket.emit('startRecording', this.uuid, (response) => {
         resolve(response);
       });
     });
@@ -136,15 +143,15 @@ export class SocketIoService {
 
   doesFileExist(filename: string): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('doesFileExist', filename, fileExistsStatus => {
+      this.socket.emit('doesFileExist', filename, (fileExistsStatus) => {
         resolve(fileExistsStatus);
       });
     });
   }
 
-  stopRecording(filename: string): Promise<Response> {
+  stopRecording(filename: string): Promise<Response<string>> {
     return new Promise((resolve) => {
-      this.socket.emit('stopRecording', filename, response => {
+      this.socket.emit('stopRecording', this.uuid, filename, (response) => {
         resolve(response);
       });
     });

@@ -2,6 +2,7 @@ import {AuthManager} from './AuthManager';
 import {ConfigManager} from './ConfigManager';
 import {DataManager} from './DataManager';
 import {LogManager} from './LogManager';
+import Socket = SocketIO.Socket;
 
 /**
  * Creates the different socket.io managers and initializes them
@@ -13,12 +14,12 @@ export class SocketIoEvents {
     private config: ConfigManager;
 
     constructor(private fs, private io) {
+
         this.config = new ConfigManager(this.fs);
 
         this.logger = new LogManager(this.fs, this.config);
-        this.logger.init();
 
-        this.auth = new AuthManager();
+        this.auth = new AuthManager(this.logger);
         this.data = new DataManager(this.fs, this.logger);
     }
 

@@ -6,21 +6,26 @@ export class DataManager {
     }
 
     public init(socket: Socket) {
-        socket.on('newData', data => {
-            this.logger.logData(JSON.parse(data));
-            socket.broadcast.emit('newData', data);
+        socket.on('newData', (data) => {
+            const parsedData = JSON.parse(data);
+            if (Array.isArray(parsedData)) {
+                this.logger.logData(parsedData);
+                socket.broadcast.emit('newData', data);
+            } else {
+                console.error('DataManager, newData:', 'parsedData is not an Array!`');
+            }
         });
 
-        socket.on('newLocation', location => {
+        socket.on('newLocation', (location) => {
             console.log(location);
         });
 
-        socket.on('startRecording', (undefined, callback) => {
-            callback(this.logger.startRecording(socket));
+        socket.on('startRecording', (uuid, callback) => {
+            callback(this.logger.startRecording(uuid));
         });
 
-        socket.on('stopRecording', async (filename, callback) => {
-            callback(await this.logger.stopRecording(socket, filename));
+        socket.on('stopRecording', async (uuid, filename, callback) => {
+            callback(await this.logger.stopRecording(uuid, filename));
         });
 
         socket.on('doesFileExist', async (filename, callback) => {

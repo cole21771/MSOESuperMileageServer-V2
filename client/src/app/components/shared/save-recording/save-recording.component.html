@@ -1,10 +1,20 @@
-<form [formGroup]="filenameForm" novalidate>
-  <mat-form-field>
-    <input matInput formControlName="filename" placeholder="Filename">
-  </mat-form-field>
+<h1 mat-dialog-title>Save recording as?</h1>
 
-  <div>
-    <button mat-raised-button color="primary" type="submit" (click)="save()">Save</button>
+<form [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="fullWidth">
+      <input matInput formControlName="filename" placeholder="Filename">
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" type="submit" (click)="save()"
+            [disabled]="!form.controls.filename.valid">Save
+    </button>
     <button mat-raised-button color="accent" (click)="dialogRef.close()">Cancel</button>
+  </mat-dialog-actions>
+
+  <div *ngIf="!form.controls.filename.valid">
+    <mat-error>Invalid Characters \ / : ? < > | * "</mat-error>
   </div>
 </form>

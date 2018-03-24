@@ -32,7 +32,8 @@ export class AppComponent implements OnInit {
 
   openLogin() {
     const dialogRef = this.loginDialog.open(LoginComponent, {
-      width: '250px'
+      width: '260px',
+      height: '270px'
     });
 
     dialogRef.afterClosed().subscribe((loginData: LoginData) => {

@@ -1,25 +1,19 @@
 import {LoginData} from '../interfaces/LoginData';
 import Socket = NodeJS.Socket;
+import {LogManager} from './LogManager';
 
 /**
  * A class that holds all of the socket.io listeners for anything related to user
  * authentication.
  */
 export class AuthManager {
-    private loggedInUsers: Socket[];
+    private loggedInUsers: string[];
 
-    constructor() {
+    constructor(private logger: LogManager) {
         this.loggedInUsers = [];
     }
 
     public init(socket: Socket) {
-        /**
-         * When the user disconnects from the server, their login status goes away.
-         */
-        socket.on('disconnect', () => {
-            this.loggedInUsers.splice(this.loggedInUsers.indexOf(socket), 1);
-        });
-
         /**
          * When called, it checks if the username and password match the pre-defined
          * username and password setup below and returns the status of the user.
@@ -32,7 +26,7 @@ export class AuthManager {
 
             const loggedIn = data.username === admin.username && data.password === admin.password;
             if (loggedIn) {
-                this.loggedInUsers.push(socket);
+                this.loggedInUsers.push(data.uuid);
             }
 
             callback(loggedIn);
@@ -42,15 +36,27 @@ export class AuthManager {
          * Used by the auth guard in the frontend to check whether or not this socket
          * is logged in
          */
-        socket.on('isLoggedIn', (data, callback) => {
-            callback(this.loggedInUsers.indexOf(socket) < 0);
+        socket.on('isLoggedIn', (uuid, callback) => {
+            callback(this.loggedInUsers.indexOf(uuid) >= 0);
         });
 
         /**
          * Logout listener
          */
-        socket.on('logout', () => {
-            this.loggedInUsers.splice(this.loggedInUsers.indexOf(socket), 1);
+        socket.on('logout', (uuid) => {
+            this.logout(uuid);
         });
+
+        /**
+         * When the user disconnects from the server, their login status goes away.
+         */
+        socket.on('client-disconnect', (uuid) => {
+            this.logout(uuid);
+        });
+    }
+
+    private logout(uuid: string) {
+        this.logger.stopRecording(uuid);
+        this.loggedInUsers.splice(this.loggedInUsers.indexOf(uuid));
     }
 }

@@ -1,19 +1,24 @@
 # MSOESuperMileageServerV2
+Development of this project is done in Jetbrains Webstorm with Node.js LTS
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.3.
+## Installation
+Navigate to the `client` folder.
+Open a command prompt and run `npm install`
+
+Navigate to the `server` folder.
+Open a command prompt and run `npm install`
 
 ## Development server
-
 Run `npm start` for a dev server. Navigate to `http://localhost:3000`. The app will automatically reload if you change any of the source files.
 
 ## Production server
+### Windows
+Run `npm run production` for a production server. Then navigate to `http://localhost:3000`.
+### Linux
+Run `npm run production-linux` for a linux ready production server. Then navigate to `http://localhost:3000`
 
-Run `npm run-script production` for a production server. Navigate to `http://localhost:3000`.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
+## Endpoints
+All network communication is done with Socket.IO
 
 ## TODO List
 ### Priority Tasks
