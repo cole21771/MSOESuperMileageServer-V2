@@ -24,7 +24,7 @@ export class SocketIoService {
   }
 
   /**
-   * TODO documentation
+   * Uses the Visibility API to disconnect from the server when the tab is no longer visible
    */
   private setupPerformanceMonitor() {
     document.addEventListener('visibilitychange', () => {

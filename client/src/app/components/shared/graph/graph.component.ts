@@ -16,21 +16,17 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.graphInfo.isValid) {
-      this.dataService.dataNotifier.subscribe(() => {
-        const x = this.dataService.getLatestData(this.graphInfo.xLabel);
-        const yArray = this.graphInfo.yLabels.map((label) => {
-          return this.dataService.getLatestData(label);
-        });
-
-        if (isNaN(x) || !yArray.every(y => !isNaN(y))) {
-          throw new Error(`GraphComponent, ngOnInit: ${this.graphInfo.title} encountered a problem with getting data from DataService`);
-        } else {
-          this.graphInfo.addData(x, yArray);
-        }
+    this.dataService.dataNotifier.subscribe(() => {
+      const x = this.dataService.getLatestData(this.graphInfo.xLabel);
+      const yArray = this.graphInfo.yLabels.map((label) => {
+        return this.dataService.getLatestData(label);
       });
-    } else {
-      throw new Error('Graph Information is not valid!');
-    }
+
+      if (isNaN(x) || !yArray.every(y => !isNaN(y))) {
+        throw new Error(`GraphComponent, ngOnInit: ${this.graphInfo.title} encountered a problem with getting data from DataService`);
+      } else {
+        this.graphInfo.addData(x, yArray);
+      }
+    });
   }
 }

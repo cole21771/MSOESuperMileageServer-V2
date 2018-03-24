@@ -12,8 +12,6 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate() {
-    const promise = this.socketService.isLoggedIn();
-    promise.then(console.log);
-    return promise;
+    return this.socketService.isLoggedIn();
   }
 }
