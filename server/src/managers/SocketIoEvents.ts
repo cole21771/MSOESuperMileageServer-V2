@@ -18,9 +18,8 @@ export class SocketIoEvents {
         this.config = new ConfigManager(this.fs);
 
         this.logger = new LogManager(this.fs, this.config);
-        this.logger.init();
 
-        this.auth = new AuthManager();
+        this.auth = new AuthManager(this.logger);
         this.data = new DataManager(this.fs, this.logger);
     }
 

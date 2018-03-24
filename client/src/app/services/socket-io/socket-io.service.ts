@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, HostListener, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
@@ -17,6 +17,10 @@ export class SocketIoService {
     this.setupPerformanceMonitor();
     this.uuid = this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
       this.s4() + '-' + this.s4() + this.s4() + this.s4();
+
+    window.onbeforeunload = () => {
+      this.socket.emit('client-disconnect', this.uuid);
+    };
   }
 
   /**
@@ -101,6 +105,8 @@ export class SocketIoService {
    */
   attemptLogin(data: LoginData): Promise<boolean> {
     return new Promise(resolve => {
+      data.uuid = this.uuid;
+
       this.socket.emit('attemptLogin', data, (loginSuccessful) => {
         resolve(loginSuccessful);
       });
@@ -114,7 +120,7 @@ export class SocketIoService {
    */
   isLoggedIn(): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('isLoggedIn', undefined, (isLoggedIn) => {
+      this.socket.emit('isLoggedIn', this.uuid, (isLoggedIn) => {
         resolve(isLoggedIn);
       });
     });

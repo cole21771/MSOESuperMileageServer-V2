@@ -15,6 +15,7 @@ export class LogManager {
 
     constructor(private fs: any, private configManager: ConfigManager) {
         this.uuidRecordingMap = new Map();
+        this.init();
     }
 
     init() {
