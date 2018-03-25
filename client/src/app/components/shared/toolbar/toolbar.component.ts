@@ -63,7 +63,7 @@ export class ToolbarComponent implements OnInit {
   startRecording() {
     this.socket.startRecording().then(response => {
       this.isRecording = true;
-      this.showDialog(response.data);
+      this.showDialog(response.error ? response.errorMessage : response.data);
     });
   }
 
@@ -79,7 +79,7 @@ export class ToolbarComponent implements OnInit {
           if (!response.error) {
             this.isRecording = false;
           }
-          this.showDialog(response.data);
+          this.showDialog(response.error ? response.errorMessage : response.data);
         });
       }
     });

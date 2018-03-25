@@ -15,10 +15,7 @@ export class LogManager {
 
     constructor(private fs: any, private configManager: ConfigManager) {
         this.uuidRecordingMap = new Map();
-        this.init();
-    }
 
-    init() {
         if (!this.fs.existsSync(this.LOG_PATH)) {
             this.fs.mkdirSync(this.LOG_PATH);
         }
@@ -30,25 +27,50 @@ export class LogManager {
         const filename = this.getFormattedDate();
         this.logStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.csv`);
 
-        this.logStream.write(this.configManager.getCSVTitle(), 'utf8', err => {
+        this.logStream.write(this.configManager.getCSVTitle(), 'utf8', (err) => {
             if (err) {
                 console.error(err);
             }
         });
     }
 
+    init(socket: Socket) {
+        socket.on('get-logs', (undefined, callback) => {
+            this.fs.readdir(this.LOG_PATH, 'utf8', (err, files) => {
+                this.handleError('LogManager, getLogs: ', err, callback);
+                callback({error: false, data: files.map((filename) => ({path: this.LOG_PATH, filename}))});
+            });
+        });
+
+        socket.on('get-recordings', (undefined, callback) => {
+            this.fs.readdir(this.RECORDING_PATH, (err, files) => {
+                this.handleError('LogManager, getRecordings: ', err, callback);
+                callback({error: false, data: files.map((filename) => ({path: this.RECORDING_PATH, filename}))});
+            });
+        });
+
+        socket.on('get-file', (fileInfo, callback) => {
+            this.fs.readFile(`${fileInfo.path}/${fileInfo.filename}`, (err, file) => {
+                this.handleError('LogManager, get-file:', err, () => {
+                    callback({error: true, errorMessage: 'File Not Found!'});
+                });
+                callback({error: false, data: file.toString()});
+            });
+        });
+    }
+
     logData(data: number[]): void {
         const csv = this.dataToCSV(data);
-        this.logStream.write(csv, 'utf8', err => {
+        this.logStream.write(csv, 'utf8', (err) => {
             if (err) {
                 console.error('LogManager, logData:', err);
             }
         });
 
-        this.uuidRecordingMap.forEach(((recording, uuid) => {
+        this.uuidRecordingMap.forEach((recording, uuid) => {
             recording.data += csv;
             this.uuidRecordingMap.set(uuid, recording);
-        }));
+        });
     }
 
     logLocation(location: Location): void {
@@ -57,12 +79,10 @@ export class LogManager {
 
     startRecording(uuid: string): Response<string> {
         if (this.uuidRecordingMap.get(uuid) === undefined) {
-            this.uuidRecordingMap.set(uuid,
-                {
-                    filename: `${this.getFormattedDate()}.csv`,
-                    data: this.configManager.getCSVTitle()
-                }
-            );
+            this.uuidRecordingMap.set(uuid, {
+                filename: `${this.getFormattedDate()}.csv`,
+                data: this.configManager.getCSVTitle()
+            });
             return {error: false, data: 'Recording successfully started!'};
         } else {
             return {error: true, data: 'Recording already in progress!'};
@@ -79,19 +99,18 @@ export class LogManager {
 
                 if (!this.fs.existsSync(`${this.RECORDING_PATH}/${recording.filename}`)) {
                     this.fs.writeFile(`${this.RECORDING_PATH}/${recording.filename}`, recording.data, (writeErr) => {
-                        if (writeErr) {
-                            console.error('LogManager, stopRecording', writeErr);
-                            resolve({error: true, data: 'Problem writing file!'});
-                        }
+                        this.handleError('LogManager, stopRecording', writeErr, () => {
+                            resolve({error: true, errorMessage: 'Problem writing file!'});
+                        });
 
                         this.uuidRecordingMap.delete(uuid);
                         resolve({error: false, data: 'Recording saved as ' + recording.filename});
                     });
                 } else {
-                    resolve({error: true, data: 'File with that name already exists!'});
+                    resolve({error: true, errorMessage: 'File with that name already exists!'});
                 }
             } else {
-                resolve({error: true, data: `How did you stop a recording you didn't start?`});
+                resolve({error: true, errorMessage: `How did you stop a recording you didn't start?`});
             }
         });
     }
@@ -123,5 +142,12 @@ export class LogManager {
             .replace(/:/g, '-');      // Replaces colons with dashes
 
         return `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}, ${time}`;
+    }
+
+    private handleError(location: string, err: string, callback) {
+        if (err) {
+            console.error(location, err);
+            callback({error: true, errorMessage: location + err});
+        }
     }
 }

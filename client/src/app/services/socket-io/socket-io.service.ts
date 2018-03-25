@@ -1,8 +1,9 @@
-import {EventEmitter, HostListener, Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
 import {Response} from '../../models/interfaces/Response';
+import {FileInfo} from "../../models/interfaces/FileInfo";
 
 @Injectable()
 export class SocketIoService {
@@ -150,10 +151,18 @@ export class SocketIoService {
   }
 
   stopRecording(filename: string): Promise<Response<string>> {
-    return new Promise((resolve) => {
-      this.socket.emit('stopRecording', this.uuid, filename, (response) => {
-        resolve(response);
-      });
-    });
+    return new Promise((resolve) => this.socket.emit('stopRecording', this.uuid, filename, resolve));
+  }
+
+  getLogs(): Promise<Response<FileInfo[]>> {
+    return new Promise((resolve) => this.socket.emit('get-logs', undefined, resolve));
+  }
+
+  getRecordings(): Promise<Response<FileInfo[]>> {
+    return new Promise((resolve) => this.socket.emit('get-recordings', undefined, resolve));
+  }
+
+  getFile(fileInfo: FileInfo): Promise<Response<string>> {
+    return new Promise((resolve) => this.socket.emit('get-file', fileInfo, resolve));
   }
 }

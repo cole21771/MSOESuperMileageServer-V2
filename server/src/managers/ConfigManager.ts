@@ -13,16 +13,16 @@ export class ConfigManager {
 
     constructor(private fs) {
         this.serverConfig = JSON.parse(fs.readFileSync(this.SERVER_CONFIG_PATH, 'utf8'));
+
+        if (!this.fs.existsSync(this.CONFIG_PATH)) {
+            this.fs.mkdirSync(this.CONFIG_PATH);
+        }
     }
 
     /**
      * Sets of all of the listeners for socket.io
      */
     public init(socket: Socket) {
-        if (!this.fs.existsSync(this.CONFIG_PATH)) {
-            this.fs.mkdirSync(this.CONFIG_PATH);
-        }
-
         /**
          * A listener for any clients to use to get the current selected configuration file.
          */
@@ -31,7 +31,7 @@ export class ConfigManager {
                 if (err) {
                     const errorString = 'ConfigManager, getSelectedConfig: ' + err;
                     console.error(errorString);
-                    callback({error: true, data: errorString});
+                    callback({error: true, errorMessage: errorString});
                 }
                 callback({error: false, data: JSON.parse(file)});
             });
