@@ -1,6 +1,6 @@
-import {ServerConfig} from '../interfaces/ServerConfig';
 import Socket = SocketIO.Socket;
-import {error} from "util";
+import {error} from 'util';
+import {ServerConfig} from '../interfaces/ServerConfig';
 
 /**
  * A class that holds all of the socket.io listeners for anything related to

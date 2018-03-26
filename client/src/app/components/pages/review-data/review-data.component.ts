@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Response} from '../../../models/interfaces/Response';
-import {FileInfo} from "../../../models/interfaces/FileInfo";
+import {FileInfo} from '../../../models/interfaces/FileInfo';
 
 @Component({
   selector: 'app-review-data',

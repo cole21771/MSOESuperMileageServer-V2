@@ -6,7 +6,8 @@ import {Router} from '@angular/router';
 import {MatDialog, MatIconRegistry, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {SaveRecordingComponent} from '../save-recording/save-recording.component';
-import {FileInfo} from "../../../models/interfaces/FileInfo";
+import {FileInfo} from '../../../models/interfaces/FileInfo';
+import {LogService} from '../../../services/log/log.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -21,6 +22,7 @@ export class ToolbarComponent implements OnInit {
   constructor(private toolbarService: ToolbarService,
               private configService: ConfigService,
               private socketService: SocketIoService,
+              private logService: LogService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
               private router: Router) {
@@ -82,35 +84,11 @@ export class ToolbarComponent implements OnInit {
           } else {
             this.isRecording = false;
             this.snackBar.open(response.data, 'Download', {duration: 8000})
-              .onAction().subscribe(() => this.fetchFile({path: './logs/recordings', filename}));
+              .onAction().subscribe(() => this.logService.downloadFile({path: './logs/recordings', filename}));
           }
         });
       }
     });
-  }
-
-  fetchFile(fileInfo: FileInfo): void {
-    this.socketService.getFile(fileInfo).then((response) => {
-      if (response.error) {
-        this.snackBar.open(response.errorMessage, undefined, {duration: 3000});
-        return;
-      }
-
-      this.download(response.data, fileInfo.filename);
-      this.showSnackBar('File downloaded');
-    });
-  }
-
-  private download(data: string, filename: string): void {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,'
-      + encodeURIComponent(data));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-    document.body.removeChild(element);
   }
 
   private showSnackBar(message: string): void {
