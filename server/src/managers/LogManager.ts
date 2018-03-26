@@ -115,9 +115,9 @@ export class LogManager {
         });
     }
 
-    doesFileExist(filename: string): Promise<boolean> {
+    doesRecordingExist(filename: string): Promise<boolean> {
         return new Promise(resolve => {
-            this.fs.exists(filename, exists => {
+            this.fs.exists(`${this.RECORDING_PATH}/${filename}`, exists => {
                 resolve(exists);
             });
         });

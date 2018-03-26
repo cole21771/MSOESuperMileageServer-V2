@@ -3,11 +3,12 @@ import * as io from 'socket.io-client';
 import {Config} from '../../models/interfaces/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
 import {Response} from '../../models/interfaces/Response';
-import {FileInfo} from "../../models/interfaces/FileInfo";
+import {FileInfo} from '../../models/interfaces/FileInfo';
+import Socket = SocketIOClient.Socket;
 
 @Injectable()
 export class SocketIoService {
-  private socket: SocketIOClient.Socket; // The client instance of socket.io
+  private socket: Socket; // The client instance of socket.io
 
   private newDataEmitter: EventEmitter<any> = new EventEmitter<any>();
   private newLocationEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -16,8 +17,7 @@ export class SocketIoService {
   constructor() {
     this.socket = io();
     this.setupPerformanceMonitor();
-    this.uuid = this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
-      this.s4() + '-' + this.s4() + this.s4() + this.s4();
+    this.uuid = this.createUUID();
 
     window.onbeforeunload = () => {
       this.socket.emit('client-disconnect', this.uuid);
@@ -49,12 +49,6 @@ export class SocketIoService {
    */
   private reconnect() {
     this.socket.connect();
-  }
-
-  private s4(): string {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
   }
 
   /**
@@ -142,9 +136,9 @@ export class SocketIoService {
     });
   }
 
-  doesFileExist(filename: string): Promise<boolean> {
+  doesRecordingExist(filename: string): Promise<boolean> {
     return new Promise(resolve => {
-      this.socket.emit('doesFileExist', filename, (fileExistsStatus) => {
+      this.socket.emit('doesRecordingExist', filename, (fileExistsStatus) => {
         resolve(fileExistsStatus);
       });
     });
@@ -164,5 +158,16 @@ export class SocketIoService {
 
   getFile(fileInfo: FileInfo): Promise<Response<string>> {
     return new Promise((resolve) => this.socket.emit('get-file', fileInfo, resolve));
+  }
+
+  private createUUID(): string {
+    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+      this.s4() + '-' + this.s4() + this.s4() + this.s4();
+  }
+
+  private s4(): string {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
   }
 }

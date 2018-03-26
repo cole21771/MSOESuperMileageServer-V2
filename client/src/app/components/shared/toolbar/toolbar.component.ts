@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {MatDialog, MatIconRegistry, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {SaveRecordingComponent} from '../save-recording/save-recording.component';
+import {FileInfo} from "../../../models/interfaces/FileInfo";
 
 @Component({
   selector: 'app-toolbar',
@@ -19,7 +20,7 @@ export class ToolbarComponent implements OnInit {
 
   constructor(private toolbarService: ToolbarService,
               private configService: ConfigService,
-              private socket: SocketIoService,
+              private socketService: SocketIoService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
               private router: Router) {
@@ -61,9 +62,9 @@ export class ToolbarComponent implements OnInit {
   }
 
   startRecording() {
-    this.socket.startRecording().then(response => {
+    this.socketService.startRecording().then(response => {
       this.isRecording = true;
-      this.showDialog(response.error ? response.errorMessage : response.data);
+      this.showSnackBar(response.error ? response.errorMessage : response.data);
     });
   }
 
@@ -75,17 +76,44 @@ export class ToolbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(filename => {
       if (filename) {
-        this.socket.stopRecording(filename).then(response => {
-          if (!response.error) {
+        this.socketService.stopRecording(filename).then(response => {
+          if (response.error) {
+            this.showSnackBar(response.errorMessage);
+          } else {
             this.isRecording = false;
+            this.snackBar.open(response.data, 'Download', {duration: 8000})
+              .onAction().subscribe(() => this.fetchFile({path: './logs/recordings', filename}));
           }
-          this.showDialog(response.error ? response.errorMessage : response.data);
         });
       }
     });
   }
 
-  private showDialog(message: string): void {
+  fetchFile(fileInfo: FileInfo): void {
+    this.socketService.getFile(fileInfo).then((response) => {
+      if (response.error) {
+        this.snackBar.open(response.errorMessage, undefined, {duration: 3000});
+        return;
+      }
+
+      this.download(response.data, fileInfo.filename);
+      this.showSnackBar('File downloaded');
+    });
+  }
+
+  private download(data: string, filename: string): void {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,'
+      + encodeURIComponent(data));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+    document.body.removeChild(element);
+  }
+
+  private showSnackBar(message: string): void {
     this.snackBar.open(message, undefined, {duration: 3000});
   }
 }

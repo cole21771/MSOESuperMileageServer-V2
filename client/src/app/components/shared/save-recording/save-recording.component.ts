@@ -45,7 +45,7 @@ export class SaveRecordingComponent implements OnInit {
 
   async save() {
     const filename = this.form.controls.filename.value;
-    if (!await this.socketService.doesFileExist(filename)) {
+    if (!await this.socketService.doesRecordingExist(filename)) {
       this.dialogRef.close(filename);
     } else {
       // this.dialogRef.close({error: true, data: ''});

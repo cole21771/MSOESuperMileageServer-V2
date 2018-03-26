@@ -28,8 +28,8 @@ export class DataManager {
             callback(await this.logger.stopRecording(uuid, filename));
         });
 
-        socket.on('doesFileExist', async (filename, callback) => {
-            callback(await this.logger.doesFileExist(filename));
+        socket.on('doesRecordingExist', async (filename, callback) => {
+            callback(await this.logger.doesRecordingExist(filename));
         });
     }
 }
