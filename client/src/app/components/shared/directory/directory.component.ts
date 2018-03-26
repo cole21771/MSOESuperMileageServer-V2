@@ -13,18 +13,10 @@ export class DirectoryComponent {
   @Input() dataSource: MatTableDataSource<string>;
   public displayedColumns = ['filename'];
 
-  constructor(private socketService: SocketIoService,
-              private logService: LogService,
-              private snackBar: MatSnackBar) {
+  constructor(private logService: LogService) {
   }
 
   downloadFile(fileInfo: FileInfo) {
     this.logService.downloadFile(fileInfo);
   }
-
-
-  private showSnackBar(message: string): void {
-    this.snackBar.open(message, undefined, {duration: 3000});
-  }
-
 }

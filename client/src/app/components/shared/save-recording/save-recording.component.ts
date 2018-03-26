@@ -48,8 +48,7 @@ export class SaveRecordingComponent implements OnInit {
     if (!await this.socketService.doesRecordingExist(filename)) {
       this.dialogRef.close(filename);
     } else {
-      // this.dialogRef.close({error: true, data: ''});
-      this.snackBar.open('Filename already in use!', undefined, {duration: 3000});
+      this.snackBar.open('File with that name already exists!', undefined, {duration: 3000});
     }
   }
 
