@@ -40,7 +40,7 @@ export class SaveRecordingComponent implements OnInit {
       .replace(' ', '')         // Gets rid of extra space left by previous replace
       .replace(/:/g, '-');      // Replaces colons with dashes
 
-    return `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}, ${time}.csv`;
+    return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}, ${time}.csv`;
   }
 
   async save() {

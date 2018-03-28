@@ -141,7 +141,7 @@ export class LogManager {
             .replace(' ', '')     // Gets rid of extra space left by previous replace
             .replace(/:/g, '-');      // Replaces colons with dashes
 
-        return `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}, ${time}`;
+        return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}, ${time}`;
     }
 
     private handleError(location: string, err: string, callback) {
