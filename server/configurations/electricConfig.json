@@ -2,6 +2,18 @@
   "vehicleType": "electric",
   "incomingData": [
     {
+      "label": "Time",
+      "min": 0,
+      "max": null,
+      "units": "ms"
+    },
+    {
+      "label": "Lap_Number",
+      "min": 0,
+      "max": 10,
+      "units": "Laps"
+    },
+    {
       "label": "Speed",
       "min": 0,
       "max": 35,
@@ -32,16 +44,10 @@
       "units": "A"
     },
     {
-      "label": "Lap_Number",
+      "label": "Throttle_Voltage",
       "min": 0,
-      "max": 10,
-      "units": ""
-    },
-    {
-      "label": "Time",
-      "min": 0,
-      "max": null,
-      "units": "ms"
+      "max": 3.5,
+      "units": "V"
     }
   ],
   "graphs": [
@@ -74,6 +80,16 @@
       "yAxis": "Motor_RPM",
       "xAxis": "Distance",
       "colors": ["#0f0"]
+    },
+    {
+      "yAxis": "Throttle_Voltage",
+      "xAxis": "Time",
+      "colors": ["#f00"]
+    },
+    {
+      "yAxis": "Throttle_Voltage, Motor_RPM",
+      "xAxis": "Time",
+      "colors": ["#f00", "#0f0"]
     }
   ],
   "views": [
@@ -85,10 +101,10 @@
       "name": "Other",
       "graphs": [0, 1, 5, 8]
     },
-	{
-	  "name": "MultiGraph",
-	  "graphs": [6]
-	}
+    {
+      "name": "Throttle",
+      "graphs": [6, 7, 0]
+    }
   ],
   "models": [
     {

@@ -3,7 +3,10 @@
     <button aria-label="Open Side Menu" mat-icon-button (click)="toggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span>SuperMileage Server</span>
+    <div class="toolbar-text" [routerLink]="['/']">
+      <mat-icon class="toolbar-text toolbar-icon" svgIcon="team-logo"></mat-icon>
+      <span>&nbsp;SuperMileage Server</span>
+    </div>
 
     <span class="spacer"></span>
 

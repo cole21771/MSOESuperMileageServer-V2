@@ -24,9 +24,8 @@ export class HomeComponent implements OnInit {
 
     // Sets up listener for when the view changes
     this.toolbarService.viewChanged.subscribe((view: View) => {
-        this.selectedGraphInfoArray = this.configService.getGraphInfo.filter((graph, index) => view.graphs.includes(index));
-      }
-    );
+      this.selectedGraphInfoArray = this.configService.getGraphInfo.filter((graph, index) => view.graphs.includes(index));
+    });
 
     this.toolbarService.emitLastView();
   }

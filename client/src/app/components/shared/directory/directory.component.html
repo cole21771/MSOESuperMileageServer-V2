@@ -1,0 +1,9 @@
+<mat-table #table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="filename">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Filename</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.filename}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="downloadFile(row)"></mat-row>
+</mat-table>
