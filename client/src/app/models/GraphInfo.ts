@@ -10,6 +10,7 @@ export class GraphInfo {
     domain: []
   };
   xLabel: string;
+  yLabel: string;
   yLabels: string[];
   xName: string;
   yName: string;
@@ -20,6 +21,7 @@ export class GraphInfo {
 
   constructor(xData: IncomingData, yData: IncomingData[], graph: Graph) {
     this.xLabel = graph.xAxis;
+    this.yLabel = graph.yAxis;
     this.yLabels = graph.yAxis.replace(' ', '').split(',');
 
     this.xName = this.xLabel.replace('_', ' ');

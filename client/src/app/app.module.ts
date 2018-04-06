@@ -46,6 +46,7 @@ import {LogService} from './services/log/log.service';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
+
     AppRoutingModule,
     AppMaterialModule
   ],

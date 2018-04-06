@@ -8,6 +8,7 @@ import {Model} from '../../models/interfaces/Model';
 import {isNullOrUndefined} from 'util';
 import {View} from '../../models/interfaces/View';
 import {ToolbarService} from '../toolbar/toolbar.service';
+import {Tile} from "../../models/interfaces/Tile";
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -48,7 +49,7 @@ export class ConfigService {
       }
     });
 
-    this.toolbarService.setView(this.config.views[0]);
+    // this.toolbarService.setView(this.config.views[0]);
   }
 
   /**
