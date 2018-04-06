@@ -2,6 +2,18 @@
   "vehicleType": "electric",
   "incomingData": [
     {
+      "label": "Time",
+      "min": 0,
+      "max": null,
+      "units": "ms"
+    },
+    {
+      "label": "Lap_Number",
+      "min": 0,
+      "max": 10,
+      "units": "Laps"
+    },
+    {
       "label": "Speed",
       "min": 0,
       "max": 35,
@@ -32,16 +44,10 @@
       "units": "A"
     },
     {
-      "label": "Lap_Number",
+      "label": "Throttle Voltage",
       "min": 0,
-      "max": 10,
-      "units": ""
-    },
-    {
-      "label": "Time",
-      "min": 0,
-      "max": null,
-      "units": "ms"
+      "max": 3.5,
+      "units": "V"
     }
   ],
   "graphs": [
