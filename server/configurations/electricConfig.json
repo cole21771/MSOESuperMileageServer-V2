@@ -44,7 +44,7 @@
       "units": "A"
     },
     {
-      "label": "Throttle Voltage",
+      "label": "Throttle_Voltage",
       "min": 0,
       "max": 3.5,
       "units": "V"
@@ -80,6 +80,16 @@
       "yAxis": "Motor_RPM",
       "xAxis": "Distance",
       "colors": ["#0f0"]
+    },
+    {
+      "yAxis": "Throttle_Voltage",
+      "xAxis": "Time",
+      "colors": ["#f00"]
+    },
+    {
+      "yAxis": "Throttle_Voltage, Motor_RPM",
+      "xAxis": "Time",
+      "colors": ["#f00", "#0f0"]
     }
   ],
   "views": [
@@ -91,10 +101,10 @@
       "name": "Other",
       "graphs": [0, 1, 5, 8]
     },
-	{
-	  "name": "MultiGraph",
-	  "graphs": [6]
-	}
+    {
+      "name": "Throttle",
+      "graphs": [6, 7, 0]
+    }
   ],
   "models": [
     {
