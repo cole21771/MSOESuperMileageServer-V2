@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.registry.addSvgIcon('moon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/moon.svg'));
     this.registry.addSvgIcon('vehicle', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/vehicle.svg'));
+    this.registry.addSvgIcon('team-logo', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/team-logo.svg'));
   }
 
   openLogin() {
