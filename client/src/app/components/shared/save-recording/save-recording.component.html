@@ -17,4 +17,8 @@
   <div *ngIf="!form.controls.filename.valid">
     <mat-error>Invalid Characters \ / : ? < > | * "</mat-error>
   </div>
+
+  <div *ngIf="res && res.error">
+    <mat-error>{{res.errorMessage}}</mat-error>
+  </div>
 </form>

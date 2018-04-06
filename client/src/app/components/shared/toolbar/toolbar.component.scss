@@ -1,0 +1,14 @@
+.toolbar-text {
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &.toolbar-icon {
+    width: 32px;
+    height: 100% !important;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

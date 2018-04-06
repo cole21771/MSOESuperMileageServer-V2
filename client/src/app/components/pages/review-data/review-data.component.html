@@ -1,3 +1,5 @@
-<p>
-  review-data works!
-</p>
+<button mat-raised-button (click)="viewLogs()">View Logs</button>
+<button mat-raised-button (click)="viewRecordings()">View Recordings</button>
+
+
+<app-directory [dataSource]="dataSource"></app-directory>

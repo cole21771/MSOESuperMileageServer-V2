@@ -23,6 +23,8 @@ import {AdminComponent} from './components/pages/admin/admin.component';
 import {CalculatorComponent} from './components/pages/calculator/calculator.component';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
+import { DirectoryComponent } from './components/shared/directory/directory.component';
+import {LogService} from './services/log/log.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import {CommonModule} from '@angular/common';
     AdminComponent,
     CalculatorComponent,
     ToolbarComponent,
-    SaveRecordingComponent
+    SaveRecordingComponent,
+    DirectoryComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,14 @@ import {CommonModule} from '@angular/common';
     AppRoutingModule,
     AppMaterialModule
   ],
-  providers: [SocketIoService, ToolbarService, AdminGuard, ConfigService, DataService],
+  providers: [
+    SocketIoService,
+    ToolbarService,
+    AdminGuard,
+    ConfigService,
+    DataService,
+    LogService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, SaveRecordingComponent]
 })
