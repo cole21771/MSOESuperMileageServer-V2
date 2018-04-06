@@ -2,19 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {MatDialogRef, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
+import {Response} from '../../../models/interfaces/Response';
 
 @Component({
   templateUrl: './save-recording.component.html'
 })
 export class SaveRecordingComponent implements OnInit {
   form: FormGroup;
+  res: Response<undefined>;
 
   constructor(private socketService: SocketIoService,
-              private dialogRef: MatDialogRef<SaveRecordingComponent>,
-              private snackBar: MatSnackBar) {
+              private dialogRef: MatDialogRef<SaveRecordingComponent>) {
   }
 
   ngOnInit() {
+    this.res = {error: false};
     this.form = new FormGroup({
       filename: new FormControl(this.getDefaultFilename(),
         [
@@ -46,9 +48,11 @@ export class SaveRecordingComponent implements OnInit {
   async save() {
     const filename = this.form.controls.filename.value;
     if (!await this.socketService.doesRecordingExist(filename)) {
+      this.res.error = false;
       this.dialogRef.close(filename);
     } else {
-      this.snackBar.open('File with that name already exists!', undefined, {duration: 3000});
+      this.res.errorMessage = 'File with that name already exists!';
+      this.res.error = true;
     }
   }
 
