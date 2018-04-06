@@ -7,12 +7,17 @@ export class DataManager {
 
     public init(socket: Socket) {
         socket.on('newData', (data) => {
-            const parsedData = JSON.parse(data);
-            if (Array.isArray(parsedData)) {
-                this.logger.logData(parsedData);
-                socket.broadcast.emit('newData', data);
-            } else {
-                console.error('DataManager, newData:', 'parsedData is not an Array!`');
+            try {
+                const parsedData = JSON.parse(data);
+
+                if (Array.isArray(parsedData)) {
+                    this.logger.logData(parsedData);
+                    socket.broadcast.emit('newData', data);
+                } else {
+                    console.error('DataManager, newData:', 'parsedData is not an Array!`');
+                }
+            } catch (err) {
+                console.error('DataManager, newData:', 'Error Parsing JSON!\n\n', data, err);
             }
         });
 
