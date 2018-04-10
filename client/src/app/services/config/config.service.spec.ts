@@ -13,6 +13,12 @@ const mockConfig: Config = {
   vehicleType: 'electric',
   incomingData: [
     {
+      label: 'Time',
+      min: 0,
+      max: null,
+      units: 'ms'
+    },
+    {
       label: 'Volts',
       min: 0,
       max: 15,
@@ -23,29 +29,6 @@ const mockConfig: Config = {
       min: 0,
       max: 30,
       units: 'A'
-    },
-    {
-      label: 'Time',
-      min: 0,
-      max: null,
-      units: 'ms'
-    }
-  ],
-  graphs: [
-    {
-      xAxis: 'Volts',
-      yAxis: 'Time',
-      colors: ['#123456']
-    },
-    {
-      xAxis: 'Current',
-      yAxis: 'Time',
-      colors: ['#654321']
-    },
-    {
-      xAxis: 'Power',
-      yAxis: 'Time',
-      colors: ['#456123']
     }
   ],
   models: [
@@ -58,10 +41,21 @@ const mockConfig: Config = {
   views: [
     {
       name: 'All',
-      graphs: [0, 1, 2]
+      tiles: [
+        {
+          name: 'oof',
+          rows: 1,
+          cols: 1,
+          type: 'Graph',
+          data: {
+            yAxis: 'Current',
+            xAxis: 'Time',
+            colors: ['#f00']
+          }
+        }
+      ]
     }
-  ],
-  displayAlways: ['Power']
+  ]
 };
 
 const socketIoServiceStub = {
@@ -133,7 +127,7 @@ describe('ConfigService', () => {
 
   it('getGraphInfo should return graphInfo', inject([ConfigService], configService => {
     setTimeout(() => {
-      /*const graphInfo: GraphInfo[] = {
+      /*const graphInfo: Graph[] = {
 
       };
       expect(configService.getGraphInfo).toBe(graphInfo);*/

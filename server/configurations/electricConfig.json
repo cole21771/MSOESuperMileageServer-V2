@@ -50,81 +50,53 @@
       "units": "V"
     }
   ],
-  "graphs": [
-    {
-      "yAxis": "Speed",
-      "xAxis": "Time",
-      "colors": ["#f00"]
-    },
-    {
-      "yAxis": "Motor_RPM",
-      "xAxis": "Time",
-      "colors": ["#0f0"]
-    },
-    {
-      "yAxis": "Joules",
-      "xAxis": "Time",
-      "colors": ["#00f"]
-    },
-    {
-      "yAxis": "Volts",
-      "xAxis": "Time",
-      "colors": ["#0ff"]
-    },
-    {
-      "yAxis": "Current",
-      "xAxis": "Time",
-      "colors": ["#f0f"]
-    },
-    {
-      "yAxis": "Motor_RPM",
-      "xAxis": "Distance",
-      "colors": ["#0f0"]
-    },
-    {
-      "yAxis": "Throttle_Voltage",
-      "xAxis": "Time",
-      "colors": ["#f00"]
-    },
-    {
-      "yAxis": "Throttle_Voltage, Motor_RPM",
-      "xAxis": "Time",
-      "colors": ["#f00", "#0f0"]
-    }
-  ],
   "views": [
     {
-      "name": "All",
-      "graphs": [0, 1, 2, 3, 4, 5]
-    },
-    {
-      "name": "Other",
-      "graphs": [0, 1, 5, 8]
-    },
-    {
-      "name": "Throttle",
-      "graphs": [6, 7, 0]
+      "name": "TestView",
+      "tiles": [
+        {
+          "name": "Speed vs Time",
+          "sub": "MPH",
+          "icon": "Speed",
+          "rows": 2,
+          "cols": 2,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Speed",
+            "xAxis": "Time",
+            "colors": ["#f00"]
+          }
+        },
+        {
+          "name": "Joules",
+          "icon": "Energy",
+          "rows": 1,
+          "cols": 1,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Joules"
+          }
+        },
+        {
+          "name": "Current",
+          "sub": "A",
+          "icon": "Current",
+          "rows": 1,
+          "cols": 3,
+          "data": {
+            "yAxis": "Current",
+            "xAxis": "Time",
+            "colors": ["#f0f"]
+          }
+        }
+      ]
     }
   ],
   "models": [
     {
       "label": "Distance",
       "formula": "Speed * 0.44704 * Time * 0.001",
-	  "units": "m/s"
-    },
-	{
-	  "label": "Resistance",
-	  "formula": "Volts / Current",
-	  "units": "Ω"
-	},
-	{
-	  "label": "Small_Motor_RPM",
-	  "formula": "Motor_RPM / 10",
-	  "units": "RPM"
-	}
-  ],
-  "displayAlways": [
-    "Joules",
-    "Lap_Number"
+      "units": "m/s"
+    }
   ]
 }

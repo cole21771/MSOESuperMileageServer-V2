@@ -1,14 +1,14 @@
-<mat-grid-list [cols]="2">
-  <div *ngFor="let tile of tiles">
+<mat-grid-list [cols]="6">
+  <div *ngFor="let tile of getTiles">
     <mat-grid-tile [colspan]="tile.columns" [rowspan]="tile.rows" class="tile mat-elevation-z6">
       <mat-card class="card-style mat-elevation-z6">
         <mat-card-header>
-          <div mat-card-avatar *ngIf="tile.icon"><img src="assets/{{tile.icon}}"/></div>
+          <div mat-card-avatar *ngIf="tile.icon">img {{tile.icon}}</div>
           <mat-card-title>{{tile.name}}</mat-card-title>
-          <mat-card-title *ngIf="tile.subName">{{tile.subName}}</mat-card-title>
+          <mat-card-title *ngIf="tile.sub">{{tile.sub}}</mat-card-title>
         </mat-card-header>
         <mat-card-content [ngSwitch]="tile.type">
-          <app-graph *ngSwitchCase="'Graph'" [graph]="tile.data"></app-graph>
+          <app-graph *ngSwitchCase="'Graph'" [graphProperties]="tile.data"></app-graph>
           <span *ngSwitchCase="'NumberDisplay'">{{tile.data.label}}</span>
           <mat-error *ngSwitchDefault>Cannot find type</mat-error>
         </mat-card-content>

@@ -1,9 +1,9 @@
-export interface Tile {
+export interface Tile<T> {
   name: string;
-  subName?: string;
+  sub?: string;
   icon?: string;
   columns: number;
   rows: number;
   type: string;
-  data: any;
+  data: T;
 }

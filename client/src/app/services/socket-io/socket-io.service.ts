@@ -56,10 +56,14 @@ export class SocketIoService {
    *
    * @returns {Promise<Config>} a Promise holding the Config file.
    */
-  getSelectedConfig(): Promise<Response<Config>> {
-    return new Promise(resolve => {
-      this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
-        resolve(dataFormat);
+  getSelectedConfig(): Promise<Config> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('getSelectedConfig', undefined, (response: Response<Config>) => {
+        if (response.error) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.data);
+        }
       });
     });
   }
@@ -128,24 +132,32 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  startRecording(): Promise<Response<string>> {
-    return new Promise(resolve => {
-      this.socket.emit('startRecording', this.uuid, (response) => {
-        resolve(response);
+  startRecording(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('startRecording', this.uuid, (response: Response<string>) => {
+        if (response.error) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.data);
+        }
       });
     });
   }
 
   doesRecordingExist(filename: string): Promise<boolean> {
-    return new Promise(resolve => {
-      this.socket.emit('doesRecordingExist', filename, (fileExistsStatus) => {
-        resolve(fileExistsStatus);
-      });
-    });
+    return new Promise(resolve => this.socket.emit('doesRecordingExist', filename, resolve));
   }
 
-  stopRecording(filename: string): Promise<Response<string>> {
-    return new Promise((resolve) => this.socket.emit('stopRecording', this.uuid, filename, resolve));
+  stopRecording(filename: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('stopRecording', this.uuid, filename, (response: Response<string>) => {
+        if (response.error) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.data);
+        }
+      });
+    });
   }
 
   getLogs(): Promise<Response<FileInfo[]>> {

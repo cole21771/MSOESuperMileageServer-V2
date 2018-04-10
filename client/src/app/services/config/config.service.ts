@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {GraphInfo} from '../../models/GraphInfo';
+import {Graph} from '../../models/Graph';
 import {Config} from '../../models/interfaces/Config';
 import {ParserVariable} from '../../models/interfaces/ParserVariable';
 import {SocketIoService} from '../socket-io/socket-io.service';
@@ -8,7 +8,7 @@ import {Model} from '../../models/interfaces/Model';
 import {isNullOrUndefined} from 'util';
 import {View} from '../../models/interfaces/View';
 import {ToolbarService} from '../toolbar/toolbar.service';
-import {Tile} from "../../models/interfaces/Tile";
+import {GraphProperties} from '../../models/interfaces/GraphProperties';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -16,40 +16,20 @@ const FormulaParser = require('hot-formula-parser').Parser;
 export class ConfigService {
   private parser: any;
   private config: Config;
-  private graphInfoArray: GraphInfo[];
   private dataModels: IncomingData[];
 
-  constructor(private socketService: SocketIoService,
-              private toolbarService: ToolbarService) {
+  constructor(private socketService: SocketIoService) {
     this.parser = new FormulaParser();
-    this.graphInfoArray = [];
     this.dataModels = [];
 
-    this.setupConfig();
-  }
+    this.socketService.getSelectedConfig().then((config) => {
+      this.config = config;
 
-  private async setupConfig() {
-    const response = await this.socketService.getSelectedConfig();
-    if (response.error) {
-      throw new Error('ConfigService, setupConfig: ' + response.errorMessage);
-    }
-    this.config = response.data;
-
-    this.dataModels = this.config.models.filter(this.isValidModel.bind(this))
-      .map(this.createDataModel.bind(this));
-
-    this.config.graphs.map(graph => {
-      const xData = this.getInfoFromLabel(graph.xAxis);
-      const yData = this.getInfoArrayFromLabel(graph.yAxis);
-
-      if (xData && yData) {
-        this.graphInfoArray.push(new GraphInfo(xData, yData, graph));
-      } else {
-        console.error('ConfigService, constructor: Error creating graphs');
-      }
+      this.dataModels = this.config.models.filter(this.isValidModel.bind(this))
+        .map(this.createDataModel.bind(this));
+    }).catch((errorMessage) => {
+      throw new Error('ConfigService, setupConfig: ' + errorMessage);
     });
-
-    // this.toolbarService.setView(this.config.views[0]);
   }
 
   /**
@@ -99,7 +79,21 @@ export class ConfigService {
   }
 
   get getViews(): View[] {
-    return this.config ? this.config.views : [];
+    return this.config ? this.config.views : undefined;
+  }
+
+  getGraph(graphProperties: GraphProperties): Graph {
+    if (isNullOrUndefined(graphProperties)) {
+      throw new Error('ConfigService, getGraph: parameters are null or undefined');
+    }
+
+    const yData = this.getInfoArrayFromLabel(graphProperties.yAxis);
+
+    if (isNullOrUndefined(yData)) {
+      throw new Error('ConfigService, getGraph: yData was could not be found');
+    } else {
+      return new Graph(yData, graphProperties);
+    }
   }
 
   /**
@@ -123,15 +117,6 @@ export class ConfigService {
     }
 
     return results.result;
-  }
-
-  /**
-   * Returns the GraphInfo objects that the service created
-   *
-   * @returns {GraphInfo[]}
-   */
-  get getGraphInfo(): GraphInfo[] {
-    return this.graphInfoArray;
   }
 
   /**

@@ -39,7 +39,7 @@ export class ToolbarService {
   }
 
   /**
-   * Allows you to set the view for which graphs should be shown
+   * Allows you to set the view for which tiles should be shown
    *
    * @param {View} view the
    */

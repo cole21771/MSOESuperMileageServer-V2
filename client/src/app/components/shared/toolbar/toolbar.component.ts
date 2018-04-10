@@ -64,10 +64,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   startRecording() {
-    this.socketService.startRecording().then(response => {
+    this.socketService.startRecording().then((message) => {
       this.isRecording = true;
-      this.showSnackBar(response.error ? response.errorMessage : response.data);
-    });
+      this.showSnackBar(message);
+    }).catch(this.showSnackBar.bind(this));
   }
 
   stopRecording() {
@@ -78,15 +78,12 @@ export class ToolbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(filename => {
       if (filename) {
-        this.socketService.stopRecording(filename).then(response => {
-          if (response.error) {
-            this.showSnackBar(response.errorMessage);
-          } else {
-            this.isRecording = false;
-            this.snackBar.open(response.data, 'Download', {duration: 8000})
-              .onAction().subscribe(() => this.logService.downloadFile({path: './logs/recordings', filename}));
-          }
-        });
+        this.socketService.stopRecording(filename).then(message => {
+          this.isRecording = false;
+          this.snackBar.open(message, 'Download', {duration: 8000})
+            .onAction().subscribe(() => this.logService.downloadFile({path: './logs/recordings', filename}));
+
+        }).catch(this.showSnackBar.bind(this));
       }
     });
   }

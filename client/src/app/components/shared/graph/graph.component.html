@@ -1,14 +1,14 @@
 <div class="inherit">
-  <ngx-charts-line-chart *ngIf="graphInfo" class="inherit"
-                         [scheme]="graphInfo.color"
-                         [results]="graphInfo.chartData"
+  <ngx-charts-line-chart *ngIf="graph" class="inherit"
+                         [scheme]="graph.color"
+                         [results]="graph.chartData"
                          [xAxis]="false"
                          [yAxis]="true"
                          [showYAxisLabel]="false"
-                         [xAxisLabel]="graphInfo.xName"
-                         [yAxisLabel]="graphInfo.yName"
-                         [yScaleMin]="graphInfo.min"
-                         [yScaleMax]="graphInfo.max"
+                         [xAxisLabel]="graph.xName"
+                         [yAxisLabel]="graph.yName"
+                         [yScaleMin]="graph.min"
+                         [yScaleMax]="graph.max"
                          [animations]="false">
   </ngx-charts-line-chart>
 </div>

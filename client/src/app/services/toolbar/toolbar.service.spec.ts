@@ -30,7 +30,7 @@ describe('ToolbarService', () => {
     inject([ToolbarService], (service: ToolbarService) => {
       const testView: View = {
         name: 'All',
-        graphs: [0, 1, 2]
+        tiles: [0, 1, 2]
       };
 
       service.viewChanged.subscribe((view) => {

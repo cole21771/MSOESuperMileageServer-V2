@@ -1,4 +1,6 @@
+import {Tile} from './Tile';
+
 export interface View {
   name: string;
-  graphs: number[];
+  tiles: Tile<any>[];
 }

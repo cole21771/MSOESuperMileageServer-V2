@@ -1,10 +1,9 @@
 import {ChartData} from './ChartData';
 import {DataPoint} from './DataPoint';
 import {IncomingData} from './interfaces/IncomingData';
-import {Graph} from './interfaces/Graph';
-import {isNull, isNullOrUndefined} from 'util';
+import {GraphProperties} from './interfaces/GraphProperties';
 
-export class GraphInfo {
+export class Graph {
   title: string;
   color: any = {
     domain: []
@@ -19,7 +18,7 @@ export class GraphInfo {
   max: number;
   chartData: ChartData[];
 
-  constructor(xData: IncomingData, yData: IncomingData[], graph: Graph) {
+  constructor(yData: IncomingData[], graph: GraphProperties) {
     this.xLabel = graph.xAxis;
     this.yLabel = graph.yAxis;
     this.yLabels = graph.yAxis.replace(' ', '').split(',');
