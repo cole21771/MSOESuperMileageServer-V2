@@ -1,5 +1,5 @@
-export interface Model {
-  label: string;
+import {IncomingData} from './IncomingData';
+
+export interface Model extends IncomingData {
   formula: string;
-  units: string;
 }

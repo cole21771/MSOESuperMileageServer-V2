@@ -35,6 +35,8 @@ const mockConfig: Config = {
     {
       label: 'Power',
       formula: 'Volts * Current',
+      min: 0,
+      max: 40,
       units: 'Watts'
     }
   ],
@@ -245,6 +247,8 @@ describe('ConfigService', () => {
         const mockModel: Model = {
           label: 'Variables',
           formula: 'Do * Not * Exist',
+          min: 0,
+          max: null,
           units: 'Blarg!'
         };
         expect(configService.isValidModel(mockModel)).toBeFalsy();

@@ -2,7 +2,7 @@ export interface Tile<T> {
   name: string;
   sub?: string;
   icon?: string;
-  columns: number;
+  cols: number;
   rows: number;
   type: string;
   data: T;

@@ -10,7 +10,7 @@ import {LoginData} from './models/interfaces/LoginData';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   viewProviders: [MatIconRegistry]
 })
 export class AppComponent implements OnInit {

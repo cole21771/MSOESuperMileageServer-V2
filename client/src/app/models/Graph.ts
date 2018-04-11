@@ -4,7 +4,6 @@ import {IncomingData} from './interfaces/IncomingData';
 import {GraphProperties} from './interfaces/GraphProperties';
 
 export class Graph {
-  title: string;
   color: any = {
     domain: []
   };
@@ -29,8 +28,6 @@ export class Graph {
         accumulator.concat(index ? ' & ' : '', currentLabel), '')
       .replace(/_/g, ' ');
 
-    this.title = `${this.yName} vs ${this.xName}`;
-
     this.color.domain = graph.colors;
     this.units = yData.map(data => data.units)
       .reduce((accumulator, currentUnits, index) => accumulator.concat(index ? ', ' : '', currentUnits), '');
@@ -48,6 +45,10 @@ export class Graph {
     this.max = dataArray.reduce((chosenData, currentData) => {
       return currentData.max > chosenData.max ? currentData : chosenData;
     }).max;
+  }
+
+  get getTitle(): string {
+    return `${this.yName} vs ${this.xName}`;
   }
 
   addData(x: number, yArray: number[]) {

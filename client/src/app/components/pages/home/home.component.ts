@@ -7,7 +7,7 @@ import {View} from '../../../models/interfaces/View';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   public tiles: Tile<any>[];
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   }
 
   get getTiles(): Tile<any>[] {
-    return this.configService.getViews ? this.configService.getViews[0].tiles : [];
+    return this.configService.getViews ? this.configService.getViews[0].tiles : undefined;
   }
 
   ngOnInit() {

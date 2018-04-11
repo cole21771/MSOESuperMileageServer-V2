@@ -1,13 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Graph} from '../../models/Graph';
 import {Config} from '../../models/interfaces/Config';
-import {ParserVariable} from '../../models/interfaces/ParserVariable';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {IncomingData} from '../../models/interfaces/IncomingData';
 import {Model} from '../../models/interfaces/Model';
 import {isNullOrUndefined} from 'util';
 import {View} from '../../models/interfaces/View';
-import {ToolbarService} from '../toolbar/toolbar.service';
 import {GraphProperties} from '../../models/interfaces/GraphProperties';
 
 const FormulaParser = require('hot-formula-parser').Parser;
@@ -16,17 +14,12 @@ const FormulaParser = require('hot-formula-parser').Parser;
 export class ConfigService {
   private parser: any;
   private config: Config;
-  private dataModels: IncomingData[];
 
   constructor(private socketService: SocketIoService) {
     this.parser = new FormulaParser();
-    this.dataModels = [];
 
     this.socketService.getSelectedConfig().then((config) => {
       this.config = config;
-
-      this.dataModels = this.config.models.filter(this.isValidModel.bind(this))
-        .map(this.createDataModel.bind(this));
     }).catch((errorMessage) => {
       throw new Error('ConfigService, setupConfig: ' + errorMessage);
     });
@@ -41,37 +34,6 @@ export class ConfigService {
    */
   private isMultiGraph(label: string): boolean {
     return label.includes(',');
-  }
-
-  /**
-   * Creates an IncomingData object from the information in a Model object
-   *
-   * @param {Model} model the model to be converted
-   * @returns {IncomingData} the calculated IncomingData object
-   */
-  private createDataModel(model: Model): IncomingData {
-    const labels = this.getLabelsFromFormula(model.formula);
-    const incomingData = labels.map<IncomingData>(this.getInfoFromLabel.bind(this));
-
-    const min = this.calculate(incomingData.map<ParserVariable>(data => {
-      return {label: data.label, value: data.min};
-    }), model.formula);
-
-    const max = this.calculate(incomingData.map<ParserVariable>(data => {
-      return {label: data.label, value: data.max};
-    }), model.formula);
-
-
-    if (isNaN(min) || isNaN(max)) {
-      throw new Error('ConfigService, createDataModel: min or max is NaN');
-    }
-
-    return {
-      label: model.label,
-      min: min,
-      max: max > 0 ? max : undefined,
-      units: model.units
-    };
   }
 
   get getModels(): Model[] {
@@ -94,29 +56,6 @@ export class ConfigService {
     } else {
       return new Graph(yData, graphProperties);
     }
-  }
-
-  /**
-   * Given an array of arrays containing a label and number, and a formula string, it calculates
-   * the formula given the variables provided
-   *
-   * @param {any[][]} variables The json that acts as a half-map
-   * @param {string} formula The formula to be calculated given the variable's values
-   * @returns {number} The result of the calculation
-   */
-  private calculate(variables: ParserVariable[], formula: string): number {
-    variables.forEach(variable => {
-      this.parser.setVariable(variable.label, isNullOrUndefined(variable.value) ? -1 : variable.value);
-    });
-
-    const results = this.parser.parse(formula);
-    if (results.error === '#VALUE!') {
-      return 0;
-    } else if (results.error) {
-      throw new Error(`ConfigService, calculate: ${results.error}`);
-    }
-
-    return results.result;
   }
 
   /**
@@ -148,7 +87,7 @@ export class ConfigService {
       return labelData;
     }
 
-    const modelData = this.dataModels.find(model => model.label === label);
+    const modelData = this.config.models.find(model => model.label === label);
     if (modelData) {
       return modelData;
     }

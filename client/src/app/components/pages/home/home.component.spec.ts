@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {HomeComponent} from './home.component';
 import 'd3';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {GraphComponent} from '../../shared/graph/graph.component';
+import {GraphComponent} from '../../tiles/graph/graph.component';
 import {AppMaterialModule} from '../../../app-material.module';
 import {ToolbarService} from '../../../services/toolbar/toolbar.service';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';

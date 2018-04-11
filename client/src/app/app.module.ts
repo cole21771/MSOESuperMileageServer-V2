@@ -4,7 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 
 import {AppComponent} from './app.component';
-import {GraphComponent} from './components/shared/graph/graph.component';
+import {GraphComponent} from './components/tiles/graph/graph.component';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppMaterialModule} from './app-material.module';
@@ -25,6 +25,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import { DirectoryComponent } from './components/shared/directory/directory.component';
 import {LogService} from './services/log/log.service';
+import { NumberComponent } from './components/tiles/number/number.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {LogService} from './services/log/log.service';
     CalculatorComponent,
     ToolbarComponent,
     SaveRecordingComponent,
-    DirectoryComponent
+    DirectoryComponent,
+    NumberComponent
   ],
   imports: [
     BrowserModule,

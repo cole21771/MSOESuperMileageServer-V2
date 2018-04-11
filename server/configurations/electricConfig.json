@@ -50,9 +50,59 @@
       "units": "V"
     }
   ],
+  "models": [
+    {
+      "label": "Distance",
+      "formula": "Speed * 0.44704 * Time * 0.001",
+      "min": 0,
+      "max": null,
+      "units": "m/s"
+    }
+  ],
   "views": [
     {
-      "name": "TestView",
+      "name": "View1",
+      "tiles": [
+        {
+          "name": "Speed vs Time",
+          "sub": "MPH",
+          "icon": "Speed",
+          "rows": 2,
+          "cols": 2,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Speed",
+            "xAxis": "Time",
+            "colors": ["#f00"]
+          }
+        },
+        {
+          "name": "Joules",
+          "icon": "Energy",
+          "rows": 2,
+          "cols": 1,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Joules"
+          }
+        },
+        {
+          "name": "Current",
+          "sub": "A",
+          "icon": "Current",
+          "rows": 1,
+          "cols": 3,
+		  "type": "Graph",
+          "data": {
+            "yAxis": "Current",
+            "xAxis": "Time",
+            "colors": ["#f0f"]
+          }
+        }
+      ]
+    },
+	{
+      "name": "View2",
       "tiles": [
         {
           "name": "Speed vs Time",
@@ -81,8 +131,9 @@
           "name": "Current",
           "sub": "A",
           "icon": "Current",
-          "rows": 1,
+          "rows": 3,
           "cols": 3,
+		  "type": "Graph",
           "data": {
             "yAxis": "Current",
             "xAxis": "Time",
@@ -90,13 +141,6 @@
           }
         }
       ]
-    }
-  ],
-  "models": [
-    {
-      "label": "Distance",
-      "formula": "Speed * 0.44704 * Time * 0.001",
-      "units": "m/s"
     }
   ]
 }
