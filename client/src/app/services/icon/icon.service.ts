@@ -17,7 +17,6 @@ export class IconService {
     this.addSvgIcon('moon');
     this.addSvgIcon('vehicle');
     this.addSvgIcon('team-logo');
-    console.log('done');
   }
 
   private addSvgIcon(name: string): void {
