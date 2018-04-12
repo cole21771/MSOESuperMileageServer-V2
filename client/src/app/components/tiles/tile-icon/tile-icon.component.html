@@ -1,3 +1,5 @@
-<p>
-  tile-icon works!
-</p>
+<div [ngSwitch]="iconType">
+  <mat-icon *ngSwitchCase="'svg'" [svgIcon]="icon"></mat-icon>
+  <img *ngSwitchCase="'image'" [src]="'./assets/icons/' + icon + '.png'"/>
+  <mat-icon [matTooltip]="'Unknown icon: ' + icon" *ngSwitchDefault>warning</mat-icon>
+</div>

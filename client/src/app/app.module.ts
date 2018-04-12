@@ -27,6 +27,7 @@ import { DirectoryComponent } from './components/shared/directory/directory.comp
 import {LogService} from './services/log/log.service';
 import { NumberComponent } from './components/tiles/number/number.component';
 import { TileIconComponent } from './components/tiles/tile-icon/tile-icon.component';
+import { IconService } from './services/icon/icon.service';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { TileIconComponent } from './components/tiles/tile-icon/tile-icon.compon
     AdminGuard,
     ConfigService,
     DataService,
-    LogService
+    LogService,
+    IconService
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, SaveRecordingComponent]

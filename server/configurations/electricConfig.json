@@ -67,7 +67,7 @@
         {
           "name": "Speed vs Time",
           "sub": "MPH",
-          "icon": "Speed",
+          "icon": "moon",
           "rows": 4,
           "cols": 4,
           "type": "Graph",
@@ -89,7 +89,7 @@
         {
           "name": "Current",
           "sub": "A",
-          "icon": "Current",
+          "icon": "team-logo",
           "rows": 2,
           "cols": 6,
 		  "type": "Graph",
@@ -131,7 +131,7 @@
         {
           "name": "Current",
           "sub": "A",
-          "icon": "Current",
+          "icon": "vehicle",
           "rows": 3,
           "cols": 3,
 		  "type": "Graph",

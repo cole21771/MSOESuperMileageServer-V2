@@ -3,7 +3,7 @@
                  class="test mat-elevation-z6">
     <mat-card class="max-size mat-elevation-z6">
       <mat-card-header>
-        <div mat-card-avatar *ngIf="tile.icon">img</div>
+        <app-tile-icon mat-card-avatar *ngIf="tile.icon" [icon]="tile.icon"></app-tile-icon>
         <mat-card-title>{{tile.name}}</mat-card-title>
         <mat-card-title *ngIf="tile.sub">{{tile.sub}}</mat-card-title>
       </mat-card-header>
