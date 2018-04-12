@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from '../../../services/data/data.service';
+import {DataPoint} from '../../../models/interfaces/DataPoint';
 
 @Component({
   selector: 'app-number',
@@ -8,13 +9,16 @@ import {DataService} from '../../../services/data/data.service';
 })
 export class NumberComponent implements OnInit {
   @Input() numberProperties: { label: string };
-  public number: number;
+  public results: DataPoint[];
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {
+    this.results = [{name: 'Joules', value: 0}];
+  }
 
   ngOnInit() {
     this.dataService.dataNotifier.subscribe(() => {
-      this.number = this.dataService.getLatestData(this.numberProperties.label);
+      this.results[0].value = this.dataService.getLatestData(this.numberProperties.label);
+      this.results = [...this.results];
     });
   }
 

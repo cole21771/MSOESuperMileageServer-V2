@@ -7,7 +7,6 @@ import {DataService} from '../../../services/data/data.service';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {ConfigService} from '../../../services/config/config.service';
 import {EventEmitter} from '@angular/core';
-import {ChartData} from '../../../models/ChartData';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const dataServiceStub = {

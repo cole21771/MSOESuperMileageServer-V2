@@ -7,6 +7,7 @@ import {Model} from '../../models/interfaces/Model';
 import {isNullOrUndefined} from 'util';
 import {View} from '../../models/interfaces/View';
 import {GraphProperties} from '../../models/interfaces/GraphProperties';
+import {ToolbarService} from '../toolbar/toolbar.service';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -15,11 +16,14 @@ export class ConfigService {
   private parser: any;
   private config: Config;
 
-  constructor(private socketService: SocketIoService) {
+  constructor(private socketService: SocketIoService,
+              private toolbarService: ToolbarService) {
     this.parser = new FormulaParser();
 
     this.socketService.getSelectedConfig().then((config) => {
       this.config = config;
+
+      this.toolbarService.setView(this.config.views[0]);
     }).catch((errorMessage) => {
       throw new Error('ConfigService, setupConfig: ' + errorMessage);
     });

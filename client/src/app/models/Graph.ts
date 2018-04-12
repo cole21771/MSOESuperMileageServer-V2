@@ -1,5 +1,4 @@
-import {ChartData} from './ChartData';
-import {DataPoint} from './DataPoint';
+import {ChartData} from './interfaces/ChartData';
 import {IncomingData} from './interfaces/IncomingData';
 import {GraphProperties} from './interfaces/GraphProperties';
 
@@ -34,7 +33,9 @@ export class Graph {
 
     this.setMinAndMax(yData);
 
-    this.chartData = yData.map(data => new ChartData(data.label));
+    this.chartData = yData.map(data => {
+      return {name: data.label, series: []};
+    });
   }
 
   private setMinAndMax(dataArray: IncomingData[]) {
@@ -53,7 +54,7 @@ export class Graph {
 
   addData(x: number, yArray: number[]) {
     yArray.forEach((y, index) => {
-      this.chartData[index].series.push(new DataPoint(`${x}`, y));
+      this.chartData[index].series.push({name: `${x}`, value: y});
 
       if (this.chartData[index].series.length > 100) {
         this.chartData[index].series.shift();

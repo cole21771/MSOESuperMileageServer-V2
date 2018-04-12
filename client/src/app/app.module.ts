@@ -10,7 +10,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppMaterialModule} from './app-material.module';
 import {LoginComponent} from './components/shared/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {LineChartModule} from '@swimlane/ngx-charts';
+import {LineChartModule, NumberCardModule} from '@swimlane/ngx-charts';
 import {ToolbarService} from './services/toolbar/toolbar.service';
 import {AdminGuard} from './gaurds/admin/admin.guard';
 import {ConfigService} from './services/config/config.service';
@@ -26,6 +26,7 @@ import {CommonModule} from '@angular/common';
 import { DirectoryComponent } from './components/shared/directory/directory.component';
 import {LogService} from './services/log/log.service';
 import { NumberComponent } from './components/tiles/number/number.component';
+import { TileIconComponent } from './components/tiles/tile-icon/tile-icon.component';
 
 @NgModule({
   declarations: [
@@ -39,16 +40,17 @@ import { NumberComponent } from './components/tiles/number/number.component';
     ToolbarComponent,
     SaveRecordingComponent,
     DirectoryComponent,
-    NumberComponent
+    NumberComponent,
+    TileIconComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     LineChartModule,
+    NumberCardModule,
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
-
     AppRoutingModule,
     AppMaterialModule
   ],

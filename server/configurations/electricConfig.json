@@ -62,13 +62,14 @@
   "views": [
     {
       "name": "View1",
+	  "cols": 12,
       "tiles": [
         {
           "name": "Speed vs Time",
           "sub": "MPH",
           "icon": "Speed",
-          "rows": 2,
-          "cols": 2,
+          "rows": 4,
+          "cols": 4,
           "type": "Graph",
           "data": {
             "yAxis": "Speed",
@@ -78,8 +79,7 @@
         },
         {
           "name": "Joules",
-          "icon": "Energy",
-          "rows": 2,
+          "rows": 1,
           "cols": 1,
           "type": "NumberDisplay",
           "data": {
@@ -90,8 +90,8 @@
           "name": "Current",
           "sub": "A",
           "icon": "Current",
-          "rows": 1,
-          "cols": 3,
+          "rows": 2,
+          "cols": 6,
 		  "type": "Graph",
           "data": {
             "yAxis": "Current",
@@ -103,6 +103,7 @@
     },
 	{
       "name": "View2",
+	  "cols": 6,
       "tiles": [
         {
           "name": "Speed vs Time",
@@ -120,7 +121,7 @@
         {
           "name": "Joules",
           "icon": "Energy",
-          "rows": 1,
+          "rows": 2,
           "cols": 1,
           "type": "NumberDisplay",
           "data": {

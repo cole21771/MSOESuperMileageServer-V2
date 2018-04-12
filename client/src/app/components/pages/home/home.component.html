@@ -1,5 +1,5 @@
-<mat-grid-list [cols]="6" gutterSize="8px" *ngIf="tiles">
-  <mat-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+<mat-grid-list [cols]="view.cols" gutterSize="8px" *ngIf="view">
+  <mat-grid-tile *ngFor="let tile of view.tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
                  class="test mat-elevation-z6">
     <mat-card class="max-size mat-elevation-z6">
       <mat-card-header>
@@ -9,7 +9,7 @@
       </mat-card-header>
       <mat-card-content class="max-size" [ngSwitch]="tile.type">
         <app-graph class="max-size" *ngSwitchCase="'Graph'" [graphProperties]="tile.data"></app-graph>
-        <app-number *ngSwitchCase="'NumberDisplay'" [numberProperties]="tile.data"></app-number>
+        <app-number class="max-size" *ngSwitchCase="'NumberDisplay'" [numberProperties]="tile.data"></app-number>
         <mat-error *ngSwitchDefault>Cannot find type</mat-error>
       </mat-card-content>
     </mat-card>

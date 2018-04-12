@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ToolbarService} from '../../../services/toolbar/toolbar.service';
-import {ConfigService} from '../../../services/config/config.service';
-import {Tile} from '../../../models/interfaces/Tile';
 import {View} from '../../../models/interfaces/View';
 
 @Component({
@@ -10,21 +8,15 @@ import {View} from '../../../models/interfaces/View';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public tiles: Tile<any>[];
+  public view: View;
 
-  constructor(private toolbarService: ToolbarService,
-              private configService: ConfigService) {
-  }
-
-  get getTiles(): Tile<any>[] {
-    return this.configService.getViews ? this.configService.getViews[0].tiles : undefined;
+  constructor(private toolbarService: ToolbarService) {
   }
 
   ngOnInit() {
     // Sets up listener for when the view changes
     this.toolbarService.viewChanged.subscribe((view: View) => {
-      this.tiles = view.tiles;
-      console.log(view);
+      this.view = view;
     });
   }
 }
