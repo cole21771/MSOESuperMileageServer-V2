@@ -7,10 +7,8 @@
         <mat-card-title>{{tile.name}}</mat-card-title>
         <mat-card-title *ngIf="tile.sub">{{tile.sub}}</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="max-size" [ngSwitch]="tile.type">
-        <app-graph class="max-size" *ngSwitchCase="'Graph'" [graphProperties]="tile.data"></app-graph>
-        <app-number class="max-size" *ngSwitchCase="'NumberDisplay'" [numberProperties]="tile.data"></app-number>
-        <mat-error *ngSwitchDefault>Cannot find type</mat-error>
+      <mat-card-content class="max-size">
+        <app-tile [tile]="tile"></app-tile>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>

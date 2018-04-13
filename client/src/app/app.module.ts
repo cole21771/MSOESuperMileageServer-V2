@@ -28,6 +28,7 @@ import {LogService} from './services/log/log.service';
 import { NumberComponent } from './components/tiles/number/number.component';
 import { TileIconComponent } from './components/tiles/tile-icon/tile-icon.component';
 import { IconService } from './services/icon/icon.service';
+import { TileComponent } from './components/tiles/tile/tile.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { IconService } from './services/icon/icon.service';
     SaveRecordingComponent,
     DirectoryComponent,
     NumberComponent,
-    TileIconComponent
+    TileIconComponent,
+    TileComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,12 @@
-.test {
-  // margin: 10px;
+mat-card {
+  padding: 10px !important;
+}
+
+mat-card-title {
+  padding-top: 2px;
+}
+
+app-tile-icon {
+  padding-left: 3px;
+  padding-top: 2px;
 }

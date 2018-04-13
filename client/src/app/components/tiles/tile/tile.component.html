@@ -1,0 +1,5 @@
+<div class="max-size" [ngSwitch]="tile.type">
+  <app-graph *ngSwitchCase="'Graph'" [graphProperties]="tile.data"></app-graph>
+  <app-number *ngSwitchCase="'NumberDisplay'" [numberProperties]="tile.data"></app-number>
+  <mat-error *ngSwitchDefault>Cannot find type</mat-error>
+</div>

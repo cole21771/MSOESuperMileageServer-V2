@@ -121,7 +121,7 @@
         {
           "name": "Joules",
           "icon": "Energy",
-          "rows": 2,
+          "rows": 1,
           "cols": 1,
           "type": "NumberDisplay",
           "data": {
