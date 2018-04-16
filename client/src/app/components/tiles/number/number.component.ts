@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from '../../../services/data/data.service';
-import {DataPoint} from '../../../models/interfaces/DataPoint';
+import {Marker} from '../../../models/interfaces/Marker';
 
 @Component({
   selector: 'app-number',
@@ -9,17 +9,29 @@ import {DataPoint} from '../../../models/interfaces/DataPoint';
 })
 export class NumberComponent implements OnInit {
   @Input() numberProperties: { label: string };
-  public results: DataPoint[];
+  public value: number;
 
   constructor(private dataService: DataService) {
-    this.results = [{name: 'Joules', value: 0}];
   }
 
   ngOnInit() {
-    this.dataService.dataNotifier.subscribe(() => {
-      this.results[0].value = this.dataService.getLatestData(this.numberProperties.label);
-      this.results = [...this.results];
-    });
+    switch (this.dataService.getDataType(this.numberProperties.label)) {
+      case 'Data':
+      case 'Model':
+        this.dataService.dataNotifier.subscribe(() => {
+          this.value = this.dataService.getLatestData(this.numberProperties.label);
+        });
+        break;
+      case 'Marker':
+        this.dataService.markerNotifier.subscribe((marker: Marker) => {
+          if (this.numberProperties.label === marker.name) {
+            this.value = Number.parseFloat(marker.marker);
+          }
+        });
+        break;
+    }
+
+
   }
 
 }

@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Graph} from '../../../models/Graph';
 import {DataService} from '../../../services/data/data.service';
 import {ConfigService} from '../../../services/config/config.service';
-import {GraphProperties} from '../../../models/interfaces/GraphProperties';
+import {GraphProperties} from '../../../models/interfaces/config/GraphProperties';
 
 @Component({
   selector: 'app-graph',

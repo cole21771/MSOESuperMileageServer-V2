@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {View} from '../../models/interfaces/View';
+import {View} from '../../models/interfaces/config/View';
 
 @Injectable()
 export class ToolbarService {

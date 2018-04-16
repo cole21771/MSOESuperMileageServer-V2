@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Graph} from '../../models/Graph';
-import {Config} from '../../models/interfaces/Config';
+import {Config} from '../../models/interfaces/config/Config';
 import {SocketIoService} from '../socket-io/socket-io.service';
-import {IncomingData} from '../../models/interfaces/IncomingData';
-import {Model} from '../../models/interfaces/Model';
+import {IncomingData} from '../../models/interfaces/config/IncomingData';
+import {Model} from '../../models/interfaces/config/Model';
 import {isNullOrUndefined} from 'util';
-import {View} from '../../models/interfaces/View';
-import {GraphProperties} from '../../models/interfaces/GraphProperties';
+import {View} from '../../models/interfaces/config/View';
+import {GraphProperties} from '../../models/interfaces/config/GraphProperties';
 import {ToolbarService} from '../toolbar/toolbar.service';
+import {MarkerProperties} from "../../models/interfaces/config/MarkerProperties";
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -46,6 +47,10 @@ export class ConfigService {
 
   get getViews(): View[] {
     return this.config ? this.config.views : undefined;
+  }
+
+  get getMarkers(): MarkerProperties[] {
+    return this.config ? this.config.markers : undefined;
   }
 
   getGraph(graphProperties: GraphProperties): Graph {

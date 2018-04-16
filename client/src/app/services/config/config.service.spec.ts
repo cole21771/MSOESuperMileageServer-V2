@@ -3,11 +3,11 @@ import {TestBed, inject} from '@angular/core/testing';
 import {ConfigService} from './config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {ToolbarService} from '../toolbar/toolbar.service';
-import {View} from '../../models/interfaces/View';
-import {Config} from '../../models/interfaces/Config';
+import {View} from '../../models/interfaces/config/View';
+import {Config} from '../../models/interfaces/config/Config';
 import {ParserVariable} from '../../models/interfaces/ParserVariable';
-import {IncomingData} from '../../models/interfaces/IncomingData';
-import {Model} from '../../models/interfaces/Model';
+import {IncomingData} from '../../models/interfaces/config/IncomingData';
+import {Model} from '../../models/interfaces/config/Model';
 
 const mockConfig: Config = {
   vehicleType: 'electric',

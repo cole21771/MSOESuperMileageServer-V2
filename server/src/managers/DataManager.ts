@@ -25,16 +25,18 @@ export class DataManager {
             console.log(location);
         });
 
-        socket.on('startRecording', (uuid, callback) => {
-            callback(this.logger.startRecording(uuid));
+        socket.on('new-marker', (markerArray) => {
+            const parsedMarker = JSON.parse(markerArray);
+
+            socket.broadcast.emit('new-marker', {
+                id: parsedMarker[0],
+                timestamp: markerArray[1],
+                marker: markerArray[2]
+            });
         });
 
-        socket.on('stopRecording', async (uuid, filename, callback) => {
-            callback(await this.logger.stopRecording(uuid, filename));
-        });
-
-        socket.on('doesRecordingExist', async (filename, callback) => {
-            callback(await this.logger.doesRecordingExist(filename));
+        socket.on('new-error', (errorArray) => {
+            console.log(errorArray);
         });
     }
 }

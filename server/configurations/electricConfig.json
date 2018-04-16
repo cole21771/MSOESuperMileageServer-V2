@@ -59,6 +59,36 @@
       "units": "m/s"
     }
   ],
+  "markers": [
+    {
+	  "id": 0,
+	  "name": "General",
+	  "showPopup": true
+	},
+	{
+	  "id": 1,
+	  "name": "Engine State",
+	  "showPopup": false
+	},
+	{
+	  "id": 2,
+	  "name": "Lap Number",
+	  "showPopup": false
+	},
+	{
+	  "id": 3,
+	  "name": "Driver Indication",
+	  "showPopup": true
+	}
+  ],
+  "errors": [
+    "General",
+	"Wire Disconnection",
+	"Serial Connection Lost",
+	"Motor Controller Fault",
+	"Motor Sensor Pattern Fault",
+	"Carbon Monoxide Warning"
+  ],
   "views": [
     {
       "name": "View1",
@@ -98,7 +128,27 @@
             "xAxis": "Time",
             "colors": ["#f0f"]
           }
-        }
+        },
+		{
+		  "name": "Lap",
+		  "rows": 1,
+		  "cols": 1,
+		  "type": "Marker",
+		  "data": {
+			"id": 2
+		  }
+		},
+		{
+		  "name": "Map",
+		  "rows": 4,
+		  "cols": 4,
+		  "type": "Map",
+		  "data": {
+		    "lat": 38.163478,
+			"long": -122.457834,
+			"zoom": "950m"
+		  }
+		}
       ]
     },
 	{

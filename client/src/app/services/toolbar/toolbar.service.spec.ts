@@ -1,7 +1,7 @@
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {ToolbarService} from './toolbar.service';
-import {View} from '../../models/interfaces/View';
+import {View} from '../../models/interfaces/config/View';
 
 describe('ToolbarService', () => {
   beforeEach(() => {

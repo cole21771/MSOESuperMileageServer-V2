@@ -2,6 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {isNullOrUndefined} from 'util';
+import {Marker} from "../../models/interfaces/Marker";
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -9,8 +10,10 @@ const FormulaParser = require('hot-formula-parser').Parser;
 export class DataService {
   private labelDataMap: Map<string, number>;
   private modelMap: Map<string, string>;
+  private markerMap: Map<string, Marker>;
   private labels: string[];
   private dataNotifierEmitter: EventEmitter<undefined>;
+  private markerNotifierEmitter: EventEmitter<Marker>;
   private parser: any;
 
   constructor(private configService: ConfigService, private socketService: SocketIoService) {
@@ -72,6 +75,10 @@ export class DataService {
     return this.dataNotifierEmitter;
   }
 
+  get markerNotifier(): EventEmitter<Marker> {
+    return this.markerNotifierEmitter;
+  }
+
   /**
    * When new data arrives in the system, it will be sent here to be put into the labelDataMap. After it is done
    * with that, it will send a notification to anybody who is subscribed to the dataNotifierEmitter
@@ -83,5 +90,17 @@ export class DataService {
       this.labelDataMap.set(label, data[index]);
     });
     this.dataNotifierEmitter.emit();
+  }
+
+  getDataType(label: string): string {
+    if (!!this.labelDataMap.get(label)) {
+      return 'Data';
+    } else if (!!this.modelMap.get(label)) {
+      return 'Model';
+    } else if (!!this.configService.getMarkers.find((mP) => `${mP.id}` === label)) {
+      return 'Marker';
+    }
+
+    return undefined;
   }
 }

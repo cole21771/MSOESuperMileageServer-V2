@@ -1,6 +1,6 @@
 import {ChartData} from './interfaces/ChartData';
-import {IncomingData} from './interfaces/IncomingData';
-import {GraphProperties} from './interfaces/GraphProperties';
+import {IncomingData} from './interfaces/config/IncomingData';
+import {GraphProperties} from './interfaces/config/GraphProperties';
 
 export class Graph {
   color: any = {

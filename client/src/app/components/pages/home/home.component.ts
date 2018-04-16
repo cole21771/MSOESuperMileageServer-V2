@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ToolbarService} from '../../../services/toolbar/toolbar.service';
-import {View} from '../../../models/interfaces/View';
+import {View} from '../../../models/interfaces/config/View';
 
 @Component({
   selector: 'app-home',

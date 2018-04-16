@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import {Config} from '../../models/interfaces/Config';
+import {Config} from '../../models/interfaces/config/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
 import {Response} from '../../models/interfaces/Response';
 import {FileInfo} from '../../models/interfaces/FileInfo';

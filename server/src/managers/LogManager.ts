@@ -57,6 +57,18 @@ export class LogManager {
                 callback({error: false, data: file.toString()});
             });
         });
+
+        socket.on('startRecording', (uuid, callback) => {
+            callback(this.startRecording(uuid));
+        });
+
+        socket.on('stopRecording', async (uuid, filename, callback) => {
+            callback(await this.stopRecording(uuid, filename));
+        });
+
+        socket.on('doesRecordingExist', async (filename, callback) => {
+            callback(await this.doesRecordingExist(filename));
+        });
     }
 
     logData(data: number[]): void {

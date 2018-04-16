@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ToolbarService} from '../../../services/toolbar/toolbar.service';
 import {ConfigService} from '../../../services/config/config.service';
-import {View} from '../../../models/interfaces/View';
+import {View} from '../../../models/interfaces/config/View';
 import {Router} from '@angular/router';
 import {MatDialog, MatIconRegistry, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
