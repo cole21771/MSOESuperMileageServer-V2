@@ -5,13 +5,15 @@ import {LoginData} from '../../models/interfaces/LoginData';
 import {Response} from '../../models/interfaces/Response';
 import {FileInfo} from '../../models/interfaces/FileInfo';
 import Socket = SocketIOClient.Socket;
+import {Marker} from '../../models/interfaces/Marker';
 
 @Injectable()
 export class SocketIoService {
   private socket: Socket; // The client instance of socket.io
 
-  private newDataEmitter: EventEmitter<any> = new EventEmitter<any>();
-  private newLocationEmitter: EventEmitter<any> = new EventEmitter<any>();
+  private newDataEmitter = new EventEmitter<any>();
+  private newLocationEmitter = new EventEmitter<any>();
+  private newMarkerEmitter = new EventEmitter<Marker>();
   private uuid: string;
 
   constructor() {
@@ -88,12 +90,20 @@ export class SocketIoService {
    *
    * @returns {EventEmitter<any>} the new location event emitter
    */
-  getLocation(): EventEmitter<any> {
+  getLocationEmitter(): EventEmitter<any> {
     this.socket.on('newLocation', (location) => {
       this.newLocationEmitter.emit(location);
     });
 
     return this.newLocationEmitter;
+  }
+
+  getMarkerEmitter(): EventEmitter<Marker> {
+    this.socket.on('new-marker', (marker) => {
+      this.newMarkerEmitter.emit(marker);
+    });
+
+    return this.newMarkerEmitter;
   }
 
   /**

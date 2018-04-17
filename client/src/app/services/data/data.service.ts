@@ -33,9 +33,8 @@ export class DataService {
 
     this.labels = this.configService.getLabels;
 
-    this.socketService.getNewDataEmitter().subscribe((data: number[]) => {
-      this.addData(data);
-    });
+    this.socketService.getNewDataEmitter().subscribe(this.addData.bind(this));
+    this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
 
     this.configService.getModels.forEach(model => {
       this.modelMap.set(model.label, model.formula);
