@@ -4,7 +4,7 @@
     <mat-card class="max-size mat-elevation-z6">
       <mat-card-header>
         <app-tile-icon mat-card-avatar *ngIf="tile.icon" [icon]="tile.icon"></app-tile-icon>
-        <mat-card-title>{{tile.name}}</mat-card-title>
+        <mat-card-title *ngIf="tile.name">{{tile.name}}</mat-card-title>
         <mat-card-title *ngIf="tile.sub">{{tile.sub}}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="max-size">

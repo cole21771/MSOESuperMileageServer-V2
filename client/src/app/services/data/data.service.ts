@@ -2,24 +2,33 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {isNullOrUndefined} from 'util';
-import {Marker} from "../../models/interfaces/Marker";
+import {Marker} from '../../models/interfaces/Marker';
+import {LocationInfo} from '../../models/interfaces/LocationInfo';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
 @Injectable()
 export class DataService {
+  private parser: any;
+
   private labelDataMap: Map<string, number>;
   private modelMap: Map<string, string>;
-  private markerMap: Map<string, Marker>;
+  private markerEmitterMap: Map<string, EventEmitter<Marker>>;
+
   private labels: string[];
   private dataNotifierEmitter: EventEmitter<undefined>;
-  private markerNotifierEmitter: EventEmitter<Marker>;
-  private parser: any;
+  private locationNotifierEmitter: EventEmitter<LocationInfo>;
 
   constructor(private configService: ConfigService, private socketService: SocketIoService) {
     this.dataNotifierEmitter = new EventEmitter<undefined>();
+    this.locationNotifierEmitter = new EventEmitter<LocationInfo>();
+
     this.labelDataMap = new Map();
     this.modelMap = new Map();
+    this.markerEmitterMap = new Map();
+    this.configService.getMarkers.forEach((marker) =>
+      this.markerEmitterMap.set(marker.name, new EventEmitter<Marker>()));
+
     this.parser = new FormulaParser();
 
     this.labels = this.configService.getLabels;
@@ -75,8 +84,12 @@ export class DataService {
     return this.dataNotifierEmitter;
   }
 
-  get markerNotifier(): EventEmitter<Marker> {
-    return this.markerNotifierEmitter;
+  getMarkerEmitter(markerName: string): EventEmitter<Marker> {
+    return this.markerEmitterMap.get(markerName);
+  }
+
+  get locationNotifier(): EventEmitter<LocationInfo> {
+    return this.locationNotifierEmitter;
   }
 
   /**
@@ -90,6 +103,10 @@ export class DataService {
       this.labelDataMap.set(label, data[index]);
     });
     this.dataNotifierEmitter.emit();
+  }
+
+  updateMarker(marker: Marker): void {
+    this.markerEmitterMap.get(marker.name).emit(marker);
   }
 
   getDataType(label: string): string {

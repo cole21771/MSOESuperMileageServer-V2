@@ -23,7 +23,7 @@ export class NumberComponent implements OnInit {
         });
         break;
       case 'Marker':
-        this.dataService.markerNotifier.subscribe((marker: Marker) => {
+        this.dataService.getMarkerEmitter(this.numberProperties.label).subscribe((marker: Marker) => {
           if (this.numberProperties.label === marker.name) {
             this.value = Number.parseFloat(marker.marker);
           }

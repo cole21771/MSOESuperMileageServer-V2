@@ -29,6 +29,8 @@ import { NumberComponent } from './components/tiles/number/number.component';
 import { TileIconComponent } from './components/tiles/tile-icon/tile-icon.component';
 import { IconService } from './services/icon/icon.service';
 import { TileComponent } from './components/tiles/tile/tile.component';
+import { MapComponent } from './components/tiles/map/map.component';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { TileComponent } from './components/tiles/tile/tile.component';
     DirectoryComponent,
     NumberComponent,
     TileIconComponent,
-    TileComponent
+    TileComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,10 @@ import { TileComponent } from './components/tiles/tile/tile.component';
     HttpClientModule,
     CommonModule,
     AppRoutingModule,
-    AppMaterialModule
+    AppMaterialModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDTI33G7NT8BwXOSEDuiOEZDD4s7Y63Uqo'
+    })
   ],
   providers: [
     SocketIoService,

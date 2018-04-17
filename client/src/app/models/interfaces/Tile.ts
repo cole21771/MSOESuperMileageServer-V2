@@ -1,5 +1,5 @@
 export interface Tile {
-  name: string;
+  name?: string;
   sub?: string;
   icon?: string;
   cols: number;

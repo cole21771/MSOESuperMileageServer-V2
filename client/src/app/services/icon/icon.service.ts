@@ -14,9 +14,8 @@ export class IconService {
   init(registry: MatIconRegistry) {
     this.registry = registry;
 
-    this.addSvgIcon('moon');
-    this.addSvgIcon('vehicle');
-    this.addSvgIcon('team-logo');
+    ['moon', 'speed', 'team-logo', 'vehicle', 'bolt', 'rpm', 'rpm2']
+      .forEach(this.addSvgIcon.bind(this));
   }
 
   private addSvgIcon(name: string): void {
