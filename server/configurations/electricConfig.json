@@ -92,6 +92,7 @@
   "views": [
     {
       "name": "View1",
+	  "type": "Desktop",
 	  "cols": 12,
       "tiles": [
 	    {
@@ -152,6 +153,7 @@
     },
 	{
       "name": "View2",
+	  "type": "Mobile",
 	  "cols": 6,
       "tiles": [
         {

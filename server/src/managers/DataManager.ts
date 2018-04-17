@@ -12,17 +12,28 @@ export class DataManager {
 
                 if (Array.isArray(parsedData)) {
                     this.logger.logData(parsedData);
-                    socket.broadcast.emit('newData', data);
+                    socket.broadcast.emit('newData', parsedData);
                 } else {
-                    console.error('DataManager, newData:', 'parsedData is not an Array!`');
+                    console.error('DataManager, newData:', 'parsedData is not an Array!');
                 }
             } catch (err) {
-                console.error('DataManager, newData:', 'Error Parsing JSON!\n\n', data, err);
+                console.error('DataManager, newData:', 'Error parsing JSON!\n\n', data, err);
             }
         });
 
         socket.on('newLocation', (location) => {
-            console.log(location);
+            try {
+                const parsedLocation = JSON.parse(location);
+
+                if (Array.isArray(parsedLocation)) {
+                    this.logger.logLocation(parsedLocation);
+                    socket.broadcast.emit('new-location', parsedLocation);
+                } else {
+                    console.error('DataManager, newLocation:', 'parsedLocation is not an Array!');
+                }
+            } catch (err) {
+                console.error('DataManager, newLocation:', 'Error parsing JSON!\n\n', location, err);
+            }
         });
 
         socket.on('new-marker', (markerArray) => {

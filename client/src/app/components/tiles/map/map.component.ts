@@ -18,10 +18,10 @@ export class MapComponent implements OnInit {
 
   async ngOnInit() {
     this.dataService.locationNotifier.subscribe((locationInfo) => {
-
+      console.log(locationInfo);
     });
 
-    this.locations.push({lat: this.mapProperties.lat, long: this.mapProperties.long, speed: 10});
+    /*this.locations.push({lat: this.mapProperties.lat, long: this.mapProperties.long, speed: 10});
     for (let i = 1; i < 200; i++) {
       const lastLoc = this.locations[i - 1];
       this.locations.push({
@@ -30,7 +30,7 @@ export class MapComponent implements OnInit {
         speed: 10
       });
       await new Promise(resolve => setTimeout(resolve, 500));
-    }
+    }*/
   }
 
 }

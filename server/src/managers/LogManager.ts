@@ -85,7 +85,7 @@ export class LogManager {
         });
     }
 
-    logLocation(location: Location): void {
+    logLocation(location: number[]): void {
 
     }
 
@@ -129,9 +129,7 @@ export class LogManager {
 
     doesRecordingExist(filename: string): Promise<boolean> {
         return new Promise(resolve => {
-            this.fs.exists(`${this.RECORDING_PATH}/${filename}`, exists => {
-                resolve(exists);
-            });
+            resolve(this.fs.existsSync(`${this.RECORDING_PATH}/${filename}`));
         });
     }
 
