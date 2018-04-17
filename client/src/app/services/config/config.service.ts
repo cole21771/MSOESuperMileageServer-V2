@@ -8,7 +8,7 @@ import {isNullOrUndefined} from 'util';
 import {View} from '../../models/interfaces/config/View';
 import {GraphProperties} from '../../models/interfaces/config/GraphProperties';
 import {ToolbarService} from '../toolbar/toolbar.service';
-import {MarkerProperties} from "../../models/interfaces/config/MarkerProperties";
+import {MarkerProperties} from '../../models/interfaces/config/MarkerProperties';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 

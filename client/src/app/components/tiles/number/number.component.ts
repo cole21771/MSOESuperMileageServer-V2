@@ -24,14 +24,12 @@ export class NumberComponent implements OnInit {
         break;
       case 'Marker':
         this.dataService.getMarkerEmitter(this.numberProperties.label).subscribe((marker: Marker) => {
-          if (this.numberProperties.label === marker.name) {
-            this.value = Number.parseFloat(marker.marker);
-          }
+          console.log(marker);
+          this.value = marker.marker;
         });
         break;
+      default:
+        console.error('NumberComponent, ngOnInit:', `Couldn't get type for NumberDisplay ${this.numberProperties.label}`);
     }
-
-
   }
-
 }

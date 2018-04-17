@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
-import {isNullOrUndefined} from 'util';
+import {isNullOrUndefined, isUndefined} from 'util';
 import {Marker} from '../../models/interfaces/Marker';
 import {LocationInfo} from '../../models/interfaces/LocationInfo';
 
@@ -9,36 +9,25 @@ const FormulaParser = require('hot-formula-parser').Parser;
 
 @Injectable()
 export class DataService {
-  private parser: any;
+  private parser = new FormulaParser();
 
-  private labelDataMap: Map<string, number>;
-  private modelMap: Map<string, string>;
-  private markerEmitterMap: Map<string, EventEmitter<Marker>>;
+  private labelDataMap = new Map<string, number>();
+  private modelMap = new Map<string, string>();
+  private markerEmitterMap = new Map<number, EventEmitter<Marker>>();
 
-  private labels: string[];
-  private dataNotifierEmitter: EventEmitter<undefined>;
-  private locationNotifierEmitter: EventEmitter<LocationInfo>;
+  private dataNotifierEmitter = new EventEmitter<undefined>();
+  private locationNotifierEmitter = new EventEmitter<LocationInfo>();
 
   constructor(private configService: ConfigService, private socketService: SocketIoService) {
-    this.dataNotifierEmitter = new EventEmitter<undefined>();
-    this.locationNotifierEmitter = new EventEmitter<LocationInfo>();
-
-    this.labelDataMap = new Map();
-    this.modelMap = new Map();
-    this.markerEmitterMap = new Map();
-    this.configService.getMarkers.forEach((marker) =>
-      this.markerEmitterMap.set(marker.name, new EventEmitter<Marker>()));
-
-    this.parser = new FormulaParser();
-
-    this.labels = this.configService.getLabels;
-
     this.socketService.getNewDataEmitter().subscribe(this.addData.bind(this));
     this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
 
-    this.configService.getModels.forEach(model => {
-      this.modelMap.set(model.label, model.formula);
-    });
+    this.configService.getLabels.forEach((label) => this.labelDataMap.set(label, 0));
+    this.configService.getModels.forEach((model) => this.modelMap.set(model.label, model.formula));
+    this.configService.getMarkers.forEach((marker) => this.markerEmitterMap.set(marker.id, new EventEmitter<Marker>()));
+    /*this.configService.getErrors.forEach((error) => {
+      // Error stuff here
+    });*/
   }
 
   /**
@@ -84,7 +73,8 @@ export class DataService {
   }
 
   getMarkerEmitter(markerName: string): EventEmitter<Marker> {
-    return this.markerEmitterMap.get(markerName);
+    const marker = this.configService.getMarkers.find((mk) => mk.name === markerName);
+    return this.markerEmitterMap.get(marker.id);
   }
 
   get locationNotifier(): EventEmitter<LocationInfo> {
@@ -98,24 +88,25 @@ export class DataService {
    * @param {number[]} data is an array of new data that will be put into the labelDataMap
    */
   addData(data: number[]) {
-    this.labels.forEach((label: string, index: number) => {
+    this.configService.getLabels.forEach((label: string, index: number) => {
       this.labelDataMap.set(label, data[index]);
     });
     this.dataNotifierEmitter.emit();
   }
 
   updateMarker(marker: Marker): void {
-    this.markerEmitterMap.get(marker.name).emit(marker);
+    this.markerEmitterMap.get(marker.id).emit(marker);
   }
 
   getDataType(label: string): string {
-    if (!!this.labelDataMap.get(label)) {
+    if (!isUndefined(this.labelDataMap.get(label))) {
       return 'Data';
-    } else if (!!this.modelMap.get(label)) {
+    } else if (!isUndefined(this.modelMap.get(label))) {
       return 'Model';
-    } else if (!!this.configService.getMarkers.find((mP) => `${mP.id}` === label)) {
+    } else if (!isUndefined(this.configService.getMarkers.find((mP) => mP.name === label))) {
       return 'Marker';
     }
+
 
     return undefined;
   }

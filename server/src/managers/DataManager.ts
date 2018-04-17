@@ -41,8 +41,8 @@ export class DataManager {
 
             socket.broadcast.emit('new-marker', {
                 id: parsedMarker[0],
-                timestamp: markerArray[1],
-                marker: markerArray[2]
+                timestamp: parsedMarker[1],
+                marker: parsedMarker[2]
             });
         });
 
