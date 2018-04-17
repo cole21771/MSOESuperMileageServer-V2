@@ -8,7 +8,7 @@
     <agm-polyline-point *ngFor="let location of locations"
                         [longitude]="location.long"
                         [latitude]="location.lat"></agm-polyline-point>
-    <agm-marker [latitude]="locations[locations.length - 1].lat"
+    <agm-marker *ngIf="locations.length > 0" [latitude]="locations[locations.length - 1].lat"
                 [longitude]="locations[locations.length - 1].long">
     </agm-marker>
   </agm-polyline>
