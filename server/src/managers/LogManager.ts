@@ -86,7 +86,7 @@ export class LogManager {
     }
 
     logLocation(location: number[]): void {
-
+        console.log(location);
     }
 
     startRecording(uuid: string): Response<string> {
