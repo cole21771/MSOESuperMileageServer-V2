@@ -18,5 +18,7 @@ export class HomeComponent implements OnInit {
     this.toolbarService.viewChanged.subscribe((view: View) => {
       this.view = view;
     });
+
+    this.toolbarService.emitLastView();
   }
 }

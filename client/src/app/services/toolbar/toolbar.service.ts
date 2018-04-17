@@ -6,6 +6,7 @@ export class ToolbarService {
   private graphModeSwitchedEmitter: EventEmitter<undefined>;
   private viewChangedEmitter: EventEmitter<View>;
   private darkThemeIndicator = true;
+  private lastView: View;
 
   constructor() {
     this.graphModeSwitchedEmitter = new EventEmitter();
@@ -43,7 +44,12 @@ export class ToolbarService {
    * @param {View} view the
    */
   setView(view: View): void {
+    this.lastView = view;
     this.viewChangedEmitter.emit(view);
+  }
+
+  emitLastView(): void {
+    this.setView(this.lastView);
   }
 
   /**
