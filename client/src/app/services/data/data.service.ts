@@ -4,6 +4,7 @@ import {SocketIoService} from '../socket-io/socket-io.service';
 import {isNullOrUndefined, isUndefined} from 'util';
 import {Marker} from '../../models/interfaces/Marker';
 import {LocationInfo} from '../../models/interfaces/LocationInfo';
+import {MatSnackBar} from '@angular/material';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -18,7 +19,9 @@ export class DataService {
   private dataNotifierEmitter = new EventEmitter<undefined>();
   private locationNotifierEmitter = new EventEmitter<LocationInfo>();
 
-  constructor(private configService: ConfigService, private socketService: SocketIoService) {
+  constructor(private configService: ConfigService,
+              private socketService: SocketIoService,
+              private snackBar: MatSnackBar) {
     this.socketService.getNewDataEmitter().subscribe(this.updateData.bind(this));
     this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
     this.socketService.getLocationEmitter().subscribe(this.updateLocation.bind(this));
@@ -96,6 +99,18 @@ export class DataService {
   }
 
   updateMarker(marker: Marker): void {
+    const markerInfo = this.configService.getMarkers.find((m) => m.id === marker.id);
+
+    if (isNullOrUndefined(markerInfo)) {
+      console.error('DataService, updateMarker:', `Marker ${marker.id} could not be found!`);
+    }
+
+    if (markerInfo.showPopup) {
+      const message = isNullOrUndefined(marker.marker) ? 'No message supplied' : marker.marker;
+      this.showSnackBar(`Marker  ${markerInfo.name}: ${message}`);
+    }
+
+
     this.markerEmitterMap.get(marker.id).emit(marker);
   }
 
@@ -113,5 +128,9 @@ export class DataService {
     }
 
     return undefined;
+  }
+
+  private showSnackBar(message: string) {
+    this.snackBar.open(message, undefined, {duration: 5000});
   }
 }

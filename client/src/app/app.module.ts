@@ -31,6 +31,7 @@ import { IconService } from './services/icon/icon.service';
 import { TileComponent } from './components/tiles/tile/tile.component';
 import { MapComponent } from './components/tiles/map/map.component';
 import {AgmCoreModule} from '@agm/core';
+import { MultiGraphComponent } from './multi-graph/multi-graph.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {AgmCoreModule} from '@agm/core';
     NumberComponent,
     TileIconComponent,
     TileComponent,
-    MapComponent
+    MapComponent,
+    MultiGraphComponent
   ],
   imports: [
     BrowserModule,
