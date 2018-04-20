@@ -2,11 +2,8 @@ mat-card {
   padding: 0 !important;
 }
 
-mat-card-title {
-  padding-top: 2px;
-}
-
 app-tile-icon {
+  left: 20px;
   display: inline-block;
 }
 
@@ -15,5 +12,12 @@ app-tile-icon {
   left: 0;
   padding: 0;
   margin: 0;
-  height: 24px;
+  height: 30px;
+
+  .header-title {
+    display: inline-block;
+    margin-left: 4px;
+    position: absolute;
+    margin-top: 2%;
+  }
 }

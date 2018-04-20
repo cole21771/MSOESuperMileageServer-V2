@@ -8,12 +8,6 @@
       "units": "ms"
     },
     {
-      "label": "Lap_Number",
-      "min": 0,
-      "max": 10,
-      "units": "Laps"
-    },
-    {
       "label": "Speed",
       "min": 0,
       "max": 35,
@@ -42,12 +36,6 @@
       "min": 0,
       "max": 50,
       "units": "A"
-    },
-    {
-      "label": "Throttle_Voltage",
-      "min": 0,
-      "max": 3.5,
-      "units": "V"
     }
   ],
   "models": [
@@ -91,9 +79,9 @@
   ],
   "views": [
     {
-      "name": "View1",
+      "name": "Desktop Fullscreen",
 	  "type": "Desktop",
-	  "cols": 12,
+	  "cols": 24,
       "tiles": [
 	    {
 		  "rows": 4,
@@ -107,15 +95,46 @@
 		},
 		{
           "name": "Speed vs Time",
-          "sub": "MPH",
           "icon": "speed",
           "rows": 4,
-          "cols": 4,
+          "cols": 6,
           "type": "Graph",
           "data": {
             "yAxis": "Speed",
             "xAxis": "Time",
             "colors": ["#f00"]
+          }
+        },
+		{
+          "name": "Current vs Time",
+          "icon": "bolt",
+          "rows": 4,
+          "cols": 6,
+		  "type": "Graph",
+          "data": {
+            "yAxis": "Current",
+            "xAxis": "Time",
+            "colors": ["#f0f"]
+          }
+        },
+        {
+          "name": "Volts vs Time",
+          "rows": 4,
+          "cols": 6,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Volts",
+            "xAxis": "Time",
+            "colors": ["#aaa"]
+          }
+        },
+        {
+          "name": "Lap",
+          "rows": 1,
+          "cols": 1,
+          "type": "Marker",
+          "data": {
+            "label": "Lap Number"
           }
         },
         {
@@ -125,28 +144,6 @@
           "type": "NumberDisplay",
           "data": {
             "label": "Joules"
-          }
-        },
-		{
-		  "name": "Lap",
-		  "rows": 1,
-		  "cols": 1,
-		  "type": "Marker",
-		  "data": {
-			"label": "Lap Number"
-		  }
-		},
-		{
-          "name": "Current",
-          "sub": "A",
-          "icon": "bolt",
-          "rows": 3,
-          "cols": 4,
-		  "type": "Graph",
-          "data": {
-            "yAxis": "Current",
-            "xAxis": "Time",
-            "colors": ["#f0f"]
           }
         }
       ]
@@ -158,7 +155,6 @@
       "tiles": [
         {
           "name": "Speed vs Time",
-          "sub": "MPH",
           "icon": "rpm",
           "rows": 2,
           "cols": 2,
@@ -181,7 +177,6 @@
         },
         {
           "name": "Current",
-          "sub": "A",
           "icon": "rpm2",
           "rows": 3,
           "cols": 3,
