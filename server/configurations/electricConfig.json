@@ -4,32 +4,27 @@
     {
       "label": "Time",
       "min": 0,
-      "max": null,
-      "units": "ms"
+      "max": null
     },
     {
       "label": "Speed",
       "min": 0,
-      "max": 35,
-      "units": "MPH"
+      "max": 35
     },
     {
       "label": "Motor_RPM",
       "min": 0,
-      "max": 3500,
-      "units": "RPM"
+      "max": 3500
     },
     {
       "label": "Joules",
       "min": 0,
-      "max": null,
-      "units": "J"
+      "max": null
     },
     {
       "label": "Volts",
       "min": 0,
-      "max": 30,
-      "units": "V"
+      "max": 30
     },
     {
       "label": "Current",
@@ -43,8 +38,13 @@
       "label": "Distance",
       "formula": "Speed * 0.44704 * Time * 0.001",
       "min": 0,
-      "max": null,
-      "units": "m/s"
+      "max": null
+    },
+    {
+      "label": "Motor_RPM-downscaled",
+      "formula": "Motor_RPM / 100",
+      "min": 0,
+      "max": 35
     }
   ],
   "markers": [
@@ -131,7 +131,7 @@
         {
           "name": "Lap",
           "rows": 1,
-          "cols": 1,
+          "cols": 2,
           "type": "Marker",
           "data": {
             "label": "Lap Number"
@@ -140,22 +140,23 @@
         {
           "name": "Joules",
           "rows": 1,
-          "cols": 1,
+          "cols": 2,
           "type": "NumberDisplay",
           "data": {
             "label": "Joules"
           }
         },
 		{
-          "name": "Volts vs Time",
+          "name": "Speed & Motor_RPM vs Time",
           "rows": 4,
           "cols": 6,
-          "type": "MultiGraph",
+          "type": "Graph",
           "data": {
             "yAxisLeft": "Speed",
 			"yAxisRight": "Motor_RPM",
+            "yAxis": "Speed, Motor_RPM-downscaled",
             "xAxis": "Time",
-            "colors": ["#aaa"]
+            "colors": ["#111", "#eee"]
           }
         }
       ]

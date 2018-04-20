@@ -11,7 +11,6 @@ export class Graph {
   yLabels: string[];
   xName: string;
   yName: string;
-  units: string;
   min: number;
   max: number;
   chartData: ChartData[];
@@ -28,9 +27,6 @@ export class Graph {
       .replace(/_/g, ' ');
 
     this.color.domain = graph.colors;
-    this.units = yData.map(data => data.units)
-      .reduce((accumulator, currentUnits, index) => accumulator.concat(index ? ', ' : '', currentUnits), '');
-
     this.setMinAndMax(yData);
 
     this.chartData = yData.map(data => {
