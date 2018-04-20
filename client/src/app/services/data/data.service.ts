@@ -19,8 +19,9 @@ export class DataService {
   private locationNotifierEmitter = new EventEmitter<LocationInfo>();
 
   constructor(private configService: ConfigService, private socketService: SocketIoService) {
-    this.socketService.getNewDataEmitter().subscribe(this.addData.bind(this));
+    this.socketService.getNewDataEmitter().subscribe(this.updateData.bind(this));
     this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
+    this.socketService.getLocationEmitter().subscribe(this.updateLocation.bind(this));
 
     this.configService.getLabels.forEach((label) => this.labelDataMap.set(label, 0));
     this.configService.getModels.forEach((model) => this.modelMap.set(model.label, model.formula));
@@ -87,7 +88,7 @@ export class DataService {
    *
    * @param {number[]} data is an array of new data that will be put into the labelDataMap
    */
-  addData(data: number[]) {
+  updateData(data: number[]): void {
     this.configService.getLabels.forEach((label: string, index: number) => {
       this.labelDataMap.set(label, data[index]);
     });
@@ -98,6 +99,10 @@ export class DataService {
     this.markerEmitterMap.get(marker.id).emit(marker);
   }
 
+  updateLocation(location: LocationInfo): void {
+    this.locationNotifierEmitter.emit(location);
+  }
+
   getDataType(label: string): string {
     if (!isUndefined(this.labelDataMap.get(label))) {
       return 'Data';
@@ -106,7 +111,6 @@ export class DataService {
     } else if (!isUndefined(this.configService.getMarkers.find((mP) => mP.name === label))) {
       return 'Marker';
     }
-
 
     return undefined;
   }

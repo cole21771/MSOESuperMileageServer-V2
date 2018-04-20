@@ -27,7 +27,7 @@ export class DataManager {
 
                 if (Array.isArray(parsedLocation)) {
                     this.logger.logLocation(parsedLocation);
-                    socket.broadcast.emit('new-location', parsedLocation);
+                    socket.broadcast.emit('newLocation', parsedLocation);
                 } else {
                     console.error('DataManager, newLocation:', 'parsedLocation is not an Array!');
                 }

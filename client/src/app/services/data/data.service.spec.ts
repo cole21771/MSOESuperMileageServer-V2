@@ -41,14 +41,14 @@ describe('DataService', () => {
 
   it('should getLatestData',
     inject([DataService], dataService => {
-      dataService.addData([2, 3, 4]);
+      dataService.updateData([2, 3, 4]);
 
       expect(dataService.getLatestData('Speed')).toBe(2);
       expect(dataService.getLatestData('Volts')).toBe(3);
       expect(dataService.getLatestData('Current')).toBe(4);
       expect(dataService.getLatestData('Power')).toBe(12);
 
-      dataService.addData([6, 12, 9]);
+      dataService.updateData([6, 12, 9]);
 
       expect(dataService.getLatestData('Speed')).toBe(6);
       expect(dataService.getLatestData('Volts')).toBe(12);
@@ -56,13 +56,13 @@ describe('DataService', () => {
       expect(dataService.getLatestData('Power')).toBe(108);
     }));
 
-  it('dataNotifier subscribers should be notified when data is added with addData()', done => {
+  it('dataNotifier subscribers should be notified when data is added with updateData()', done => {
     inject([DataService], dataService => {
       dataService.dataNotifier.subscribe(() => {
         done();
       });
 
-      dataService.addData([]);
+      dataService.updateData([]);
     })();
   });
 });

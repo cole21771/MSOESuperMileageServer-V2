@@ -17,8 +17,12 @@ export class MapComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.dataService.locationNotifier.subscribe((locationInfo) => {
-      console.log(locationInfo);
+    this.dataService.locationNotifier.subscribe((locationArray) => {
+      this.locations.push({
+        lat: locationArray[0],
+        long: locationArray[1],
+        speed: locationArray[2]
+      });
     });
 
     /*this.locations.push({lat: this.mapProperties.lat, long: this.mapProperties.long, speed: 10});
