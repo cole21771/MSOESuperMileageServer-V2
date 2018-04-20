@@ -145,6 +145,18 @@
           "data": {
             "label": "Joules"
           }
+        },
+		{
+          "name": "Volts vs Time",
+          "rows": 4,
+          "cols": 6,
+          "type": "MultiGraph",
+          "data": {
+            "yAxisLeft": "Speed",
+			"yAxisRight": "Motor_RPM",
+            "xAxis": "Time",
+            "colors": ["#aaa"]
+          }
         }
       ]
     },

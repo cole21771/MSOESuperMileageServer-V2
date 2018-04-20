@@ -10,7 +10,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppMaterialModule} from './app-material.module';
 import {LoginComponent} from './components/shared/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {LineChartModule, NumberCardModule} from '@swimlane/ngx-charts';
+import {LineChartModule, NgxChartsModule, NumberCardModule} from '@swimlane/ngx-charts';
 import {ToolbarService} from './services/toolbar/toolbar.service';
 import {AdminGuard} from './gaurds/admin/admin.guard';
 import {ConfigService} from './services/config/config.service';
@@ -31,7 +31,7 @@ import { IconService } from './services/icon/icon.service';
 import { TileComponent } from './components/tiles/tile/tile.component';
 import { MapComponent } from './components/tiles/map/map.component';
 import {AgmCoreModule} from '@agm/core';
-import { MultiGraphComponent } from './multi-graph/multi-graph.component';
+import { MultiGraphComponent } from './components/tiles/multi-graph/multi-graph.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,7 @@ import { MultiGraphComponent } from './multi-graph/multi-graph.component';
     BrowserModule,
     BrowserAnimationsModule,
     LineChartModule,
-    NumberCardModule,
+    NgxChartsModule,
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
