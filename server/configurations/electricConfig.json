@@ -11,6 +11,11 @@
       "min": 0,
       "max": 35
     },
+	{
+	  "label": "Avgerage_Speed",
+	  "min": 0,
+	  "max": 35
+	},
     {
       "label": "Motor_RPM",
       "min": 0,
@@ -33,20 +38,7 @@
       "units": "A"
     }
   ],
-  "models": [
-    {
-      "label": "Distance",
-      "formula": "Speed * 0.44704 * Time * 0.001",
-      "min": 0,
-      "max": null
-    },
-    {
-      "label": "Motor_RPM-downscaled",
-      "formula": "Motor_RPM / 100",
-      "min": 0,
-      "max": 35
-    }
-  ],
+  "models": [],
   "markers": [
     {
 	  "id": 0,
@@ -124,30 +116,21 @@
           }
         },
         {
-          "name": "Run Time",
-          "rows": 1,
-          "cols": 2,
-          "type": "NumberDisplay",
-          "data": {
-            "label": "Time"
-          }
-        },
-        {
-          "name": "Lap Time",
-          "rows": 1,
-          "cols": 2,
-          "type": "NumberDisplay",
-          "data": {
-            "label": "Lap_Time"
-          }
-        },
-        {
           "name": "Joules",
           "rows": 1,
           "cols": 2,
           "type": "NumberDisplay",
           "data": {
             "label": "Joules"
+          }
+        },
+        {
+          "name": "Run Time",
+          "rows": 1,
+          "cols": 2,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Time"
           }
         },
         {
@@ -160,10 +143,19 @@
           }
         },
         {
+          "name": "Lap Times",
+          "rows": 6,
+          "cols": 2,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Lap_Time"
+          }
+        },
+        {
           "name": "Voltage vs Time",
           "icon": "bolt",
           "rows": 5,
-          "cols": 7,
+          "cols": 5,
           "type": "Graph",
           "data": {
             "yAxis": "Volts",
@@ -184,56 +176,47 @@
           }
         },
 		{
+		  "name": "Speed",
+		  "rows": 1,
+		  "cols": 4,
+		  "type": "NumberDisplay",
+		  "data": {
+		    "label": "Speed"
+		  }
+		},
+		{
+		  "name": "Average Speed",
+		  "rows": 1,
+		  "cols": 4,
+		  "type": "NumberDisplay",
+		  "data": {
+		    "label": "Avgerage_Speed"
+		  }
+		},
+		{
+		  "name": "Joules vs Time",
+		  "icon": "bolt",
+		  "rows": 5,
+		  "cols": 8,
+		  "type": "Graph",
+		  "data": {
+            "yAxis": "Joules",
+            "xAxis": "Time",
+            "colors": [
+              "#0ff"
+            ]
+          }
+		},
+		{
           "name": "Motor RPM vs Time",
           "icon": "rpm",
-          "rows": 5,
+          "rows": 4,
           "cols": 8,
 		  "type": "Graph",
           "data": {
             "yAxis": "Motor_RPM",
             "xAxis": "Time",
             "colors": ["#0f0"]
-          }
-        }
-      ]
-    },
-	{
-      "name": "View2",
-	  "type": "Mobile",
-	  "cols": 6,
-      "tiles": [
-        {
-          "name": "Speed vs Time",
-          "icon": "rpm",
-          "rows": 2,
-          "cols": 2,
-          "type": "Graph",
-          "data": {
-            "yAxis": "Speed",
-            "xAxis": "Time",
-            "colors": ["#f00"]
-          }
-        },
-        {
-          "name": "Joules",
-          "icon": "Energy",
-          "rows": 1,
-          "cols": 1,
-          "type": "NumberDisplay",
-          "data": {
-            "label": "Joules"
-          }
-        },
-        {
-          "name": "Current",
-          "icon": "rpm2",
-          "rows": 3,
-          "cols": 3,
-		  "type": "Graph",
-          "data": {
-            "yAxis": "Current",
-            "xAxis": "Time",
-            "colors": ["#f0f"]
           }
         }
       ]

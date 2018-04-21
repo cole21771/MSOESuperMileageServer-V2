@@ -1,3 +1,12 @@
 <div>
-  <div class="value">{{value}}</div>
+  <div *ngIf="numberProperties.label !== 'Lap_Time' && numberProperties.label !== 'Time'" class="value">{{value}}</div>
+  <div *ngIf="numberProperties.label === 'Time'" class="value">{{value | date:'mm:ss'}}</div>
+
+  <div *ngIf="numberProperties.label === 'Lap_Time'">
+    <h1 class="currentLap">{{value | date:'mm:ss'}}</h1>
+    <br><br>
+    <span *ngFor="let time of times, let i = index">
+      <div class="value">#{{i + 1}}: {{time | date:'mm:ss'}}</div>
+    </span>
+  </div>
 </div>

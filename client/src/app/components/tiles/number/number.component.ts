@@ -10,6 +10,8 @@ import {Marker} from '../../../models/interfaces/Marker';
 export class NumberComponent implements OnInit {
   @Input() numberProperties: { label: string };
   public value: number;
+  public lastTime = 0;
+  public times: number[] = [];
 
   constructor(private dataService: DataService) {
   }
@@ -25,6 +27,16 @@ export class NumberComponent implements OnInit {
       case 'Marker':
         this.dataService.getMarkerEmitter(this.numberProperties.label).subscribe((marker: Marker) => {
           this.value = marker.marker;
+        });
+        break;
+      case 'LapTime':
+        this.dataService.getMarkerEmitter('Lap Number').subscribe((marker: Marker) => {
+          this.times.push(this.value);
+          this.lastTime = this.dataService.getLatestData('Time');
+        });
+
+        this.dataService.dataNotifier.subscribe(() => {
+          this.value = this.dataService.getLatestData('Time') - this.lastTime;
         });
         break;
       default:
