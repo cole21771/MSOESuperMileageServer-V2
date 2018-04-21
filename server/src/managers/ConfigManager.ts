@@ -1,7 +1,7 @@
 import Socket = SocketIO.Socket;
 import {Config} from '../../../client/src/app/models/interfaces/config/Config';
-import {ServerConfig} from '../models/interfaces/ServerConfig';
 import {Response} from '../models/interfaces/Response';
+import {ServerConfig} from '../models/interfaces/ServerConfig';
 
 /**
  * A class that holds all of the socket.io listeners for anything related to

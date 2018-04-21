@@ -13,7 +13,7 @@ import {IconService} from './services/icon/icon.service';
   styleUrls: ['./app.component.scss'],
   viewProviders: [MatIconRegistry]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   public isLoggedIn: Boolean = false;
 
   constructor(private router: Router,
