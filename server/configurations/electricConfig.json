@@ -70,12 +70,30 @@
 	}
   ],
   "errors": [
-    "General",
-	"Wire Disconnection",
-	"Serial Connection Lost",
-	"Motor Controller Fault",
-	"Motor Sensor Pattern Fault",
-	"Carbon Monoxide Warning"
+	{
+	  "id": 0,
+	  "name": "General"
+	},
+	{
+	  "id": 1,
+	  "name": "Wire Disconnection"
+	},
+	{
+	  "id": 2,
+	  "name": "Serial Connection Lost"
+	},
+	{
+	  "id": 3,
+	  "name": "Motor Controller Fault"
+	},
+	{
+	  "id": 4,
+	  "name": "Motor Sensor Pattern Fault"
+	},
+	{
+	  "id": 5,
+	  "name": "Carbon Monoxide Warning"
+	}
   ],
   "views": [
     {
@@ -106,26 +124,29 @@
           }
         },
 		{
-          "name": "Current vs Time",
-          "icon": "bolt",
+          "name": "Motor RPM vs Time",
+          "icon": "rpm",
           "rows": 4,
           "cols": 6,
 		  "type": "Graph",
           "data": {
-            "yAxis": "Current",
+            "yAxis": "Motor_RPM",
             "xAxis": "Time",
-            "colors": ["#f0f"]
+            "colors": ["#0f0"]
           }
         },
         {
-          "name": "Volts vs Time",
+          "name": "Speed & Motor_RPM vs Time",
+          "icon": "rpm2",
           "rows": 4,
           "cols": 6,
           "type": "Graph",
           "data": {
-            "yAxis": "Volts",
+            "yAxisLeft": "Speed",
+            "yAxisRight": "Motor_RPM",
+            "yAxis": "Speed, Motor_RPM-downscaled",
             "xAxis": "Time",
-            "colors": ["#aaa"]
+            "colors": ["#f00", "#0f0"]
           }
         },
         {
@@ -146,17 +167,28 @@
             "label": "Joules"
           }
         },
-		{
-          "name": "Speed & Motor_RPM vs Time",
+        {
+          "name": "Current vs Time",
+          "icon": "bolt",
           "rows": 4,
           "cols": 6,
           "type": "Graph",
           "data": {
-            "yAxisLeft": "Speed",
-			"yAxisRight": "Motor_RPM",
-            "yAxis": "Speed, Motor_RPM-downscaled",
+            "yAxis": "Current",
             "xAxis": "Time",
-            "colors": ["#111", "#eee"]
+            "colors": ["#ff0"]
+          }
+        },
+        {
+          "name": "Volts vs Time",
+          "icon": "bolt",
+          "rows": 4,
+          "cols": 6,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Volts",
+            "xAxis": "Time",
+            "colors": ["#aaa"]
           }
         }
       ]

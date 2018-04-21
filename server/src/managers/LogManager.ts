@@ -1,5 +1,3 @@
-import {Location} from '../interfaces/Location';
-import {OpenFile} from '../interfaces/OpenFile';
 import Socket = SocketIO.Socket;
 import {Recording} from '../interfaces/Recording';
 import {Response} from '../interfaces/Response';
@@ -11,7 +9,7 @@ export class LogManager {
     private RECORDING_PATH = `${this.LOG_PATH}/recordings`;
 
     private uuidRecordingMap: Map<string, Recording>;
-    private logStream: WriteStream;
+    private dataLogStream: WriteStream;
 
     constructor(private fs: any, private configManager: ConfigManager) {
         this.uuidRecordingMap = new Map();
@@ -25,9 +23,9 @@ export class LogManager {
         }
 
         const filename = this.getFormattedDate();
-        this.logStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.csv`);
+        this.dataLogStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.csv`);
 
-        this.logStream.write(this.configManager.getCSVTitle(), 'utf8', (err) => {
+        this.dataLogStream.write(this.configManager.getCSVTitle(), 'utf8', (err) => {
             if (err) {
                 console.error(err);
             }
@@ -73,7 +71,7 @@ export class LogManager {
 
     logData(data: number[]): void {
         const csv = this.dataToCSV(data);
-        this.logStream.write(csv, 'utf8', (err) => {
+        this.dataLogStream.write(csv, 'utf8', (err) => {
             if (err) {
                 console.error('LogManager, logData:', err);
             }
@@ -86,7 +84,15 @@ export class LogManager {
     }
 
     logLocation(location: number[]): void {
-        console.log(location);
+
+    }
+
+    logMarker(marker: number[]): void {
+
+    }
+
+    logError(error: any[]): void {
+
     }
 
     startRecording(uuid: string): Response<string> {

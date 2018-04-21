@@ -6,6 +6,7 @@ import {Response} from '../../models/interfaces/Response';
 import {FileInfo} from '../../models/interfaces/FileInfo';
 import Socket = SocketIOClient.Socket;
 import {Marker} from '../../models/interfaces/Marker';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 
 @Injectable()
 export class SocketIoService {
@@ -14,6 +15,7 @@ export class SocketIoService {
   private newDataEmitter = new EventEmitter<any>();
   private newLocationEmitter = new EventEmitter<any>();
   private newMarkerEmitter = new EventEmitter<Marker>();
+  private newErrorEmitter = new EventEmitter<any[]>();
   private uuid: string;
 
   constructor() {
@@ -91,19 +93,18 @@ export class SocketIoService {
    * @returns {EventEmitter<any>} the new location event emitter
    */
   getLocationEmitter(): EventEmitter<any> {
-    this.socket.on('newLocation', (location) => {
-      this.newLocationEmitter.emit(location);
-    });
-
+    this.socket.on('newLocation', this.newLocationEmitter.emit);
     return this.newLocationEmitter;
   }
 
   getMarkerEmitter(): EventEmitter<Marker> {
-    this.socket.on('new-marker', (marker) => {
-      this.newMarkerEmitter.emit(marker);
-    });
-
+    this.socket.on('newMarker', this.newMarkerEmitter.emit);
     return this.newMarkerEmitter;
+  }
+
+  getErrorEmitter(): EventEmitter<any[]> {
+    this.socket.on('newError', this.newErrorEmitter.emit);
+    return this.newErrorEmitter;
   }
 
   /**

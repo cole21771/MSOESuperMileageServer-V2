@@ -24,14 +24,12 @@ export class DataService {
               private snackBar: MatSnackBar) {
     this.socketService.getNewDataEmitter().subscribe(this.updateData.bind(this));
     this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
-    this.socketService.getLocationEmitter().subscribe(this.updateLocation.bind(this));
+    this.socketService.getLocationEmitter().subscribe(this.locationNotifierEmitter.emit);
+    this.socketService.getErrorEmitter().subscribe(this.throwError.bind(this));
 
     this.configService.getLabels.forEach((label) => this.labelDataMap.set(label, 0));
     this.configService.getModels.forEach((model) => this.modelMap.set(model.label, model.formula));
     this.configService.getMarkers.forEach((marker) => this.markerEmitterMap.set(marker.id, new EventEmitter<Marker>()));
-    /*this.configService.getErrors.forEach((error) => {
-      // Error stuff here
-    });*/
   }
 
   /**
@@ -91,14 +89,14 @@ export class DataService {
    *
    * @param {number[]} data is an array of new data that will be put into the labelDataMap
    */
-  updateData(data: number[]): void {
+  private updateData(data: number[]): void {
     this.configService.getLabels.forEach((label: string, index: number) => {
       this.labelDataMap.set(label, data[index]);
     });
     this.dataNotifierEmitter.emit();
   }
 
-  updateMarker(marker: Marker): void {
+  private updateMarker(marker: Marker): void {
     const markerInfo = this.configService.getMarkers.find((m) => m.id === marker.id);
 
     if (isNullOrUndefined(markerInfo)) {
@@ -110,12 +108,12 @@ export class DataService {
       this.showSnackBar(`Marker  ${markerInfo.name}: ${message}`);
     }
 
-
     this.markerEmitterMap.get(marker.id).emit(marker);
   }
 
-  updateLocation(location: LocationInfo): void {
-    this.locationNotifierEmitter.emit(location);
+  private throwError(err: any[]) {
+    const errorProperties = this.configService.getErrors.find((e) => e.id === err[0]);
+    this.showSnackBar(`Error ${errorProperties.name}: ${err[2]}`);
   }
 
   getDataType(label: string): string {

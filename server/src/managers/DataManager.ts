@@ -37,17 +37,35 @@ export class DataManager {
         });
 
         socket.on('new-marker', (markerArray) => {
-            const parsedMarker = JSON.parse(markerArray);
-
-            socket.broadcast.emit('new-marker', {
-                id: parsedMarker[0],
-                timestamp: parsedMarker[1],
-                marker: parsedMarker[2]
-            });
+            try {
+                const parsedMarker = JSON.parse(markerArray);
+                if (Array.isArray(parsedMarker)) {
+                    this.logger.logMarker(parsedMarker);
+                    socket.broadcast.emit('newMarker', {
+                        id: parsedMarker[0],
+                        timestamp: parsedMarker[1],
+                        marker: parsedMarker[2]
+                    });
+                }
+            } catch (err) {
+                console.error('DataManager, newMarker:', 'Error parsing JSON!\n\n', markerArray, err);
+            }
         });
 
         socket.on('new-error', (errorArray) => {
-            console.log(errorArray);
+            try {
+                const parsedError = JSON.parse(errorArray);
+                if (Array.isArray(parsedError)) {
+                    this.logger.logError(parsedError);
+                    socket.broadcast.emit('newError', {
+                        id: parsedError[0],
+                        timestamp: parsedError[1],
+                        marker: parsedError[2]
+                    });
+                }
+            } catch (err) {
+                console.error('DataManager, newError:', 'Error parsing JSON!\n\n', errorArray, err);
+            }
         });
     }
 }

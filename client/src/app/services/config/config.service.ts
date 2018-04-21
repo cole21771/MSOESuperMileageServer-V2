@@ -9,6 +9,7 @@ import {View} from '../../models/interfaces/config/View';
 import {GraphProperties} from '../../models/interfaces/config/GraphProperties';
 import {ToolbarService} from '../toolbar/toolbar.service';
 import {MarkerProperties} from '../../models/interfaces/config/MarkerProperties';
+import {ErrorProperties} from '../../models/interfaces/config/ErrorProperties';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
@@ -51,6 +52,10 @@ export class ConfigService {
 
   get getMarkers(): MarkerProperties[] {
     return this.config ? this.config.markers : undefined;
+  }
+
+  get getErrors(): ErrorProperties[] {
+    return this.config ? this.config.errors : undefined;
   }
 
   getGraph(graphProperties: GraphProperties): Graph {
