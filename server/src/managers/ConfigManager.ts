@@ -2,6 +2,7 @@ import Socket = SocketIO.Socket;
 import {Config} from '../../../client/src/app/models/interfaces/config/Config';
 import {Response} from '../models/interfaces/Response';
 import {ServerConfig} from '../models/interfaces/ServerConfig';
+import {isUndefined} from 'util';
 
 /**
  * A class that holds all of the socket.io listeners for anything related to
@@ -67,19 +68,24 @@ export class ConfigManager {
         });
     }
 
-    public getCSVTitle(): string {
-        const file = this.fs.readFileSync(`${this.CONFIG_PATH}/${this.serverConfig.selectedConfig}`, 'utf8');
-        const config = JSON.parse(file);
+    public getCSVTitle(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.getConfig.then((res: Response<Config>) => {
+                const config = res.data;
 
-        let csv = '';
-        config.incomingData.forEach((data, index) => {
-            csv += data.label.replace(/_/g, ' ');
-            if (index !== config.incomingData.length - 1) {
-                csv += ', ';
-            }
+                let csv = '';
+                config.incomingData.forEach((data, index) => {
+                    csv += data.label.replace(/_/g, ' ');
+                    if (index !== config.incomingData.length - 1) {
+                        csv += ', ';
+                    }
+                });
+
+                resolve(csv + '\n');
+            }).catch((errRes: Response<undefined>) => {
+                throw new Error('ConfigManager, getCSVTitle: \n\n' + errRes.errorMessage);
+            });
         });
-
-        return csv + '\n';
     }
 
     public get getConfig(): Promise<Response<Config>> {

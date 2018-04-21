@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MatSnackBar, MatTableDataSource} from '@angular/material';
-import {SocketIoService} from '../../../services/socket-io/socket-io.service';
+import {Component, Input} from '@angular/core';
+import {MatTableDataSource} from '@angular/material';
 import {FileInfo} from '../../../models/interfaces/FileInfo';
 import {LogService} from '../../../services/log/log.service';
 
@@ -11,12 +10,16 @@ import {LogService} from '../../../services/log/log.service';
 })
 export class DirectoryComponent {
   @Input() dataSource: MatTableDataSource<string>;
-  public displayedColumns = ['filename'];
+  public displayedColumns = ['filename', 'actions'];
 
   constructor(private logService: LogService) {
   }
 
-  downloadFile(fileInfo: FileInfo) {
+  getSMV(fileInfo: FileInfo) {
     this.logService.downloadFile(fileInfo);
+  }
+
+  getCSV(fileInfo: FileInfo) {
+    this.logService.downloadCSVFile(fileInfo);
   }
 }

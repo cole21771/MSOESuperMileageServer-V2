@@ -3,10 +3,9 @@ import {ToolbarService} from '../../../services/toolbar/toolbar.service';
 import {ConfigService} from '../../../services/config/config.service';
 import {View} from '../../../models/interfaces/config/View';
 import {Router} from '@angular/router';
-import {MatDialog, MatIconRegistry, MatSidenav, MatSnackBar} from '@angular/material';
+import {MatDialog, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {SaveRecordingComponent} from '../save-recording/save-recording.component';
-import {FileInfo} from '../../../models/interfaces/FileInfo';
 import {LogService} from '../../../services/log/log.service';
 
 @Component({

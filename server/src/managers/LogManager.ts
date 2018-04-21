@@ -3,6 +3,7 @@ import {Config} from '../../../client/src/app/models/interfaces/config/Config';
 import {FullLog} from '../models/FullLog';
 import {Recording} from '../models/interfaces/Recording';
 import {Response} from '../models/interfaces/Response';
+import {TimestampedData} from '../models/interfaces/TimestampedData';
 import WriteStream = NodeJS.WriteStream;
 import {ConfigManager} from './ConfigManager';
 
@@ -11,7 +12,6 @@ export class LogManager {
     private RECORDING_PATH = `${this.LOG_PATH}/recordings`;
 
     private uuidRecordingMap: Map<string, Recording>;
-    private dataLogStream: WriteStream;
     private sessionLog: FullLog;
 
     constructor(private fs: any, private configManager: ConfigManager) {
@@ -59,12 +59,19 @@ export class LogManager {
             });
         });
 
-        socket.on('get-file', (fileInfo, callback) => {
+        socket.on('get-file', (fileInfo, inCsvFormat, callback) => {
             this.fs.readFile(`${fileInfo.path}/${fileInfo.filename}`, (err, file) => {
                 this.handleFileSystemError('LogManager, get-file:', err, () => {
                     callback({error: true, errorMessage: 'File Not Found!'});
                 });
-                callback({error: false, data: file.toString()});
+
+                if (inCsvFormat) {
+                    const fullLog: FullLog = new FullLog();
+                    fullLog.fromJSON(JSON.parse(file));
+                    this.dataToCSV(fullLog.getData).then((data) => callback({error: false, data }));
+                } else {
+                    callback({error: false, data: file.toString()});
+                }
             });
         });
 
@@ -166,17 +173,23 @@ export class LogManager {
         });
     }
 
-   /* private dataToCSV(fullLog: number[]): string {
-        let csv = '';
-        fullLog.forEach((value, index) => {
-            csv += value;
-            if (index !== fullLog.length - 1) {
-                csv += ', ';
-            }
-        });
+    private dataToCSV(logData: Array<TimestampedData<number[]>>): Promise<string> {
+        return new Promise((resolve) => {
+            this.configManager.getCSVTitle().then((csv: string) => {
+                logData.forEach((timestampedData) => {
+                    timestampedData.data.forEach((data, dataIndex, arr) => {
+                        csv += data;
+                        if (dataIndex !== arr.length - 1) {
+                            csv += ', ';
+                        }
+                    });
+                    csv += '\n';
+                });
 
-        return csv + '\n';
-    }*/
+                resolve(csv + '\n');
+            });
+        });
+    }
 
     private getFormattedDate(date = new Date()): string {
         const time = date.toTimeString()

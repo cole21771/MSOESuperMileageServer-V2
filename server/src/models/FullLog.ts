@@ -9,12 +9,20 @@ export class FullLog {
     private errors: Array<TimestampedData<any[]>>;
     private _hasBufferedData: boolean;
 
-    constructor(config: Config) {
+    constructor(config?: Config) {
         this.config = config;
         this.data = [];
         this.locations = [];
         this.markers = [];
         this.errors = [];
+    }
+
+    public fromJSON(fullLog: FullLog) {
+        this.config = fullLog.config;
+        this.data = fullLog.data;
+        this.locations = fullLog.locations;
+        this.markers = fullLog.markers;
+        this.errors = fullLog.errors;
     }
 
     public static getTimedData(data: any): TimestampedData<any> {
@@ -27,6 +35,10 @@ export class FullLog {
 
     public resetBuffer(): void {
         this._hasBufferedData = false;
+    }
+
+    public get getData(): Array<TimestampedData<number[]>> {
+        return this.data;
     }
 
     addData(data: number[]): void {

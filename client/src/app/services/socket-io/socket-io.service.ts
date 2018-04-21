@@ -179,8 +179,8 @@ export class SocketIoService {
     return new Promise((resolve) => this.socket.emit('get-recordings', undefined, resolve));
   }
 
-  getFile(fileInfo: FileInfo): Promise<Response<string>> {
-    return new Promise((resolve) => this.socket.emit('get-file', fileInfo, resolve));
+  getFile(fileInfo: FileInfo, inCsvFormat = false): Promise<Response<string>> {
+    return new Promise((resolve) => this.socket.emit('get-file', fileInfo, inCsvFormat, resolve));
   }
 
   private createUUID(): string {
