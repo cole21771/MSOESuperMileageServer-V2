@@ -25,7 +25,7 @@ export class DataService {
     this.socketService.getNewDataEmitter().subscribe(this.updateData.bind(this));
     this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
     this.socketService.getLocationEmitter().subscribe((locationArr) => {
-      this.locationNotifierEmitter.emit(locationArr)
+      this.locationNotifierEmitter.emit(locationArr);
     });
     this.socketService.getErrorEmitter().subscribe(this.throwError.bind(this));
 

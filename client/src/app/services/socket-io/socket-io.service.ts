@@ -100,12 +100,12 @@ export class SocketIoService {
   }
 
   getMarkerEmitter(): EventEmitter<Marker> {
-    this.socket.on('newMarker', this.newMarkerEmitter.emit);
+    this.socket.on('newMarker', (markerArr) => this.newMarkerEmitter.emit(markerArr));
     return this.newMarkerEmitter;
   }
 
   getErrorEmitter(): EventEmitter<any[]> {
-    this.socket.on('newError', this.newErrorEmitter.emit);
+    this.socket.on('newError', (errorArr) => this.newErrorEmitter.emit(errorArr));
     return this.newErrorEmitter;
   }
 
