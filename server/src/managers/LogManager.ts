@@ -1,6 +1,8 @@
 import Socket = SocketIO.Socket;
-import {Recording} from '../interfaces/Recording';
-import {Response} from '../interfaces/Response';
+import {Config} from '../../../client/src/app/models/interfaces/config/Config';
+import {FullLog} from '../models/FullLog';
+import {Recording} from '../models/interfaces/Recording';
+import {Response} from '../models/interfaces/Response';
 import WriteStream = NodeJS.WriteStream;
 import {ConfigManager} from './ConfigManager';
 
@@ -10,9 +12,16 @@ export class LogManager {
 
     private uuidRecordingMap: Map<string, Recording>;
     private dataLogStream: WriteStream;
+    private sessionLog: FullLog;
 
     constructor(private fs: any, private configManager: ConfigManager) {
         this.uuidRecordingMap = new Map();
+
+        this.configManager.getConfig.then((res: Response<Config>) => {
+            this.sessionLog = new FullLog(res.data);
+        }).catch((errRes: Response<undefined>) => {
+            throw new Error('Error retrieving config for session log!\n\n' + errRes.errorMessage);
+        });
 
         if (!this.fs.existsSync(this.LOG_PATH)) {
             this.fs.mkdirSync(this.LOG_PATH);
@@ -23,33 +32,37 @@ export class LogManager {
         }
 
         const filename = this.getFormattedDate();
-        this.dataLogStream = this.fs.createWriteStream(`${this.LOG_PATH}/${filename}.csv`);
-
-        this.dataLogStream.write(this.configManager.getCSVTitle(), 'utf8', (err) => {
-            if (err) {
-                console.error(err);
+        setInterval(() => {
+            if (this.sessionLog.hasBufferedData) {
+                this.fs.writeFile(`${this.LOG_PATH}/${filename}.smv`, JSON.stringify(this.sessionLog), 'utf8', (err) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
+                this.sessionLog.resetBuffer();
+                console.log('Writing session log');
             }
-        });
+        }, 2000);
     }
 
     init(socket: Socket) {
         socket.on('get-logs', (undefined, callback) => {
             this.fs.readdir(this.LOG_PATH, 'utf8', (err, files) => {
-                this.handleError('LogManager, getLogs: ', err, callback);
+                this.handleFileSystemError('LogManager, getLogs: ', err, callback);
                 callback({error: false, data: files.map((filename) => ({path: this.LOG_PATH, filename}))});
             });
         });
 
         socket.on('get-recordings', (undefined, callback) => {
             this.fs.readdir(this.RECORDING_PATH, (err, files) => {
-                this.handleError('LogManager, getRecordings: ', err, callback);
+                this.handleFileSystemError('LogManager, getRecordings: ', err, callback);
                 callback({error: false, data: files.map((filename) => ({path: this.RECORDING_PATH, filename}))});
             });
         });
 
         socket.on('get-file', (fileInfo, callback) => {
             this.fs.readFile(`${fileInfo.path}/${fileInfo.filename}`, (err, file) => {
-                this.handleError('LogManager, get-file:', err, () => {
+                this.handleFileSystemError('LogManager, get-file:', err, () => {
                     callback({error: true, errorMessage: 'File Not Found!'});
                 });
                 callback({error: false, data: file.toString()});
@@ -70,38 +83,53 @@ export class LogManager {
     }
 
     logData(data: number[]): void {
-        const csv = this.dataToCSV(data);
-        this.dataLogStream.write(csv, 'utf8', (err) => {
-            if (err) {
-                console.error('LogManager, logData:', err);
-            }
-        });
+        this.sessionLog.addData(data);
 
         this.uuidRecordingMap.forEach((recording, uuid) => {
-            recording.data += csv;
+            recording.fullLog.addData(data);
             this.uuidRecordingMap.set(uuid, recording);
         });
     }
 
     logLocation(location: number[]): void {
+        this.sessionLog.addLocation(location);
 
+        this.uuidRecordingMap.forEach((recording, uuid) => {
+            recording.fullLog.addLocation(location);
+            this.uuidRecordingMap.set(uuid, recording);
+        });
     }
 
     logMarker(marker: number[]): void {
+        this.sessionLog.addMarker(marker);
 
+        this.uuidRecordingMap.forEach((recording, uuid) => {
+            recording.fullLog.addMarker(marker);
+            this.uuidRecordingMap.set(uuid, recording);
+        });
     }
 
     logError(error: any[]): void {
+        this.sessionLog.addError(error);
 
+        this.uuidRecordingMap.forEach((recording, uuid) => {
+            recording.fullLog.addError(error);
+            this.uuidRecordingMap.set(uuid, recording);
+        });
     }
 
     startRecording(uuid: string): Response<string> {
         if (this.uuidRecordingMap.get(uuid) === undefined) {
-            this.uuidRecordingMap.set(uuid, {
-                filename: `${this.getFormattedDate()}.csv`,
-                data: this.configManager.getCSVTitle()
+            this.configManager.getConfig.then((res: Response<Config>) => {
+                this.uuidRecordingMap.set(uuid, {
+                    filename: `${this.getFormattedDate()}.csv`,
+                    fullLog: new FullLog(res.data)
+                });
+                return {error: false, data: 'Recording successfully started!'};
+            }).catch((errRes: Response<undefined>) => {
+                console.error('LogManager, startRecording:', 'Error getting config', errRes.errorMessage);
+                return {error: true, data: 'Problem getting config for starting recording!'};
             });
-            return {error: false, data: 'Recording successfully started!'};
         } else {
             return {error: true, data: 'Recording already in progress!'};
         }
@@ -116,8 +144,8 @@ export class LogManager {
                 }
 
                 if (!this.fs.existsSync(`${this.RECORDING_PATH}/${recording.filename}`)) {
-                    this.fs.writeFile(`${this.RECORDING_PATH}/${recording.filename}`, recording.data, (writeErr) => {
-                        this.handleError('LogManager, stopRecording', writeErr, () => {
+                    this.fs.writeFile(`${this.RECORDING_PATH}/${recording.filename}`, recording.fullLog, (writeErr) => {
+                        this.handleFileSystemError('LogManager, stopRecording', writeErr, () => {
                             resolve({error: true, errorMessage: 'Problem writing file!'});
                         });
 
@@ -139,17 +167,17 @@ export class LogManager {
         });
     }
 
-    private dataToCSV(data: number[]): string {
+   /* private dataToCSV(fullLog: number[]): string {
         let csv = '';
-        data.forEach((value, index) => {
+        fullLog.forEach((value, index) => {
             csv += value;
-            if (index !== data.length - 1) {
+            if (index !== fullLog.length - 1) {
                 csv += ', ';
             }
         });
 
         return csv + '\n';
-    }
+    }*/
 
     private getFormattedDate(date = new Date()): string {
         const time = date.toTimeString()
@@ -160,7 +188,7 @@ export class LogManager {
         return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}, ${time}`;
     }
 
-    private handleError(location: string, err: string, callback) {
+    private handleFileSystemError(location: string, err: string, callback) {
         if (err) {
             console.error(location, err);
             callback({error: true, errorMessage: location + err});

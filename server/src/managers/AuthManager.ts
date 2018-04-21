@@ -1,4 +1,4 @@
-import {LoginData} from '../interfaces/LoginData';
+import {LoginData} from '../models/interfaces/LoginData';
 import Socket = NodeJS.Socket;
 import {LogManager} from './LogManager';
 
