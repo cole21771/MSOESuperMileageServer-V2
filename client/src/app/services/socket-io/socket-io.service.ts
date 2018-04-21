@@ -93,7 +93,9 @@ export class SocketIoService {
    * @returns {EventEmitter<any>} the new location event emitter
    */
   getLocationEmitter(): EventEmitter<any> {
-    this.socket.on('newLocation', this.newLocationEmitter.emit);
+    this.socket.on('newLocation', (locationArr) => {
+      this.newLocationEmitter.emit(locationArr);
+    });
     return this.newLocationEmitter;
   }
 

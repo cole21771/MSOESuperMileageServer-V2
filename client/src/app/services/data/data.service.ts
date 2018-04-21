@@ -24,7 +24,9 @@ export class DataService {
               private snackBar: MatSnackBar) {
     this.socketService.getNewDataEmitter().subscribe(this.updateData.bind(this));
     this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
-    this.socketService.getLocationEmitter().subscribe(this.locationNotifierEmitter.emit);
+    this.socketService.getLocationEmitter().subscribe((locationArr) => {
+      this.locationNotifierEmitter.emit(locationArr)
+    });
     this.socketService.getErrorEmitter().subscribe(this.throwError.bind(this));
 
     this.configService.getLabels.forEach((label) => this.labelDataMap.set(label, 0));
