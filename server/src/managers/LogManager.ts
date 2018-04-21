@@ -40,7 +40,6 @@ export class LogManager {
                     }
                 });
                 this.sessionLog.resetBuffer();
-                console.log('Writing session log');
             }
         }, 2000);
     }
