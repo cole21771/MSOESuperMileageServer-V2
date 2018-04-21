@@ -17,16 +17,16 @@ export class FullLog {
         this.errors = [];
     }
 
+    public static getTimedData(data: any): TimestampedData<any> {
+        return {timestamp: Date.now(), data};
+    }
+
     public fromJSON(fullLog: FullLog) {
         this.config = fullLog.config;
         this.data = fullLog.data;
         this.locations = fullLog.locations;
         this.markers = fullLog.markers;
         this.errors = fullLog.errors;
-    }
-
-    public static getTimedData(data: any): TimestampedData<any> {
-        return {timestamp: Date.now(), data};
     }
 
     public get hasBufferedData(): boolean {

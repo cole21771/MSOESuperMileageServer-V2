@@ -1,8 +1,8 @@
 import Socket = SocketIO.Socket;
+import {isUndefined} from 'util';
 import {Config} from '../../../client/src/app/models/interfaces/config/Config';
 import {Response} from '../models/interfaces/Response';
 import {ServerConfig} from '../models/interfaces/ServerConfig';
-import {isUndefined} from 'util';
 
 /**
  * A class that holds all of the socket.io listeners for anything related to
