@@ -102,8 +102,8 @@
 	  "cols": 24,
       "tiles": [
 	    {
-		  "rows": 4,
-		  "cols": 4,
+		  "rows": 6,
+		  "cols": 7,
 		  "type": "Map",
 		  "data": {
 		    "lat": 38.163478,
@@ -111,51 +111,34 @@
 			"zoom": 15
 		  }
 		},
-		{
-          "name": "Speed vs Time",
-          "icon": "speed",
-          "rows": 4,
-          "cols": 6,
+        {
+          "name": "Current vs Time",
+          "icon": "bolt",
+          "rows": 6,
+          "cols": 10,
           "type": "Graph",
           "data": {
-            "yAxis": "Speed",
+            "yAxis": "Current",
             "xAxis": "Time",
-            "colors": ["#f00"]
-          }
-        },
-		{
-          "name": "Motor RPM vs Time",
-          "icon": "rpm",
-          "rows": 4,
-          "cols": 6,
-		  "type": "Graph",
-          "data": {
-            "yAxis": "Motor_RPM",
-            "xAxis": "Time",
-            "colors": ["#0f0"]
+            "colors": ["#ff0"]
           }
         },
         {
-          "name": "Speed & Motor_RPM vs Time",
-          "icon": "rpm2",
-          "rows": 4,
-          "cols": 6,
-          "type": "Graph",
-          "data": {
-            "yAxisLeft": "Speed",
-            "yAxisRight": "Motor_RPM",
-            "yAxis": "Speed, Motor_RPM-downscaled",
-            "xAxis": "Time",
-            "colors": ["#f00", "#0f0"]
-          }
-        },
-        {
-          "name": "Lap",
+          "name": "Run Time",
           "rows": 1,
           "cols": 2,
-          "type": "Marker",
+          "type": "NumberDisplay",
           "data": {
-            "label": "Lap Number"
+            "label": "Time"
+          }
+        },
+        {
+          "name": "Lap Time",
+          "rows": 1,
+          "cols": 2,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Lap_Time"
           }
         },
         {
@@ -168,27 +151,48 @@
           }
         },
         {
-          "name": "Current vs Time",
-          "icon": "bolt",
-          "rows": 4,
-          "cols": 6,
-          "type": "Graph",
+          "name": "Lap",
+          "rows": 1,
+          "cols": 1,
+          "type": "Marker",
           "data": {
-            "yAxis": "Current",
-            "xAxis": "Time",
-            "colors": ["#ff0"]
+            "label": "Lap Number"
           }
         },
         {
-          "name": "Volts vs Time",
+          "name": "Voltage vs Time",
           "icon": "bolt",
-          "rows": 4,
-          "cols": 6,
+          "rows": 5,
+          "cols": 7,
           "type": "Graph",
           "data": {
             "yAxis": "Volts",
             "xAxis": "Time",
             "colors": ["#aaa"]
+          }
+        },
+		{
+          "name": "Speed vs Time",
+          "icon": "speed",
+          "rows": 5,
+          "cols": 8,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Speed",
+            "xAxis": "Time",
+            "colors": ["#f00"]
+          }
+        },
+		{
+          "name": "Motor RPM vs Time",
+          "icon": "rpm",
+          "rows": 5,
+          "cols": 8,
+		  "type": "Graph",
+          "data": {
+            "yAxis": "Motor_RPM",
+            "xAxis": "Time",
+            "colors": ["#0f0"]
           }
         }
       ]
