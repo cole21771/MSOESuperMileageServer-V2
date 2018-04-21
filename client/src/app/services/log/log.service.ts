@@ -18,8 +18,8 @@ export class LogService {
 
   downloadCSVFile(fileInfo: FileInfo) {
     this.socketService.getFile(fileInfo, true).then((res) => {
-      fileInfo.filename = fileInfo.filename.substring(0, fileInfo.filename.length - 3) + '.csv';
-      this.handleFileResponse(res, fileInfo);
+      const filename = fileInfo.filename.substring(0, fileInfo.filename.length - 3) + '.csv';
+      this.handleFileResponse(res, {path: fileInfo.path, filename});
     });
   }
 
