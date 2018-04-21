@@ -40,6 +40,7 @@ export class DataService {
    * @returns {number} the latest data for the label provided.
    */
   getLatestData(label: string): number {
+    console.log(this.labelDataMap);
     const data = this.labelDataMap.get(label);
     if (!isNullOrUndefined(data)) {
       return data;
@@ -60,7 +61,7 @@ export class DataService {
         throw new Error('DataService, getLatestData: Parser Error: ' + results.error);
       }
     } else {
-      throw new Error('DataService, getLatestData: model doesn\'t exist');
+      throw new Error(`DataService, getLatestData: model ${label} doesn't exist`);
     }
   }
 
@@ -91,7 +92,7 @@ export class DataService {
    */
   private updateData(data: number[]): void {
     this.configService.getLabels.forEach((label: string, index: number) => {
-      this.labelDataMap.set(label, data[index]);
+      this.labelDataMap.set(label, isNullOrUndefined(data[index]) ? 0 : data[index]);
     });
     this.dataNotifierEmitter.emit();
   }

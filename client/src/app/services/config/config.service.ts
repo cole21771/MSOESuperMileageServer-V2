@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Graph} from '../../models/Graph';
 import {Config} from '../../models/interfaces/config/Config';
 import {SocketIoService} from '../socket-io/socket-io.service';
@@ -11,16 +11,12 @@ import {ToolbarService} from '../toolbar/toolbar.service';
 import {MarkerProperties} from '../../models/interfaces/config/MarkerProperties';
 import {ErrorProperties} from '../../models/interfaces/config/ErrorProperties';
 
-const FormulaParser = require('hot-formula-parser').Parser;
-
 @Injectable()
 export class ConfigService {
-  private parser: any;
   private config: Config;
 
   constructor(private socketService: SocketIoService,
               private toolbarService: ToolbarService) {
-    this.parser = new FormulaParser();
 
     this.socketService.getSelectedConfig().then((config) => {
       this.config = config;

@@ -24,7 +24,6 @@ export class NumberComponent implements OnInit {
         break;
       case 'Marker':
         this.dataService.getMarkerEmitter(this.numberProperties.label).subscribe((marker: Marker) => {
-          console.log(marker);
           this.value = marker.marker;
         });
         break;
