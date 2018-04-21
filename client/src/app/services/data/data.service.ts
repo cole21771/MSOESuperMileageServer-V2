@@ -40,7 +40,6 @@ export class DataService {
    * @returns {number} the latest data for the label provided.
    */
   getLatestData(label: string): number {
-    console.log(this.labelDataMap);
     const data = this.labelDataMap.get(label);
     if (!isNullOrUndefined(data)) {
       return data;
