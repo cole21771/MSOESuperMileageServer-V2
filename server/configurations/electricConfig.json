@@ -112,7 +112,7 @@
           "data": {
             "yAxis": "Current",
             "xAxis": "Time",
-            "colors": ["#ff0"]
+            "colors": ["#000080"]
           }
         },
         {
@@ -146,10 +146,7 @@
           "name": "Lap Times",
           "rows": 6,
           "cols": 2,
-          "type": "NumberDisplay",
-          "data": {
-            "label": "Lap_Time"
-          }
+          "type": "LapTime"
         },
         {
           "name": "Voltage vs Time",

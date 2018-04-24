@@ -125,8 +125,6 @@ export class DataService {
       return 'Model';
     } else if (!isUndefined(this.configService.getMarkers.find((mP) => mP.name === label))) {
       return 'Marker';
-    } else if (label === 'Lap_Time') {
-      return 'LapTime';
     }
 
     return undefined;

@@ -1,0 +1,7 @@
+<div>
+  <h1 class="currentLap">{{currentLapTime | date:'mm:ss'}}</h1>
+  <br><br>
+  <div *ngFor="let time of times, let i = index">
+    <span class="value">#{{i + 1}}: {{time | date:'mm:ss'}}</span>
+  </div>
+</div>

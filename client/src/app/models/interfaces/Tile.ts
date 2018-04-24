@@ -4,5 +4,5 @@ export interface Tile {
   cols: number;
   rows: number;
   type: string;
-  data: any;
+  data?: any;
 }
