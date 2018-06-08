@@ -11,119 +11,74 @@
       "min": 0,
       "max": 35
     },
-	{
-	  "label": "Average_Speed",
-	  "min": 0,
-	  "max": 35
-	}
+    {
+      "label": "Average_Speed",
+      "min": 0,
+      "max": 35
+    }
   ],
   "models": [],
   "markers": [
     {
-	  "id": 0,
-	  "name": "General",
-	  "showPopup": true
-	},
-	{
-	  "id": 1,
-	  "name": "Engine State",
-	  "showPopup": false
-	},
-	{
-	  "id": 2,
-	  "name": "Lap Number",
-	  "showPopup": false
-	},
-	{
-	  "id": 3,
-	  "name": "Driver Indication",
-	  "showPopup": true
-	}
+      "id": 0,
+      "name": "General",
+      "showPopup": true
+    },
+    {
+      "id": 1,
+      "name": "Engine State",
+      "showPopup": false
+    },
+    {
+      "id": 2,
+      "name": "Lap Number",
+      "showPopup": false
+    },
+    {
+      "id": 3,
+      "name": "Driver Indication",
+      "showPopup": true
+    }
   ],
   "errors": [
-	{
-	  "id": 0,
-	  "name": "General"
-	},
-	{
-	  "id": 1,
-	  "name": "Wire Disconnection"
-	},
-	{
-	  "id": 2,
-	  "name": "Serial Connection Lost"
-	}
+    {
+      "id": 0,
+      "name": "General"
+    },
+    {
+      "id": 1,
+      "name": "Wire Disconnection"
+    },
+    {
+      "id": 2,
+      "name": "Serial Connection Lost"
+    }
   ],
   "views": [
     {
       "name": "Desktop Fullscreen",
-	  "type": "Desktop",
-	  "cols": 24,
+      "type": "Desktop",
+      "cols": 24,
       "tiles": [
-	    {
-		  "rows": 8,
-		  "cols": 6,
-		  "type": "Map",
-		  "data": {
-		    "lat": 42.223212,
-			"long": -84.916767,
-			"zoom": 16
-		  }
-		},
         {
-          "name": "Speed vs Time",
-          "icon": "speed",
           "rows": 8,
-          "cols": 12,
-          "type": "Graph",
+          "cols": 6,
+          "type": "Map",
           "data": {
-            "yAxis": "Speed",
-            "xAxis": "Time",
-            "colors": ["#f00"]
+            "lat": 42.223212,
+            "long": -84.916767,
+            "zoom": 16
           }
         },
         {
-          "name": "Run Time",
+          "name": "Location Speed",
           "rows": 1,
-          "cols": 2,
+          "cols": 3,
           "type": "NumberDisplay",
           "data": {
-            "label": "Time"
+            "label": "LocationSpeed"
           }
-        },
-        {
-          "name": "Lap",
-          "rows": 1,
-          "cols": 1,
-          "type": "Marker",
-          "data": {
-            "label": "Lap Number"
-          }
-        },
-        {
-          "name": "Lap Times",
-          "rows": 6,
-          "cols": 2,
-          "type": "LapTime"
-        },
-		{
-		  "name": "Speed",
-		  "rows": 1,
-		  "cols": 3,
-		  "type": "NumberDisplay",
-		  "data": {
-		    "label": "Speed"
-		  }
-		},
-		{
-		  "name": "Average Speed",
-		  "rows": 1,
-		  "cols": 3,
-		  "type": "NumberDisplay",
-		  "data": {
-		    "label": "Average_Speed"
-		  }
-		}
+        }
       ]
     }
   ]
