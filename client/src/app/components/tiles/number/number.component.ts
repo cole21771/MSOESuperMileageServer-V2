@@ -29,7 +29,16 @@ export class NumberComponent implements OnInit {
         break;
       case 'LocationData':
         this.dataService.locationNotifier.subscribe((locationArr) => {
-          this.value = locationArr[2];
+          switch (this.numberProperties.label) {
+            case 'LocationSpeed':
+              this.value = locationArr[2];
+              break;
+            case 'Latitude':
+              this.value = locationArr[0];
+              break;
+            case 'Longitude':
+              this.value = locationArr[1];
+          }
         });
         break;
       default:

@@ -125,7 +125,7 @@ export class DataService {
       return 'Model';
     } else if (!isUndefined(this.configService.getMarkers.find((mP) => mP.name === label))) {
       return 'Marker';
-    } else if (label === 'LocationData') {
+    } else if (['LocationSpeed', 'Latitude', 'Longitude'].includes(label)) {
       return 'LocationData';
     }
 
