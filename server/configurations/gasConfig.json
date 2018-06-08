@@ -71,6 +71,20 @@
           }
         },
         {
+          "name": "Location Speed vs Time",
+          "icon": "speed",
+          "rows": 8,
+          "cols": 12,
+          "type": "Graph",
+          "data": {
+            "yAxis": "LocationSpeed",
+            "xAxis": "Time",
+            "colors": [
+              "#f00"
+            ]
+          }
+        },
+        {
           "name": "Location Speed",
           "rows": 1,
           "cols": 3,

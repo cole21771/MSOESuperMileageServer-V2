@@ -102,6 +102,10 @@ export class ConfigService {
       return modelData;
     }
 
+    if (label === 'LocationSpeed') {
+      return {label: 'LocationSpeed', min: 0, max: 35};
+    }
+
     return undefined;
   }
 
