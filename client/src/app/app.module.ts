@@ -32,6 +32,7 @@ import { TileComponent } from './components/tiles/tile/tile.component';
 import { MapComponent } from './components/tiles/map/map.component';
 import {AgmCoreModule} from '@agm/core';
 import { MultiGraphComponent } from './components/tiles/multi-graph/multi-graph.component';
+import { LapTimeComponent } from './components/tiles/lap-time/lap-time.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { MultiGraphComponent } from './components/tiles/multi-graph/multi-graph.
     TileIconComponent,
     TileComponent,
     MapComponent,
-    MultiGraphComponent
+    MultiGraphComponent,
+    LapTimeComponent
   ],
   imports: [
     BrowserModule,
