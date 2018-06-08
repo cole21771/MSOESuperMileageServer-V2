@@ -27,6 +27,11 @@ export class NumberComponent implements OnInit {
           this.value = marker.marker;
         });
         break;
+      case 'LocationData':
+        this.dataService.locationNotifier.subscribe((locationArr) => {
+          this.value = locationArr[2];
+        });
+        break;
       default:
         console.error('NumberComponent, ngOnInit:', `Couldn't get type for NumberDisplay ${this.numberProperties.label}`);
     }
