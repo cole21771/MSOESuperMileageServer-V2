@@ -51,7 +51,7 @@ export class DataService {
     if (formula) {
       this.configService.getLabelsFromFormula(formula).forEach((variable) => {
         const value = this.labelDataMap.get(variable);
-        this.parser.setVariable(variable, value ? value : 1); // TODO one
+        this.parser.setVariable(variable, value ? value : 1); // TODO one?
       });
 
       const results = this.parser.parse(formula);
