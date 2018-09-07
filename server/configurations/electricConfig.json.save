@@ -1,0 +1,116 @@
+{
+  "vehicleType": "electric",
+  "incomingData": [
+    {
+      "label": "time" 
+    },
+    {
+      "label": "Speed",
+      "min": 0,
+      "max": 35,
+      "units": "MPH"
+    },
+    {
+      "label": "Motor_RPM",
+      "min": 0,
+      "max": 3500,
+      "units": "RPM"
+    },
+    {
+      "label": "Joules",
+      "min": 0,
+      "max": null,
+      "units": "J"
+    },
+    {
+      "label": "Volts",
+      "min": 0,
+      "max": 30,
+      "units": "V"
+    },
+    {
+      "label": "Current",
+      "min": 0,
+      "max": 50,
+      "units": "A"
+    },
+    {
+      "label": "Lap_Number",
+      "min": 0,
+      "max": 10,
+      "units": ""
+    },
+    {
+      "label": "Time",
+      "min": 0,
+      "max": null,
+      "units": "ms"    }
+  ],
+  "graphs": [
+    {
+      "yAxis": "Speed",
+      "xAxis": "Time",
+      "colors": ["#f00"]
+    },
+    {
+      "yAxis": "Motor_RPM",
+      "xAxis": "Time",
+      "colors": ["#0f0"]
+    },
+    {
+      "yAxis": "Joules",
+      "xAxis": "Time",
+      "colors": ["#00f"]
+    },
+    {
+      "yAxis": "Volts",
+      "xAxis": "Time",
+      "colors": ["#0ff"]
+    },
+    {
+      "yAxis": "Current",
+      "xAxis": "Time",
+      "colors": ["#f0f"]
+    },
+    {
+      "yAxis": "Motor_RPM",
+      "xAxis": "Distance",
+      "colors": ["#0f0"]
+    }
+  ],
+  "views": [
+    {
+      "name": "All",
+      "graphs": [0, 1, 2, 3, 4, 5]
+    },
+    {
+      "name": "Other",
+      "graphs": [0, 1, 5, 8]
+    },
+	{
+	  "name": "MultiGraph",
+	  "graphs": [6]
+	}
+  ],
+  "models": [
+    {
+      "label": "Distance",
+      "formula": "Speed * 0.44704 * Time * 0.001",
+	  "units": "m/s"
+    },
+	{
+	  "label": "Resistance",
+	  "formula": "Volts / Current",
+	  "units": "Ω"
+	},
+	{
+	  "label": "Small_Motor_RPM",
+	  "formula": "Motor_RPM / 10",
+	  "units": "RPM"
+	}
+  ],
+  "displayAlways": [
+    "Joules",
+    "Lap_Number"
+  ]
+}

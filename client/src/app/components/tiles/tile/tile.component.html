@@ -1,0 +1,9 @@
+<div class="max-size" [ngSwitch]="tile.type">
+  <app-graph *ngSwitchCase="'Graph'" [graphProperties]="tile.data"></app-graph>
+  <app-multi-graph *ngSwitchCase="'MultiGraph'" [graphProperties]="tile.data"></app-multi-graph>
+  <app-number *ngSwitchCase="'NumberDisplay'" [numberProperties]="tile.data"></app-number>
+  <app-lap-time *ngSwitchCase="'LapTime'"></app-lap-time>
+  <app-map *ngSwitchCase="'Map'" [mapProperties]="tile.data"></app-map>
+  <app-number *ngSwitchCase="'Marker'" [numberProperties]="tile.data"></app-number>
+  <mat-error *ngSwitchDefault>Cannot find type</mat-error>
+</div>

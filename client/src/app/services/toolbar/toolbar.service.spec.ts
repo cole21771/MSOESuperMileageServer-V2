@@ -1,7 +1,7 @@
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {ToolbarService} from './toolbar.service';
-import {View} from '../../models/interfaces/View';
+import {View} from '../../models/interfaces/config/View';
 
 describe('ToolbarService', () => {
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('ToolbarService', () => {
     inject([ToolbarService], (service: ToolbarService) => {
       const testView: View = {
         name: 'All',
-        graphs: [0, 1, 2]
+        tiles: [0, 1, 2]
       };
 
       service.viewChanged.subscribe((view) => {

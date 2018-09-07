@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {View} from '../../models/interfaces/View';
+import {View} from '../../models/interfaces/config/View';
 
 @Injectable()
 export class ToolbarService {
@@ -39,7 +39,7 @@ export class ToolbarService {
   }
 
   /**
-   * Allows you to set the view for which graphs should be shown
+   * Allows you to set the view for which tiles should be shown
    *
    * @param {View} view the
    */
@@ -48,11 +48,8 @@ export class ToolbarService {
     this.viewChangedEmitter.emit(view);
   }
 
-  /**
-   * Emits the last view again
-   */
   emitLastView(): void {
-    this.viewChangedEmitter.emit(this.lastView);
+    this.setView(this.lastView);
   }
 
   /**

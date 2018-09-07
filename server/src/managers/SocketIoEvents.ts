@@ -28,6 +28,7 @@ export class SocketIoEvents {
             this.auth.init(socket);
             this.data.init(socket);
             this.config.init(socket);
+            this.logger.init(socket);
         });
     }
 }

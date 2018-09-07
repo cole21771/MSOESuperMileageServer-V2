@@ -1,33 +1,37 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {ConfigService} from '../config/config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
-import {isNullOrUndefined} from 'util';
+import {isNullOrUndefined, isUndefined} from 'util';
+import {Marker} from '../../models/interfaces/Marker';
+import {LocationInfo} from '../../models/interfaces/LocationInfo';
+import {MatSnackBar} from '@angular/material';
 
 const FormulaParser = require('hot-formula-parser').Parser;
 
 @Injectable()
 export class DataService {
-  private labelDataMap: Map<string, number>;
-  private modelMap: Map<string, string>;
-  private labels: string[];
-  private dataNotifierEmitter: EventEmitter<undefined>;
-  private parser: any;
+  private parser = new FormulaParser();
 
-  constructor(private configService: ConfigService, private socketService: SocketIoService) {
-    this.dataNotifierEmitter = new EventEmitter<undefined>();
-    this.labelDataMap = new Map();
-    this.modelMap = new Map();
-    this.parser = new FormulaParser();
+  private labelDataMap = new Map<string, number>();
+  private modelMap = new Map<string, string>();
+  private markerEmitterMap = new Map<number, EventEmitter<Marker>>();
 
-    this.labels = this.configService.getLabels;
+  private dataNotifierEmitter = new EventEmitter<undefined>();
+  private locationNotifierEmitter = new EventEmitter<LocationInfo>();
 
-    this.socketService.getNewDataEmitter().subscribe((data: number[]) => {
-      this.addData(data);
+  constructor(private configService: ConfigService,
+              private socketService: SocketIoService,
+              private snackBar: MatSnackBar) {
+    this.socketService.getNewDataEmitter().subscribe(this.updateData.bind(this));
+    this.socketService.getMarkerEmitter().subscribe(this.updateMarker.bind(this));
+    this.socketService.getLocationEmitter().subscribe((locationArr) => {
+      this.locationNotifierEmitter.emit(locationArr);
     });
+    this.socketService.getErrorEmitter().subscribe(this.throwError.bind(this));
 
-    this.configService.getModels.forEach(model => {
-      this.modelMap.set(model.label, model.formula);
-    });
+    this.configService.getLabels.forEach((label) => this.labelDataMap.set(label, 0));
+    this.configService.getModels.forEach((model) => this.modelMap.set(model.label, model.formula));
+    this.configService.getMarkers.forEach((marker) => this.markerEmitterMap.set(marker.id, new EventEmitter<Marker>()));
   }
 
   /**
@@ -47,7 +51,7 @@ export class DataService {
     if (formula) {
       this.configService.getLabelsFromFormula(formula).forEach((variable) => {
         const value = this.labelDataMap.get(variable);
-        this.parser.setVariable(variable, value ? value : 1); // TODO one
+        this.parser.setVariable(variable, value ? value : 1); // TODO one?
       });
 
       const results = this.parser.parse(formula);
@@ -58,7 +62,7 @@ export class DataService {
         throw new Error('DataService, getLatestData: Parser Error: ' + results.error);
       }
     } else {
-      throw new Error('DataService, getLatestData: model doesn\'t exist');
+      throw new Error(`DataService, getLatestData: model ${label} doesn't exist`);
     }
   }
 
@@ -72,16 +76,63 @@ export class DataService {
     return this.dataNotifierEmitter;
   }
 
+  getMarkerEmitter(markerName: string): EventEmitter<Marker> {
+    const marker = this.configService.getMarkers.find((mk) => mk.name === markerName);
+    return this.markerEmitterMap.get(marker.id);
+  }
+
+  get locationNotifier(): EventEmitter<LocationInfo> {
+    return this.locationNotifierEmitter;
+  }
+
   /**
    * When new data arrives in the system, it will be sent here to be put into the labelDataMap. After it is done
    * with that, it will send a notification to anybody who is subscribed to the dataNotifierEmitter
    *
    * @param {number[]} data is an array of new data that will be put into the labelDataMap
    */
-  addData(data: number[]) {
-    this.labels.forEach((label: string, index: number) => {
-      this.labelDataMap.set(label, data[index]);
+  private updateData(data: number[]): void {
+    this.configService.getLabels.forEach((label: string, index: number) => {
+      this.labelDataMap.set(label, isNullOrUndefined(data[index]) ? 0 : data[index]);
     });
     this.dataNotifierEmitter.emit();
+  }
+
+  private updateMarker(marker: Marker): void {
+    const markerInfo = this.configService.getMarkers.find((m) => m.id === marker.id);
+
+    if (isNullOrUndefined(markerInfo)) {
+      console.error('DataService, updateMarker:', `Marker ${marker.id} could not be found!`);
+    }
+
+    if (markerInfo.showPopup) {
+      const message = isNullOrUndefined(marker.marker) ? 'No message supplied' : marker.marker;
+      this.showSnackBar(`Marker  ${markerInfo.name}: ${message}`);
+    }
+
+    this.markerEmitterMap.get(marker.id).emit(marker);
+  }
+
+  private throwError(err: any[]) {
+    const errorProperties = this.configService.getErrors.find((e) => e.id === err[0]);
+    this.showSnackBar(`Error ${errorProperties.name}: ${err[2]}`);
+  }
+
+  getDataType(label: string): string {
+    if (!isUndefined(this.labelDataMap.get(label))) {
+      return 'Data';
+    } else if (!isUndefined(this.modelMap.get(label))) {
+      return 'Model';
+    } else if (!isUndefined(this.configService.getMarkers.find((mP) => mP.name === label))) {
+      return 'Marker';
+    } else if (['LocationSpeed', 'Latitude', 'Longitude'].includes(label)) {
+      return 'LocationData';
+    }
+
+    return undefined;
+  }
+
+  private showSnackBar(message: string) {
+    this.snackBar.open(message, undefined, {duration: 5000});
   }
 }

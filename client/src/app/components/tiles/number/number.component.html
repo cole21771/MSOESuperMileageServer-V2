@@ -1,0 +1,4 @@
+<div [ngSwitch]="numberProperties.label">
+  <div *ngSwitchCase="'Time'" class="value">{{value | date:'mm:ss'}}</div>
+  <div *ngSwitchDefault class="value">{{value}}</div>
+</div>

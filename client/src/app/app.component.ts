@@ -4,13 +4,13 @@ import {LoginComponent} from './components/shared/login/login.component';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 import {ToolbarService} from './services/toolbar/toolbar.service';
 import {Router} from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
 import {LoginData} from './models/interfaces/LoginData';
+import {IconService} from './services/icon/icon.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   viewProviders: [MatIconRegistry]
 })
 export class AppComponent implements OnInit {
@@ -19,15 +19,14 @@ export class AppComponent implements OnInit {
   constructor(private router: Router,
               private socketService: SocketIoService,
               private toolbarService: ToolbarService,
+              private iconService: IconService,
               private loginDialog: MatDialog,
               private snackBar: MatSnackBar,
-              private registry: MatIconRegistry,
-              private sanitizer: DomSanitizer) {
+              private registry: MatIconRegistry) {
   }
 
   ngOnInit() {
-    this.registry.addSvgIcon('moon',
-      this.sanitizer.bypassSecurityTrustResourceUrl('./assets/moon.svg'));
+    this.iconService.init(this.registry);
   }
 
   openLogin() {

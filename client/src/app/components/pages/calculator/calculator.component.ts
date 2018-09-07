@@ -5,7 +5,7 @@ const FormulaParser = require('hot-formula-parser').Parser;
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
-  styleUrls: ['./calculator.component.css']
+  styleUrls: ['./calculator.component.scss']
 })
 export class CalculatorComponent implements OnInit {
 

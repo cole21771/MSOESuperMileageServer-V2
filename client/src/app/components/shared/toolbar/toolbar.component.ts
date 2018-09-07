@@ -1,16 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ToolbarService} from '../../../services/toolbar/toolbar.service';
 import {ConfigService} from '../../../services/config/config.service';
-import {View} from '../../../models/interfaces/View';
+import {View} from '../../../models/interfaces/config/View';
 import {Router} from '@angular/router';
-import {MatDialog, MatIconRegistry, MatSidenav, MatSnackBar} from '@angular/material';
+import {MatDialog, MatSidenav, MatSnackBar} from '@angular/material';
 import {SocketIoService} from '../../../services/socket-io/socket-io.service';
 import {SaveRecordingComponent} from '../save-recording/save-recording.component';
+import {LogService} from '../../../services/log/log.service';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css']
+  styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
   @Input() sidenav: MatSidenav;
@@ -19,7 +20,8 @@ export class ToolbarComponent implements OnInit {
 
   constructor(private toolbarService: ToolbarService,
               private configService: ConfigService,
-              private socket: SocketIoService,
+              private socketService: SocketIoService,
+              private logService: LogService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
               private router: Router) {
@@ -61,10 +63,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   startRecording() {
-    this.socket.startRecording().then(response => {
+    this.socketService.startRecording().then((message) => {
       this.isRecording = true;
-      this.showDialog(response.data);
-    });
+      this.showSnackBar(message);
+    }).catch(this.showSnackBar.bind(this));
   }
 
   stopRecording() {
@@ -75,17 +77,17 @@ export class ToolbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(filename => {
       if (filename) {
-        this.socket.stopRecording(filename).then(response => {
-          if (!response.error) {
-            this.isRecording = false;
-          }
-          this.showDialog(response.data);
-        });
+        this.socketService.stopRecording(filename).then(message => {
+          this.isRecording = false;
+          this.snackBar.open(message, 'Download', {duration: 8000})
+            .onAction().subscribe(() => this.logService.downloadFile({path: './logs/recordings', filename}));
+
+        }).catch(this.showSnackBar.bind(this));
       }
     });
   }
 
-  private showDialog(message: string): void {
+  private showSnackBar(message: string): void {
     this.snackBar.open(message, undefined, {duration: 3000});
   }
 }

@@ -2,113 +2,221 @@
   "vehicleType": "electric",
   "incomingData": [
     {
+      "label": "Time",
+      "min": 0,
+      "max": null
+    },
+    {
       "label": "Speed",
       "min": 0,
-      "max": 35,
-      "units": "MPH"
+      "max": 35
     },
+	{
+	  "label": "Average_Speed",
+	  "min": 0,
+	  "max": 35
+	},
     {
       "label": "Motor_RPM",
       "min": 0,
-      "max": 3500,
-      "units": "RPM"
+      "max": 3500
     },
     {
       "label": "Joules",
       "min": 0,
-      "max": null,
-      "units": "J"
+      "max": null
     },
     {
       "label": "Volts",
       "min": 0,
-      "max": 30,
-      "units": "V"
+      "max": 30
     },
     {
       "label": "Current",
       "min": 0,
       "max": 50,
       "units": "A"
-    },
-    {
-      "label": "Lap_Number",
-      "min": 0,
-      "max": 10,
-      "units": ""
-    },
-    {
-      "label": "Time",
-      "min": 0,
-      "max": null,
-      "units": "ms"
     }
   ],
-  "graphs": [
+  "models": [],
+  "markers": [
     {
-      "yAxis": "Speed",
-      "xAxis": "Time",
-      "colors": ["#f00"]
-    },
-    {
-      "yAxis": "Motor_RPM",
-      "xAxis": "Time",
-      "colors": ["#0f0"]
-    },
-    {
-      "yAxis": "Joules",
-      "xAxis": "Time",
-      "colors": ["#00f"]
-    },
-    {
-      "yAxis": "Volts",
-      "xAxis": "Time",
-      "colors": ["#0ff"]
-    },
-    {
-      "yAxis": "Current",
-      "xAxis": "Time",
-      "colors": ["#f0f"]
-    },
-    {
-      "yAxis": "Motor_RPM",
-      "xAxis": "Distance",
-      "colors": ["#0f0"]
-    }
+	  "id": 0,
+	  "name": "General",
+	  "showPopup": true
+	},
+	{
+	  "id": 1,
+	  "name": "Engine State",
+	  "showPopup": false
+	},
+	{
+	  "id": 2,
+	  "name": "Lap Number",
+	  "showPopup": false
+	},
+	{
+	  "id": 3,
+	  "name": "Driver Indication",
+	  "showPopup": true
+	}
+  ],
+  "errors": [
+	{
+	  "id": 0,
+	  "name": "General"
+	},
+	{
+	  "id": 1,
+	  "name": "Wire Disconnection"
+	},
+	{
+	  "id": 2,
+	  "name": "Serial Connection Lost"
+	},
+	{
+	  "id": 3,
+	  "name": "Motor Controller Fault"
+	},
+	{
+	  "id": 4,
+	  "name": "Motor Sensor Pattern Fault"
+	},
+	{
+	  "id": 5,
+	  "name": "Carbon Monoxide Warning"
+	}
   ],
   "views": [
     {
-      "name": "All",
-      "graphs": [0, 1, 2, 3, 4, 5]
-    },
-    {
-      "name": "Other",
-      "graphs": [0, 1, 5, 8]
-    },
-	{
-	  "name": "MultiGraph",
-	  "graphs": [6]
-	}
-  ],
-  "models": [
-    {
-      "label": "Distance",
-      "formula": "Speed * 0.44704 * Time * 0.001",
-	  "units": "m/s"
-    },
-	{
-	  "label": "Resistance",
-	  "formula": "Volts / Current",
-	  "units": "Ω"
-	},
-	{
-	  "label": "Small_Motor_RPM",
-	  "formula": "Motor_RPM / 10",
-	  "units": "RPM"
-	}
-  ],
-  "displayAlways": [
-    "Joules",
-    "Lap_Number"
+      "name": "Desktop Fullscreen",
+	  "type": "Desktop",
+	  "cols": 24,
+      "tiles": [
+	    {
+		  "rows": 6,
+		  "cols": 7,
+		  "type": "Map",
+		  "data": {
+		    "lat": 38.163478,
+			"long": -122.457834,
+			"zoom": 15
+		  }
+		},
+        {
+          "name": "Current vs Time",
+          "icon": "bolt",
+          "rows": 6,
+          "cols": 10,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Current",
+            "xAxis": "Time",
+            "colors": ["#000080"]
+          }
+        },
+        {
+          "name": "Joules",
+          "rows": 1,
+          "cols": 2,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Joules"
+          }
+        },
+        {
+          "name": "Run Time",
+          "rows": 1,
+          "cols": 2,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "Time"
+          }
+        },
+        {
+          "name": "Lap",
+          "rows": 1,
+          "cols": 1,
+          "type": "Marker",
+          "data": {
+            "label": "Lap Number"
+          }
+        },
+        {
+          "name": "Lap Times",
+          "rows": 6,
+          "cols": 2,
+          "type": "LapTime"
+        },
+        {
+          "name": "Voltage vs Time",
+          "icon": "bolt",
+          "rows": 5,
+          "cols": 5,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Volts",
+            "xAxis": "Time",
+            "colors": ["#aaa"]
+          }
+        },
+		{
+          "name": "Speed vs Time",
+          "icon": "speed",
+          "rows": 5,
+          "cols": 8,
+          "type": "Graph",
+          "data": {
+            "yAxis": "Speed",
+            "xAxis": "Time",
+            "colors": ["#f00"]
+          }
+        },
+		{
+		  "name": "Speed",
+		  "rows": 1,
+		  "cols": 4,
+		  "type": "NumberDisplay",
+		  "data": {
+		    "label": "Speed"
+		  }
+		},
+		{
+		  "name": "Average Speed",
+		  "rows": 1,
+		  "cols": 4,
+		  "type": "NumberDisplay",
+		  "data": {
+		    "label": "Average_Speed"
+		  }
+		},
+		{
+		  "name": "Joules vs Time",
+		  "icon": "bolt",
+		  "rows": 5,
+		  "cols": 8,
+		  "type": "Graph",
+		  "data": {
+            "yAxis": "Joules",
+            "xAxis": "Time",
+            "colors": [
+              "#0ff"
+            ]
+          }
+		},
+		{
+          "name": "Motor RPM vs Time",
+          "icon": "rpm",
+          "rows": 4,
+          "cols": 8,
+		  "type": "Graph",
+          "data": {
+            "yAxis": "Motor_RPM",
+            "xAxis": "Time",
+            "colors": ["#0f0"]
+          }
+        }
+      ]
+    }
   ]
 }

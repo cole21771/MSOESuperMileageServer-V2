@@ -1,22 +1,27 @@
-import {EventEmitter, HostListener, Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import {Config} from '../../models/interfaces/Config';
+import {Config} from '../../models/interfaces/config/Config';
 import {LoginData} from '../../models/interfaces/LoginData';
 import {Response} from '../../models/interfaces/Response';
+import {FileInfo} from '../../models/interfaces/FileInfo';
+import Socket = SocketIOClient.Socket;
+import {Marker} from '../../models/interfaces/Marker';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 
 @Injectable()
 export class SocketIoService {
-  private socket: SocketIOClient.Socket; // The client instance of socket.io
+  private socket: Socket; // The client instance of socket.io
 
-  private newDataEmitter: EventEmitter<any> = new EventEmitter<any>();
-  private newLocationEmitter: EventEmitter<any> = new EventEmitter<any>();
+  private newDataEmitter = new EventEmitter<any>();
+  private newLocationEmitter = new EventEmitter<any>();
+  private newMarkerEmitter = new EventEmitter<Marker>();
+  private newErrorEmitter = new EventEmitter<any[]>();
   private uuid: string;
 
   constructor() {
     this.socket = io();
     this.setupPerformanceMonitor();
-    this.uuid = this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
-      this.s4() + '-' + this.s4() + this.s4() + this.s4();
+    this.uuid = this.createUUID();
 
     window.onbeforeunload = () => {
       this.socket.emit('client-disconnect', this.uuid);
@@ -50,21 +55,19 @@ export class SocketIoService {
     this.socket.connect();
   }
 
-  private s4(): string {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-
   /**
    * Sends a request to the server to get the selected configuration.
    *
    * @returns {Promise<Config>} a Promise holding the Config file.
    */
-  getSelectedConfig(): Promise<Response<Config>> {
-    return new Promise(resolve => {
-      this.socket.emit('getSelectedConfig', undefined, (dataFormat) => {
-        resolve(dataFormat);
+  getSelectedConfig(): Promise<Config> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('getSelectedConfig', undefined, (response: Response<Config>) => {
+        if (response.error) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.data);
+        }
       });
     });
   }
@@ -77,7 +80,7 @@ export class SocketIoService {
    */
   getNewDataEmitter(): EventEmitter<number[]> {
     this.socket.on('newData', (data) => {
-      this.newDataEmitter.emit(JSON.parse(data));
+      this.newDataEmitter.emit(data);
     });
 
     return this.newDataEmitter;
@@ -89,12 +92,21 @@ export class SocketIoService {
    *
    * @returns {EventEmitter<any>} the new location event emitter
    */
-  getLocation(): EventEmitter<any> {
-    this.socket.on('newLocation', (location) => {
-      this.newLocationEmitter.emit(location);
+  getLocationEmitter(): EventEmitter<any> {
+    this.socket.on('newLocation', (locationArr) => {
+      this.newLocationEmitter.emit(locationArr);
     });
-
     return this.newLocationEmitter;
+  }
+
+  getMarkerEmitter(): EventEmitter<Marker> {
+    this.socket.on('newMarker', (markerArr) => this.newMarkerEmitter.emit(markerArr));
+    return this.newMarkerEmitter;
+  }
+
+  getErrorEmitter(): EventEmitter<any[]> {
+    this.socket.on('newError', (errorArr) => this.newErrorEmitter.emit(errorArr));
+    return this.newErrorEmitter;
   }
 
   /**
@@ -133,27 +145,54 @@ export class SocketIoService {
     this.socket.emit('logout');
   }
 
-  startRecording(): Promise<Response<string>> {
-    return new Promise(resolve => {
-      this.socket.emit('startRecording', this.uuid, (response) => {
-        resolve(response);
+  startRecording(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('startRecording', this.uuid, (response: Response<string>) => {
+        if (response.error) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.data);
+        }
       });
     });
   }
 
-  doesFileExist(filename: string): Promise<boolean> {
-    return new Promise(resolve => {
-      this.socket.emit('doesFileExist', filename, (fileExistsStatus) => {
-        resolve(fileExistsStatus);
+  doesRecordingExist(filename: string): Promise<boolean> {
+    return new Promise(resolve => this.socket.emit('doesRecordingExist', filename, resolve));
+  }
+
+  stopRecording(filename: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.socket.emit('stopRecording', this.uuid, filename, (response: Response<string>) => {
+        if (response.error) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.data);
+        }
       });
     });
   }
 
-  stopRecording(filename: string): Promise<Response<string>> {
-    return new Promise((resolve) => {
-      this.socket.emit('stopRecording', this.uuid, filename, (response) => {
-        resolve(response);
-      });
-    });
+  getLogs(): Promise<Response<FileInfo[]>> {
+    return new Promise((resolve) => this.socket.emit('get-logs', undefined, resolve));
+  }
+
+  getRecordings(): Promise<Response<FileInfo[]>> {
+    return new Promise((resolve) => this.socket.emit('get-recordings', undefined, resolve));
+  }
+
+  getFile(fileInfo: FileInfo, inCsvFormat = false): Promise<Response<string>> {
+    return new Promise((resolve) => this.socket.emit('get-file', fileInfo, inCsvFormat, resolve));
+  }
+
+  private createUUID(): string {
+    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+      this.s4() + '-' + this.s4() + this.s4() + this.s4();
+  }
+
+  private s4(): string {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
   }
 }

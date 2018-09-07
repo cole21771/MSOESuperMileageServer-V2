@@ -3,11 +3,14 @@
     <button aria-label="Open Side Menu" mat-icon-button (click)="toggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span>SuperMileage Server</span>
+    <div class="toolbar-text" [routerLink]="['/']">
+      <mat-icon class="toolbar-text toolbar-icon" svgIcon="team-logo"></mat-icon>
+      <span>&nbsp;SuperMileage Server</span>
+    </div>
 
     <span class="spacer"></span>
 
-    <button mat-icon-button *ngIf="isHome" aria-label="Graph Options" matTooltip="Graph Options"
+    <button mat-icon-button *ngIf="isHome" aria-label="Graph Options" matTooltip="GraphProperties Options"
             [matMenuTriggerFor]="graphMenu">
       <mat-icon>insert_chart</mat-icon>
       <mat-menu #graphMenu="matMenu">
