@@ -1,0 +1,15 @@
+<agm-map class="max-size" [latitude]="mapProperties.lat"
+         [longitude]="mapProperties.long"
+         [zoom]="mapProperties.zoom"
+         [disableDefaultUI]="true"
+         [fullscreenControl]="true"
+         [streetViewControl]="false">
+  <agm-polyline [clickable]="false" strokeColor="#f00">
+    <agm-polyline-point *ngFor="let location of locations"
+                        [longitude]="location.long"
+                        [latitude]="location.lat"></agm-polyline-point>
+    <agm-marker *ngIf="locations.length > 0" [latitude]="locations[locations.length - 1].lat"
+                [longitude]="locations[locations.length - 1].long">
+    </agm-marker>
+  </agm-polyline>
+</agm-map>

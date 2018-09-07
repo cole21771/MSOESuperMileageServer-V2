@@ -1,16 +1,14 @@
-<mat-grid-list [cols]="cols" rowHeight="4:3" gutterSize="10" (window:resize)="attemptResize()">
-  <div *ngFor="let graphInfo of selectedGraphInfoArray">
-    <mat-grid-tile id="{{graphInfo.title}}" class="tile mat-elevation-z6" >
-      <mat-card class="mat-elevation-z6 card-style">
-        <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>{{graphInfo.title}}</mat-card-title>
-          <mat-card-subtitle>{{graphInfo.units}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content class="inherit">
-          <app-graph [showXAxis]="cols !== 1" [graphInfo]="graphInfo" class="inherit"></app-graph>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </div>
+<mat-grid-list [cols]="view.cols" gutterSize="8px" *ngIf="view">
+  <mat-grid-tile *ngFor="let tile of view.tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+                 class="test mat-elevation-z6">
+    <mat-card class="max-size mat-elevation-z6">
+      <div class="header" *ngIf="tile.icon || tile.name || tile.sub">
+        <app-tile-icon mat-card-avatar *ngIf="tile.icon" [icon]="tile.icon"></app-tile-icon>
+        <div class="header-title" *ngIf="tile.name">{{tile.name}}</div>
+      </div>
+      <mat-card-content class="max-size">
+        <app-tile [tile]="tile"></app-tile>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
 </mat-grid-list>

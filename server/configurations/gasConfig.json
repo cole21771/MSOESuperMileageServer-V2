@@ -1,0 +1,99 @@
+{
+  "vehicleType": "gas",
+  "incomingData": [
+    {
+      "label": "Time",
+      "min": 0,
+      "max": null
+    },
+    {
+      "label": "Speed",
+      "min": 0,
+      "max": 35
+    },
+    {
+      "label": "Average_Speed",
+      "min": 0,
+      "max": 35
+    }
+  ],
+  "models": [],
+  "markers": [
+    {
+      "id": 0,
+      "name": "General",
+      "showPopup": true
+    },
+    {
+      "id": 1,
+      "name": "Engine State",
+      "showPopup": false
+    },
+    {
+      "id": 2,
+      "name": "Lap Number",
+      "showPopup": false
+    },
+    {
+      "id": 3,
+      "name": "Driver Indication",
+      "showPopup": true
+    }
+  ],
+  "errors": [
+    {
+      "id": 0,
+      "name": "General"
+    },
+    {
+      "id": 1,
+      "name": "Wire Disconnection"
+    },
+    {
+      "id": 2,
+      "name": "Serial Connection Lost"
+    }
+  ],
+  "views": [
+    {
+      "name": "Desktop Fullscreen",
+      "type": "Desktop",
+      "cols": 24,
+      "tiles": [
+        {
+          "rows": 8,
+          "cols": 6,
+          "type": "Map",
+          "data": {
+            "lat": 42.223212,
+            "long": -84.916767,
+            "zoom": 16
+          }
+        },
+        {
+          "name": "Location Speed vs Time",
+          "icon": "speed",
+          "rows": 8,
+          "cols": 12,
+          "type": "Graph",
+          "data": {
+            "yAxis": "LocationSpeed",
+            "xAxis": "Time",
+            "colors": [
+              "#f00"
+            ]
+          }
+        },
+        {
+          "name": "Location Speed",
+          "rows": 1,
+          "cols": 3,
+          "type": "NumberDisplay",
+          "data": {
+            "label": "LocationSpeed"
+          }
+        }
+      ]
+    }
+  ]
+}

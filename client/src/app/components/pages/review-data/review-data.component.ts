@@ -7,7 +7,7 @@ import {FileInfo} from '../../../models/interfaces/FileInfo';
 @Component({
   selector: 'app-review-data',
   templateUrl: './review-data.component.html',
-  styleUrls: ['./review-data.component.css']
+  styleUrls: ['./review-data.component.scss']
 })
 export class ReviewDataComponent implements OnInit {
   dataSource = new MatTableDataSource();

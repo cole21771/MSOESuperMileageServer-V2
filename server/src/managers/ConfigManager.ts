@@ -1,6 +1,8 @@
 import Socket = SocketIO.Socket;
-import {error} from 'util';
-import {ServerConfig} from '../interfaces/ServerConfig';
+import {isUndefined} from 'util';
+import {Config} from '../../../client/src/app/models/interfaces/config/Config';
+import {Response} from '../models/interfaces/Response';
+import {ServerConfig} from '../models/interfaces/ServerConfig';
 
 /**
  * A class that holds all of the socket.io listeners for anything related to
@@ -27,14 +29,7 @@ export class ConfigManager {
          * A listener for any clients to use to get the current selected configuration file.
          */
         socket.on('getSelectedConfig', (undefined, callback) => {
-            this.fs.readFile(`${this.CONFIG_PATH}/${this.serverConfig.selectedConfig}`, 'utf8', (err, file) => {
-                if (err) {
-                    const errorString = 'ConfigManager, getSelectedConfig: ' + err;
-                    console.error(errorString);
-                    callback({error: true, errorMessage: errorString});
-                }
-                callback({error: false, data: JSON.parse(file)});
-            });
+            this.getConfig.then(callback).catch(callback);
         });
 
         /**
@@ -73,18 +68,36 @@ export class ConfigManager {
         });
     }
 
-    public getCSVTitle(): string {
-        const file = this.fs.readFileSync(`${this.CONFIG_PATH}/${this.serverConfig.selectedConfig}`, 'utf8');
-        const config = JSON.parse(file);
+    public getCSVTitle(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.getConfig.then((res: Response<Config>) => {
+                const config = res.data;
 
-        let csv = '';
-        config.incomingData.forEach((data, index) => {
-            csv += data.label.replace(/_/g, ' ');
-            if (index !== config.incomingData.length - 1) {
-                csv += ', ';
-            }
+                let csv = '';
+                config.incomingData.forEach((data, index) => {
+                    csv += data.label.replace(/_/g, ' ');
+                    if (index !== config.incomingData.length - 1) {
+                        csv += ', ';
+                    }
+                });
+
+                resolve(csv + '\n');
+            }).catch((errRes: Response<undefined>) => {
+                throw new Error('ConfigManager, getCSVTitle: \n\n' + errRes.errorMessage);
+            });
         });
+    }
 
-        return csv + '\n';
+    public get getConfig(): Promise<Response<Config>> {
+        return new Promise((resolve, reject) => {
+            this.fs.readFile(`${this.CONFIG_PATH}/${this.serverConfig.selectedConfig}`, 'utf8', (err, file) => {
+                if (err) {
+                    const errorString = 'ConfigManager, getSelectedConfig: ' + err;
+                    console.error(errorString);
+                    reject({error: true, errorMessage: errorString});
+                }
+                resolve({error: false, data: JSON.parse(file)});
+            });
+        });
     }
 }

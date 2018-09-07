@@ -4,13 +4,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SocketIoService} from './services/socket-io/socket-io.service';
 
 import {AppComponent} from './app.component';
-import {GraphComponent} from './components/shared/graph/graph.component';
+import {GraphComponent} from './components/tiles/graph/graph.component';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppMaterialModule} from './app-material.module';
 import {LoginComponent} from './components/shared/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {LineChartModule} from '@swimlane/ngx-charts';
+import {LineChartModule, NgxChartsModule, NumberCardModule} from '@swimlane/ngx-charts';
 import {ToolbarService} from './services/toolbar/toolbar.service';
 import {AdminGuard} from './gaurds/admin/admin.guard';
 import {ConfigService} from './services/config/config.service';
@@ -25,6 +25,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import { DirectoryComponent } from './components/shared/directory/directory.component';
 import {LogService} from './services/log/log.service';
+import { NumberComponent } from './components/tiles/number/number.component';
+import { TileIconComponent } from './components/tiles/tile-icon/tile-icon.component';
+import { IconService } from './services/icon/icon.service';
+import { TileComponent } from './components/tiles/tile/tile.component';
+import { MapComponent } from './components/tiles/map/map.component';
+import {AgmCoreModule} from '@agm/core';
+import { MultiGraphComponent } from './components/tiles/multi-graph/multi-graph.component';
+import { LapTimeComponent } from './components/tiles/lap-time/lap-time.component';
 
 @NgModule({
   declarations: [
@@ -37,17 +45,27 @@ import {LogService} from './services/log/log.service';
     CalculatorComponent,
     ToolbarComponent,
     SaveRecordingComponent,
-    DirectoryComponent
+    DirectoryComponent,
+    NumberComponent,
+    TileIconComponent,
+    TileComponent,
+    MapComponent,
+    MultiGraphComponent,
+    LapTimeComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     LineChartModule,
+    NgxChartsModule,
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
     AppRoutingModule,
-    AppMaterialModule
+    AppMaterialModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDTI33G7NT8BwXOSEDuiOEZDD4s7Y63Uqo'
+    })
   ],
   providers: [
     SocketIoService,
@@ -55,7 +73,8 @@ import {LogService} from './services/log/log.service';
     AdminGuard,
     ConfigService,
     DataService,
-    LogService
+    LogService,
+    IconService
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, SaveRecordingComponent]

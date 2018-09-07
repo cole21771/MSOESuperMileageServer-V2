@@ -3,15 +3,21 @@ import {TestBed, inject} from '@angular/core/testing';
 import {ConfigService} from './config.service';
 import {SocketIoService} from '../socket-io/socket-io.service';
 import {ToolbarService} from '../toolbar/toolbar.service';
-import {View} from '../../models/interfaces/View';
-import {Config} from '../../models/interfaces/Config';
+import {View} from '../../models/interfaces/config/View';
+import {Config} from '../../models/interfaces/config/Config';
 import {ParserVariable} from '../../models/interfaces/ParserVariable';
-import {IncomingData} from '../../models/interfaces/IncomingData';
-import {Model} from '../../models/interfaces/Model';
+import {IncomingData} from '../../models/interfaces/config/IncomingData';
+import {Model} from '../../models/interfaces/config/Model';
 
 const mockConfig: Config = {
   vehicleType: 'electric',
   incomingData: [
+    {
+      label: 'Time',
+      min: 0,
+      max: null,
+      units: 'ms'
+    },
     {
       label: 'Volts',
       min: 0,
@@ -23,45 +29,35 @@ const mockConfig: Config = {
       min: 0,
       max: 30,
       units: 'A'
-    },
-    {
-      label: 'Time',
-      min: 0,
-      max: null,
-      units: 'ms'
-    }
-  ],
-  graphs: [
-    {
-      xAxis: 'Volts',
-      yAxis: 'Time',
-      colors: ['#123456']
-    },
-    {
-      xAxis: 'Current',
-      yAxis: 'Time',
-      colors: ['#654321']
-    },
-    {
-      xAxis: 'Power',
-      yAxis: 'Time',
-      colors: ['#456123']
     }
   ],
   models: [
     {
       label: 'Power',
       formula: 'Volts * Current',
+      min: 0,
+      max: 40,
       units: 'Watts'
     }
   ],
   views: [
     {
       name: 'All',
-      graphs: [0, 1, 2]
+      tiles: [
+        {
+          name: 'oof',
+          rows: 1,
+          cols: 1,
+          type: 'Graph',
+          data: {
+            yAxis: 'Current',
+            xAxis: 'Time',
+            colors: ['#f00']
+          }
+        }
+      ]
     }
-  ],
-  displayAlways: ['Power']
+  ]
 };
 
 const socketIoServiceStub = {
@@ -133,7 +129,7 @@ describe('ConfigService', () => {
 
   it('getGraphInfo should return graphInfo', inject([ConfigService], configService => {
     setTimeout(() => {
-      /*const graphInfo: GraphInfo[] = {
+      /*const graphInfo: Graph[] = {
 
       };
       expect(configService.getGraphInfo).toBe(graphInfo);*/
@@ -251,6 +247,8 @@ describe('ConfigService', () => {
         const mockModel: Model = {
           label: 'Variables',
           formula: 'Do * Not * Exist',
+          min: 0,
+          max: null,
           units: 'Blarg!'
         };
         expect(configService.isValidModel(mockModel)).toBeFalsy();
